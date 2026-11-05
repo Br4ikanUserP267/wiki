@@ -1,0 +1,12 @@
+{
+  "name": "wiki-cejel-ips",
+  "version": "1.0.0",
+  "description": "Wiki de calidad en salud para CEJEL IPS: habilitación, PAMEC y acreditación.",
+  "private": true,
+  "scripts": {
+    "start": "node --no-warnings server/server.js"
+  },
+  "engines": {
+    "node": ">=22.5"
+  }
+}

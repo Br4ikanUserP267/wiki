@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wiki CEJEL IPS · Calidad en Salud</title>
+<link rel="icon" href="images/logo-cejel.png">
+<style>
+:root{
+  /* Paleta tomada del logo de CEJEL IPS */
+  --navy:#17466B; --steel:#2E77A5; --blue:#2E77A5; --text:#0F6CAD; --sky:#389BDE;
+  --ice:#E3F3FF; --mist:#F1F9FF; --line:#C5E0F5; --ink:#12263F; --muted:#4F6579; --accent:#389BDE;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--mist);line-height:1.55}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:8px;top:-60px;background:#fff;color:var(--navy);padding:12px 18px;border-radius:8px;font-weight:700;z-index:50}
+.skip:focus{top:8px}
+:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+header :focus-visible{outline-color:#fff;box-shadow:0 0 0 5px var(--navy)}
+.skip:focus-visible{outline-color:var(--navy);box-shadow:none}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- Encabezado ---------- */
+header{background:linear-gradient(100deg,var(--navy),var(--steel));color:#fff;padding:12px 28px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:20;box-shadow:0 3px 14px rgba(23,70,107,.35)}
+.brand{display:block;flex:none;line-height:0}
+.brand img{height:52px;width:auto;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
+header h1{font-size:1.2rem;margin:0;font-weight:700;line-height:1.2}
+header h1 small{display:block;font-weight:400;font-size:.8rem;opacity:.95}
+#auth{margin-left:auto;display:flex;gap:8px;align-items:center}
+.who{font-size:.85rem;margin-right:4px}
+.hbtn{min-height:44px;background:rgba(255,255,255,.14);color:#fff;border:1.5px solid rgba(255,255,255,.7);border-radius:8px;padding:8px 16px;font:inherit;font-weight:600;cursor:pointer}
+.hbtn:hover{background:rgba(255,255,255,.26)}
+.cta{background:#fff;color:var(--navy);text-decoration:none;font-weight:700;border-radius:8px;padding:12px 20px;min-height:44px;display:inline-flex;align-items:center}
+.cta:hover{background:var(--ice)}
+#menuBtn{display:none;background:rgba(255,255,255,.18);color:#fff;border:1.5px solid rgba(255,255,255,.6);border-radius:8px;min-width:48px;min-height:48px;font-size:1.3rem;cursor:pointer}
+
+/* ---------- Estructura ---------- */
+.layout{display:flex;gap:28px;max-width:1360px;margin:0 auto;padding:26px 28px 60px;align-items:flex-start}
+#nav{width:310px;flex:none;position:sticky;top:102px;max-height:calc(100vh - 122px)}
+main{flex:1;min-width:0}
+
+/* ---------- Menú lateral unificado ---------- */
+.navcard{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 24px rgba(23,70,107,.1);overflow:hidden;display:flex;flex-direction:column;max-height:inherit}
+.navsearch{padding:16px 16px 14px;background:linear-gradient(180deg,var(--ice),#fff);border-bottom:1px solid var(--line)}
+label[for=search]{display:block;font-weight:700;color:var(--navy);margin-bottom:6px;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase}
+#search{width:100%;min-height:46px;padding:9px 14px;border:1.5px solid #5B7C97;border-radius:10px;font:inherit;background:#fff}
+#count{font-size:.82rem;color:var(--muted);margin-top:6px;min-height:1.1em}
+.navhead{padding:14px 18px 6px;font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text)}
+#links{list-style:none;margin:0;padding:0 8px 8px;overflow:auto}
+#links li{border-top:1px solid #E4F0FA}
+#links li:first-child{border-top:0}
+#links a{position:relative;display:flex;align-items:center;gap:12px;min-height:52px;padding:10px 12px 10px 14px;color:var(--ink);text-decoration:none;font-size:.92rem;font-weight:500;line-height:1.3;border-radius:10px}
+#links a b{flex:none;width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:var(--ice);color:var(--text);font-size:.82rem;font-weight:800}
+#links a span{flex:1;min-width:0}
+#links a svg{flex:none;width:16px;height:16px;stroke:#7FA6C4;opacity:0;transition:opacity .15s}
+#links a:hover{background:var(--mist)}
+#links a:hover svg{opacity:1}
+#links a[aria-current=page]{background:var(--ice);color:var(--navy);font-weight:700}
+#links a[aria-current=page]::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:4px;border-radius:4px;background:var(--steel)}
+#links a[aria-current=page] b{background:var(--steel);color:#fff}
+#links a[aria-current=page] svg{opacity:1;stroke:var(--steel)}
+#links .addli{padding:10px 8px 4px}
+.addbtn{width:100%;min-height:46px;border:2px dashed var(--steel);background:#fff;color:var(--text);border-radius:10px;font:inherit;font-weight:700;cursor:pointer}
+.addbtn:hover{background:var(--ice)}
+
+/* ---------- Banner del módulo ---------- */
+.hero{position:relative;display:flex;align-items:center;overflow:hidden;min-height:270px;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 10px 30px rgba(23,70,107,.12);margin-bottom:22px}
+.hero .txt{position:relative;z-index:1;max-width:58%;padding:38px 44px;color:var(--navy)}
+.hero .num{color:var(--text);letter-spacing:.28em;font-size:.8rem;font-weight:800}
+.hero h2{color:var(--navy);font-size:2.3rem;font-weight:800;line-height:1.15;margin:10px 0}
+.hero h2:focus{outline:none}
+.hero p{color:var(--muted);font-size:1.08rem;margin:0}
+.crumbs{margin-top:18px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;gap:8px;flex-wrap:wrap;color:var(--navy);align-items:center}
+.crumbs li+li::before{content:"›";margin-right:8px;color:var(--muted)}
+.crumbs a{color:var(--navy)}
+.hero .visual{position:absolute;right:0;top:0;bottom:0;width:54%;background:linear-gradient(135deg,var(--navy),var(--steel) 55%,var(--sky));-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 48%);mask-image:linear-gradient(90deg,transparent 0,#000 48%)}
+.hero .visual .scene,.hero .visual .photo{position:absolute;inset:0;width:100%;height:100%}
+.hero .visual .photo{object-fit:cover}
+.mini{margin-top:16px;min-height:40px;background:#fff;border:1.5px solid var(--steel);color:var(--text);border-radius:8px;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer}
+.mini:hover{background:var(--ice)}
+
+/* ---------- Tarjetas y contenido ---------- */
+.tools{display:flex;justify-content:flex-end;margin-bottom:10px}
+.tools button{min-height:44px;background:#fff;border:1.5px solid var(--steel);color:var(--text);border-radius:10px;padding:8px 16px;font:inherit;font-weight:600;cursor:pointer}
+.tools button:hover{background:var(--ice)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 2px 8px rgba(23,70,107,.06);transition:box-shadow .2s}
+.card:hover{box-shadow:0 8px 22px rgba(23,70,107,.13)}
+.card summary,.card .sum{cursor:pointer;list-style:none;min-height:58px;padding:15px 20px;font-weight:600;color:var(--navy);display:flex;align-items:center;gap:14px}
+.card .sum{cursor:default}
+.card summary::-webkit-details-marker{display:none}
+.card summary i,.card .sum i{font-style:normal;flex:none;min-width:44px;text-align:center;background:linear-gradient(135deg,var(--steel),var(--sky));color:#fff;border-radius:8px;padding:3px 9px;font-size:.82rem}
+.card summary::after{content:"+"/"";margin-left:auto;color:var(--text);font-size:1.6rem;font-weight:400}
+.card[open] summary::after{content:"–"/""}
+.card[open] summary{border-bottom:1px solid var(--line);background:var(--ice)}
+.card>ul{margin:0;padding:14px 22px 18px 44px}
+.card>ul li{margin:6px 0}
+.card li::marker{color:var(--sky)}
+.body{padding:8px 26px 22px}
+.body p{margin:.7em 0}
+.body ul,.body ol{padding-left:24px;margin:.6em 0}
+.body li{margin:5px 0}
+.body h3.sub{color:var(--navy);font-size:1.08rem;margin:1.4em 0 .3em;padding-left:12px;border-left:4px solid var(--sky)}
+.body blockquote{margin:1.1em 0;padding:13px 18px;background:var(--ice);border-left:5px solid var(--steel);border-radius:0 12px 12px 0;color:var(--navy)}
+.tw{overflow-x:auto;margin:1em 0;border:1px solid var(--line);border-radius:12px}
+.tw table{border-collapse:collapse;width:100%;min-width:480px;font-size:.95rem}
+.tw th,.tw td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.tw thead th{background:var(--navy);color:#fff}
+.tw tbody tr:nth-child(even){background:var(--mist)}
+.tw tbody th{font-weight:600;color:var(--navy)}
+.adm{padding:12px 20px 0;display:flex;gap:8px}
+.note{background:var(--ice);border:1px dashed var(--sky);border-radius:12px;padding:12px 16px;color:var(--navy);font-size:.92rem}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:22px}
+.pager button{min-height:48px;background:#fff;border:1.5px solid var(--steel);color:var(--text);padding:10px 18px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer}
+.pager button:hover:not(:disabled){background:var(--steel);color:#fff}
+.pager button:disabled{opacity:.5;cursor:not-allowed}
+mark.hit{background:#FFE98A;color:var(--ink);border-radius:3px;padding:0 2px}
+.empty{color:var(--muted);text-align:center;padding:30px}
+.offline{background:#fff;border:2px solid var(--steel);border-radius:16px;padding:26px}
+.offline code{background:var(--ice);padding:2px 8px;border-radius:6px}
+
+/* ---------- Resultados de búsqueda ---------- */
+.results h2{color:var(--navy);font-size:1.7rem;margin:0 0 4px}
+.results h2:focus{outline:none}
+.rcount{color:var(--muted);margin:0 0 16px}
+.rlist{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.rlist a{display:block;background:#fff;border:1px solid var(--line);border-left:5px solid var(--sky);border-radius:14px;padding:14px 18px;color:var(--ink);text-decoration:none;box-shadow:0 2px 8px rgba(23,70,107,.06)}
+.rlist a:hover{box-shadow:0 8px 22px rgba(23,70,107,.14);border-left-color:var(--steel)}
+.rmod{display:block;font-size:.76rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text)}
+.rtitle{display:flex;gap:10px;align-items:center;font-weight:700;color:var(--navy);font-size:1.05rem;margin:3px 0}
+.rtitle i{font-style:normal;flex:none;background:linear-gradient(135deg,var(--steel),var(--sky));color:#fff;border-radius:8px;padding:2px 9px;font-size:.8rem}
+.rsnip{display:block;color:var(--muted);font-size:.93rem}
+.card{scroll-margin-top:96px}
+
+/* ---------- Diálogos ---------- */
+dialog{border:0;border-radius:18px;padding:0;width:min(1120px,calc(100% - 32px));max-height:96vh;color:var(--ink);box-shadow:0 20px 60px rgba(10,30,50,.45)}
+dialog::backdrop{background:rgba(10,30,50,.55)}
+dialog form{padding:28px 34px;max-height:96vh;overflow:auto}
+dialog h2{margin:0 0 14px;color:var(--navy);font-size:1.3rem}
+.fld{margin-bottom:14px}
+.fld label{display:block;font-weight:600;color:var(--navy);margin-bottom:5px}
+.fld input,.fld textarea{width:100%;border:1.5px solid #5B7C97;border-radius:10px;padding:10px 12px;font:inherit;background:#fff;min-height:46px}
+.fld textarea{resize:vertical;line-height:1.45}
+.help{font-size:.84rem;color:var(--muted);margin-top:4px}
+.help code{background:var(--ice);padding:1px 5px;border-radius:4px}
+.chk{display:flex;gap:8px;align-items:center;min-height:44px;margin-bottom:8px}
+.chk input{width:22px;height:22px}
+.err{background:#FDECEC;border:1.5px solid #B3261E;color:#7A130D;border-radius:10px;padding:10px 14px;margin:0 0 14px;font-weight:600}
+.dbtns{display:flex;gap:10px;flex-wrap:wrap}
+.dbtns button{min-height:48px;padding:10px 20px;border-radius:10px;font:inherit;font-weight:700;cursor:pointer;border:1.5px solid var(--steel);background:#fff;color:var(--text)}
+.dbtns .primary{background:var(--steel);color:#fff}
+.dbtns .danger{margin-left:auto;border-color:#B3261E;color:#8A1912}
+.dbtns button:disabled{opacity:.6}
+
+/* ---------- Imágenes, enlaces y herramientas del editor ---------- */
+.body figure{margin:1.3em 0;text-align:center}
+.body figure img{display:inline-block;max-width:100%;max-height:440px;width:auto;height:auto;object-fit:contain;border-radius:12px;border:1px solid var(--line);background:#fff}
+.body figcaption{text-align:center}
+.body figcaption{color:var(--muted);font-size:.88rem;margin-top:6px}
+.body a{color:var(--text);font-weight:600}
+.mtools{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.mtools .mini{margin-top:0}
+.ipanel{background:var(--mist);border:1.5px solid var(--sky);border-radius:12px;padding:14px;margin:8px 0}
+.ipanel[hidden],.prevbox[hidden],.ippv[hidden]{display:none}
+.ippv{max-width:220px;max-height:140px;border-radius:8px;border:1px solid var(--line);margin:0 0 10px}
+.prevbox{border:1.5px dashed var(--steel);border-radius:12px;background:#fff;margin:8px 0;padding:10px 18px;max-height:60vh;overflow:auto;font-size:1.05rem}
+
+/* ---------- Administración ---------- */
+.adminbox{padding:28px 34px;max-height:96vh;overflow:auto}
+.adminbox section{margin:0 0 22px}
+.adminbox h3{margin:0 0 8px;color:var(--navy);font-size:1.1rem;border-left:4px solid var(--sky);padding-left:10px}
+.btnlink{display:inline-flex;align-items:center;min-height:48px;padding:10px 18px;border:1.5px solid var(--steel);border-radius:10px;color:var(--text);font-weight:700;text-decoration:none;background:#fff}
+.btnlink:hover{background:var(--ice)}
+.dbtns button.mini{min-height:48px;margin:0}
+.okmsg{background:#E8F6EC;border:1.5px solid #1E7B3A;color:#0E4A22;border-radius:10px;padding:10px 14px;font-weight:600}
+.okmsg[hidden]{display:none}
+.blist{margin:8px 0 0;padding-left:20px;font-size:.88rem;color:var(--muted)}
+.uform{display:grid;grid-template-columns:1.2fr 1.2fr 160px auto;gap:10px;align-items:end;margin-top:12px}
+.uform .fld{margin:0}
+.uform .mini{margin:0;min-height:46px}
+.fld select,select[data-uid]{min-height:44px;border:1.5px solid #5B7C97;border-radius:8px;padding:6px 10px;font:inherit;background:#fff}
+.fld select{width:100%}
+.mini.dng{border-color:#B3261E;color:#8A1912}
+.adminbox .tw td,.adminbox .tw th{white-space:nowrap;vertical-align:middle}
+.adm{flex-wrap:wrap}
+.hero .mini{margin-right:8px}
+@media(max-width:700px){.uform{grid-template-columns:1fr}}
+
+#f_body{min-height:400px;font-size:1.05rem;line-height:1.6}
+dialog h2{font-size:1.5rem}
+.fld label{font-size:1.02rem}
+
+/* ---------- Accesibilidad ---------- */
+#a11yBtn{position:fixed;right:20px;bottom:20px;z-index:30;width:60px;height:60px;border-radius:50%;border:3px solid #fff;background:var(--steel);color:#fff;cursor:pointer;display:grid;place-items:center;box-shadow:0 6px 18px rgba(23,70,107,.45)}
+#a11yBtn svg{width:32px;height:32px}
+#a11yPanel{position:fixed;right:20px;bottom:90px;z-index:30;width:260px;background:#fff;border:2px solid var(--steel);border-radius:16px;padding:16px;box-shadow:0 12px 30px rgba(23,70,107,.3)}
+#a11yPanel[hidden]{display:none}
+#a11yPanel h2{margin:0 0 10px;font-size:1rem;color:var(--navy)}
+#a11yPanel button{display:block;width:100%;min-height:48px;margin-bottom:8px;background:var(--ice);border:1.5px solid var(--steel);color:var(--navy);border-radius:10px;font:inherit;font-weight:600;cursor:pointer;text-align:left;padding:8px 14px}
+#a11yPanel button[aria-pressed=true]{background:var(--steel);color:#fff}
+html.hc{--navy:#000;--steel:#0033A0;--blue:#0033A0;--text:#0033A0;--sky:#0033A0;--ice:#fff;--mist:#fff;--line:#000;--ink:#000;--muted:#000}
+
+/* ---------- Móvil ---------- */
+@media(max-width:900px){
+  header{padding:10px 14px;gap:10px}
+  header h1 small,.who,.cta{display:none}
+  header h1{font-size:1rem}
+  .brand img{height:42px}
+  #menuBtn{display:block}
+  .layout{display:block;padding:14px 14px 70px}
+  #nav{position:fixed;left:0;top:66px;bottom:0;width:320px;max-width:88vw;max-height:none;padding:12px;background:var(--mist);z-index:15;transform:translateX(-105%);visibility:hidden;transition:transform .25s,visibility .25s;box-shadow:6px 0 24px rgba(0,0,0,.2)}
+  #nav.open{transform:none;visibility:visible}
+  .hero{flex-direction:column-reverse;align-items:stretch;min-height:0}
+  .hero .txt{max-width:100%;padding:8px 22px 26px}
+  .hero h2{font-size:1.6rem}
+  .hero .visual{position:relative;width:100%;height:140px;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
+  #a11yBtn{right:12px;bottom:12px}#a11yPanel{right:12px;bottom:82px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#mtitle">Saltar al contenido</a>
+<header>
+  <a class="brand" href="#m1" aria-label="CEJEL IPS, ir al inicio"><img src="images/logo-cejel-h.png" alt="CEJEL IPS"></a>
+  <h1>Wiki de Calidad en Salud<small>Habilitación, PAMEC y Acreditación</small></h1>
+  <div id="auth"></div>
+  <a class="cta" href="#m1">Empezar por el módulo 1</a>
+  <button id="menuBtn" aria-label="Abrir menú de módulos" aria-expanded="false" aria-controls="nav">☰</button>
+</header>
+<div class="layout">
+  <nav id="nav" aria-label="Módulos de la wiki">
+    <div class="navcard">
+      <div class="navsearch" role="search">
+        <label for="search">Buscar en la wiki</label>
+        <input id="search" type="search" autocomplete="off" aria-keyshortcuts="/" placeholder="Ej.: habilitación, glosas  ( / )">
+        <div id="count" aria-hidden="true"></div>
+      </div>
+      <div class="navhead" aria-hidden="true">Módulos</div>
+      <ol id="links"></ol>
+    </div>
+  </nav>
+  <main id="main"></main>
+</div>
+<div id="status" class="sr-only" role="status" aria-live="polite"></div>
+<dialog id="dlg" aria-labelledby="dtitle"></dialog>
+
+<button id="a11yBtn" type="button" aria-label="Opciones de accesibilidad" aria-expanded="false" aria-controls="a11yPanel"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="4.5" r="1.8"/><path d="M5 8.5l7 1.5 7-1.5M12 10v5m0 0l-3.5 6M12 15l3.5 6"/></svg></button>
+<div id="a11yPanel" role="dialog" aria-label="Opciones de accesibilidad" hidden>
+  <h2>Accesibilidad</h2>
+  <button type="button" id="aBig">Aumentar texto (A+)</button>
+  <button type="button" id="aSmall">Reducir texto (A−)</button>
+  <button type="button" id="aHc" aria-pressed="false">Alto contraste</button>
+  <button type="button" id="aReset">Restablecer</button>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let M=[], admin=null, role=null, cur=0, q="", first=true, pending=null;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+const terms=()=>norm(q).split(/\s+/).filter(Boolean);
+function hl(s){ s=String(s); const ts=terms(), n=norm(s);
+  if(!ts.length||n.length!==s.length) return esc(s);
+  const on=new Array(s.length).fill(false);
+  for(const w of ts){ let i=n.indexOf(w); while(i>=0){ for(let k=i;k<i+w.length;k++) on[k]=true; i=n.indexOf(w,i+w.length); } }
+  let o="", open=false;
+  for(let k=0;k<s.length;k++){ if(on[k]&&!open){o+='<mark class="hit">';open=true;} if(!on[k]&&open){o+="</mark>";open=false;} o+=esc(s[k]); }
+  return o+(open?"</mark>":"");
+}
+// sección = [código, título, puntos[], cuerpo, id]
+const hay=x=>norm([x[0],x[1],x[2].join(" "),x[3]||""].join(" "));
+const hasAll=(h,ts)=>ts.every(t=>h.includes(t));
+const plain=t=>String(t).replace(/^\s*(#{1,3}|>|[-•]|\d+[.)])\s+/gm,"").replace(/[|*]/g," ").replace(/\s+/g," ").trim();
+function runSearch(all){
+  const ts=terms(), out=[];
+  const ok=h=>all?ts.every(t=>h.includes(t)):ts.some(t=>h.includes(t));
+  M.forEach((m,mi)=>{
+    const mh=norm(m.t+" "+m.d);
+    if(ok(mh)) out.push({mi,score:5,mod:true});
+    m.s.forEach(x=>{
+      if(!ok(mh+" "+hay(x))) return;
+      const tt=norm(x[0]+" "+x[1]); let score=1;
+      const hits=ts.filter(t=>(tt+" "+norm(x[2].join(" "))+" "+norm(x[3]||"")).includes(t)).length;
+      if(hasAll(tt,ts)) score=4; else if(ts.some(t=>tt.includes(t))) score=3; else if(hasAll(norm(x[2].join(" ")),ts)) score=2;
+      out.push({mi,x,score:score+hits/10});
+    });
+  });
+  return out.sort((a,b)=>b.score-a.score||a.mi-b.mi);
+}
+// Todas las palabras; si no hay nada, se muestran las que contienen alguna.
+function search(){
+  const ts=terms(); if(!ts.length) return [];
+  let out=runSearch(true);
+  if(!out.length&&ts.length>1){ out=runSearch(false); out.loose=true; }
+  return out;
+}
+function snippet(x){
+  const src=plain(x[3]||x[2].join(" · ")); if(!src) return "";
+  const n=norm(src); let pos=-1;
+  for(const t of terms()){ const i=n.indexOf(t); if(i>=0&&(pos<0||i<pos)) pos=i; }
+  if(pos<0||n.length!==src.length) return esc(src.slice(0,160))+(src.length>160?"…":"");
+  let a=Math.max(0,pos-70); const b=Math.min(src.length,pos+110);
+  if(a>0){ const sp=src.indexOf(" ",a); if(sp>=0&&sp<pos) a=sp+1; }
+  return (a>0?"…":"")+hl(src.slice(a,b))+(b<src.length?"…":"");
+}
+const matchMod=m=>!q||terms().length===0||search().some(r=>M[r.mi]===m);
+
+/* ---------- Markdown simplificado y seguro (todo se escapa antes) ---------- */
+const URLOK=/^(?!.*&(?:quot|#39|lt|gt);)(https?:\/\/[\w\-.~:\/?#@!$&;=%+,]+|#m\d+(?:\/s\d+)?)$/;
+const inl=t=>esc(t)
+  .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,(m,txt,u)=>!URLOK.test(u)?m:(u[0]==="#"?`<a href="${u}">${txt}</a>`:`<a href="${u}" target="_blank" rel="noopener noreferrer">${txt}</a>`))
+  .replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");
+function md(src){
+  const L=String(src).replace(/\r/g,"").split("\n"); let o="", i=0;
+  const isUl=l=>/^\s*[-•]\s+/.test(l), isOl=l=>/^\s*\d+[.)]\s+/.test(l), isTb=l=>l.trim().startsWith("|");
+  while(i<L.length){
+    const l=L[i];
+    if(!l.trim()){i++;continue;}
+    if(/^###\s+/.test(l)){o+=`<h3 class="sub">${inl(l.replace(/^###\s+/,""))}</h3>`;i++;continue;}
+    const im=l.match(/^!\[([^\]]*)\]\((https?:\/\/[^\s)]+|\/images\/[\w.\-]+)\)\s*$/);
+    if(im){ o+=`<figure><img src="${esc(im[2])}" alt="${esc(im[1])}" loading="lazy" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('em'),{textContent:'(No se pudo cargar la imagen)'}))">${im[1]?`<figcaption aria-hidden="true">${esc(im[1])}</figcaption>`:""}</figure>`;i++;continue; }
+    if(/^>/.test(l)){const b=[];while(i<L.length&&/^>/.test(L[i])){b.push(L[i].replace(/^>\s?/,""));i++;}o+=`<blockquote>${b.map(inl).join("<br>")}</blockquote>`;continue;}
+    if(isUl(l)){const b=[];while(i<L.length&&isUl(L[i])){b.push(L[i].replace(/^\s*[-•]\s+/,""));i++;}o+=`<ul>${b.map(x=>`<li>${inl(x)}</li>`).join("")}</ul>`;continue;}
+    if(isOl(l)){const b=[];while(i<L.length&&isOl(L[i])){b.push(L[i].replace(/^\s*\d+[.)]\s+/,""));i++;}o+=`<ol>${b.map(x=>`<li>${inl(x)}</li>`).join("")}</ol>`;continue;}
+    if(isTb(l)){const r=[];while(i<L.length&&isTb(L[i])){r.push(L[i]);i++;}
+      const cells=x=>x.trim().replace(/^\|/,"").replace(/\|$/,"").split("|").map(c=>c.trim());
+      const sep=r.length>1&&/^[\s|:-]+$/.test(r[1]);
+      const head=cells(r[0]), rows=r.slice(sep?2:1).map(cells);
+      o+=`<div class="tw" tabindex="0" role="region" aria-label="Tabla (se desplaza si no cabe)"><table><thead><tr>${head.map(c=>`<th scope="col">${inl(c)}</th>`).join("")}</tr></thead><tbody>${rows.map(rw=>`<tr>${rw.map((c,k)=>k?`<td>${inl(c)}</td>`:`<th scope="row">${inl(c)}</th>`).join("")}</tr>`).join("")}</tbody></table></div>`;continue;}
+    const p=[];do{p.push(L[i]);i++;}while(i<L.length&&L[i].trim()&&!/^(###|>|!\[)/.test(L[i])&&!isUl(L[i])&&!isOl(L[i])&&!isTb(L[i]));
+    o+=`<p>${p.map(inl).join(" ")}</p>`;
+  }
+  return o;
+}
+
+/* ---------- Ilustración del banner ---------- */
+const ST='fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"';
+const ICONS=[
+`<path d="M16 8h26l8 8v40H16z"/><path d="M42 8v8h8M24 28h18M24 37h18M24 46h12"/>`,
+`<path d="M10 56V22l22-12 22 12v34zM32 26v16M24 34h16M26 56V46h12v10"/>`,
+`<path d="M32 6l20 8v16c0 14-9 23-20 28C21 53 12 44 12 30V14z"/><path d="M22 32l7 7 13-14"/>`,
+`<path d="M52 24A22 22 0 0 0 14 20M12 40a22 22 0 0 0 38 4"/><path d="M52 10v14H38M12 54V40h14"/>`,
+`<path d="M32 6l7 16 17 2-13 12 4 17-15-9-15 9 4-17L8 24l17-2z"/>`,
+`<path d="M32 54S8 40 8 24a13 13 0 0 1 24-6 13 13 0 0 1 24 6c0 16-24 30-24 30z"/><path d="M20 30h8l4-8 5 14 3-6h6"/>`,
+`<path d="M14 6h36v52l-6-4-6 4-6-4-6 4-6-4-6 4z"/><path d="M24 20h16M24 30h16M24 40h9"/>`,
+`<path d="M10 54h44M16 54V36M30 54V24M44 54V12"/><path d="M12 24l14-10 10 6 16-14M44 6h8v8"/>`
+];
+const PLUS=(x,y,o)=>`<path d="M${x} ${y-9}v18M${x-9} ${y}h18" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="${o}"/>`;
+function scene(i){
+  return `<svg class="scene" viewBox="0 0 400 260" preserveAspectRatio="xMaxYMid meet" aria-hidden="true" focusable="false">
+  <circle cx="340" cy="40" r="120" fill="#fff" opacity=".08"/><circle cx="260" cy="250" r="90" fill="#fff" opacity=".07"/>
+  ${PLUS(150,50,.35)}${PLUS(380,170,.3)}${PLUS(140,210,.25)}${PLUS(330,240,.3)}${PLUS(395,30,.25)}
+  <rect x="120" y="120" width="46" height="18" rx="9" fill="#fff" opacity=".25" transform="rotate(-35 143 129)"/>
+  <rect x="330" y="205" width="40" height="16" rx="8" fill="#fff" opacity=".2" transform="rotate(28 350 213)"/>
+  <rect x="195" y="55" width="150" height="150" rx="36" fill="#fff" opacity=".2" stroke="#fff" stroke-opacity=".55" stroke-width="2"/>
+  <g transform="translate(220 80) scale(1.5)" ${ST}>${ICONS[i%ICONS.length]}</g></svg>`;
+}
+
+/* ---------- Datos y API ---------- */
+async function call(method,url,body){
+  const r=await fetch(url,{method,headers:{"Content-Type":"application/json","X-Requested-With":"wiki"},body:body?JSON.stringify(body):undefined});
+  let d={}; try{d=await r.json();}catch(e){}
+  if(!r.ok) throw new Error(d.error||("Error "+r.status));
+  return d;
+}
+async function load(){
+  const r=await fetch("/api/content",{cache:"no-store"}); if(!r.ok) throw new Error("x");
+  M=(await r.json()).map(m=>({id:m.id,t:m.t,d:m.d,note:m.note,image:m.image||"",s:m.s.map(x=>[x.code,x.title,x.bullets,x.body,x.id])}));
+}
+function say(t){ $("status").textContent=""; setTimeout(()=>$("status").textContent=t,50); }
+
+/* ---------- Vistas ---------- */
+const num2=n=>String(n).padStart(2,"0");
+const CHEV='<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6"/></svg>';
+function nav(){
+  const items=M.map((m,i)=>matchMod(m)?`<li><a href="#m${i+1}" ${i===cur&&!q?'aria-current="page"':""}><b aria-hidden="true">${num2(i+1)}</b><span><span class="sr-only">Módulo ${i+1}: </span>${esc(m.t)}</span>${CHEV}</a></li>`:"").join("");
+  $("links").innerHTML=(items||'<li class="empty">Sin resultados</li>')+(admin&&!q?'<li class="addli"><button type="button" class="addbtn" data-act="add-mod">＋ Nuevo módulo</button></li>':"");
+}
+function viewResults(moveFocus){
+  const res=search(), mods=new Set(res.map(r=>r.mi)).size;
+  const items=res.slice(0,60).map(r=>{
+    const m=M[r.mi], lab=`Módulo ${r.mi+1} · ${esc(m.t)}`;
+    if(r.mod) return `<li><a href="#m${r.mi+1}" data-act="open" data-m="${r.mi}"><span class="rmod">${lab}</span><span class="rtitle"><span>${hl(m.t)}</span></span><span class="rsnip">${hl(m.d)}</span></a></li>`;
+    return `<li><a href="#m${r.mi+1}/s${r.x[4]}" data-act="open" data-m="${r.mi}" data-id="${r.x[4]}"><span class="rmod">${lab}</span><span class="rtitle"><i>${esc(r.x[0])}</i><span>${hl(r.x[1])}</span></span><span class="rsnip">${snippet(r.x)}</span></a></li>`;
+  }).join("");
+  $("main").innerHTML=`<section class="results" aria-labelledby="mtitle">
+    <h2 id="mtitle" tabindex="-1">Resultados para “${esc(q)}”</h2>
+    <p class="rcount">${res.length?`${res.length} resultado(s) en ${mods} módulo(s)${res.length>60?" · se muestran los 60 más relevantes":""}${res.loose?" · ninguna sección contiene todas las palabras; se muestran las que contienen alguna":""}`:"Sin resultados"}</p>
+    ${res.length?`<ol class="rlist">${items}</ol>`:`<div class="offline"><p><strong>No encontramos nada para “${esc(q)}”.</strong></p><ul><li>No importan las tildes ni las mayúsculas, pero revisa la ortografía.</li><li>Prueba con menos palabras o con una palabra clave: <em>habilitación</em>, <em>glosas</em>, <em>PAMEC</em>.</li></ul><button type="button" class="mini" data-act="clear-search">Borrar búsqueda</button></div>`}
+  </section>`;
+  nav();
+  if(moveFocus) scrollTo({top:0});
+}
+function view(moveFocus){
+  const m=M[cur]; if(!m) return;
+  if(q){ viewResults(moveFocus); return; }
+  const secs=m.s;
+  const hasOpen=secs.some(x=>x[2].length||x[3]);
+  const card=x=>{
+    const inner=x[3]?`<div class="body">${md(x[3])}</div>`:(x[2].length?`<ul>${x[2].map(b=>`<li>${hl(b)}</li>`).join("")}</ul>`:"");
+    const bar=admin?`<div class="adm"><button type="button" class="mini" data-act="edit-sec" data-id="${x[4]}">✎ Editar sección</button><button type="button" class="mini" data-act="sec-up" data-id="${x[4]}" aria-label="Subir la sección ${esc(x[1])}">↑ Subir</button><button type="button" class="mini" data-act="sec-down" data-id="${x[4]}" aria-label="Bajar la sección ${esc(x[1])}">↓ Bajar</button></div>`:"";
+    if(!inner&&!admin) return `<div class="card"><div class="sum"><i>${esc(x[0])}</i><span>${hl(x[1])}</span></div></div>`;
+    return `<details class="card" id="s${x[4]}"><summary><i>${esc(x[0])}</i><span>${hl(x[1])}</span></summary>${bar}${inner||'<p class="empty">Esta sección aún no tiene contenido.</p>'}</details>`;
+  };
+  $("main").innerHTML=`
+   <section class="hero" aria-labelledby="mtitle">
+    <div class="txt"><div class="num">MÓDULO ${cur+1} DE ${M.length}</div><h2 id="mtitle" tabindex="-1">${esc(m.t)}</h2><p>${esc(m.d)}</p>
+     <nav class="crumbs" aria-label="Ruta de navegación"><ol><li><a href="#m1">Inicio</a></li><li aria-current="page">Módulo ${cur+1}</li></ol></nav>
+     ${admin?'<button type="button" class="mini" data-act="edit-mod">✎ Editar módulo</button><button type="button" class="mini" data-act="mod-up" aria-label="Subir este módulo en el menú">↑ Subir módulo</button><button type="button" class="mini" data-act="mod-down" aria-label="Bajar este módulo en el menú">↓ Bajar módulo</button>':""}</div>
+    <div class="visual">${scene(cur)}<img class="photo" src="${esc(m.image||"images/modulo-"+(cur+1)+".jpg")}" alt="" referrerpolicy="no-referrer" onerror="this.remove()"></div>
+   </section>
+   ${hasOpen?`<div class="tools"><button type="button" id="toggleAll">Expandir todas las secciones</button></div>`:""}
+   ${secs.map(card).join("")||`<p class="empty" role="status">Ninguna sección de este módulo coincide con “${esc(q)}”. Revisa los otros módulos del menú.</p>`}
+   ${admin&&!q?'<p><button type="button" class="addbtn" data-act="add-sec">＋ Agregar sección a este módulo</button></p>':""}
+   ${m.note?`<p class="note"><span aria-hidden="true">ℹ️ </span>${esc(m.note)}</p>`:""}
+   <div class="pager"><button type="button" data-act="go" data-i="${cur-1}" ${cur?"":"disabled"}>← Anterior</button>
+   <button type="button" data-act="go" data-i="${cur+1}" ${cur<M.length-1?"":"disabled"}>Siguiente →</button></div>`;
+  const t=$("toggleAll");
+  if(t) t.onclick=()=>{ const ds=[...document.querySelectorAll("details.card")]; const open=ds.some(d=>!d.open);
+    ds.forEach(d=>d.open=open); t.textContent=open?"Contraer todas las secciones":"Expandir todas las secciones"; };
+  nav();
+  const tgt=pending&&document.getElementById("s"+pending); pending=null;
+  if(tgt){ tgt.open=true; tgt.scrollIntoView({block:"start"}); tgt.querySelector("summary").focus({preventScroll:true}); say("Sección abierta: "+tgt.querySelector("summary span").textContent); }
+  else if(moveFocus){ scrollTo({top:0}); if(!first){ $("mtitle").focus({preventScroll:true}); say(`Módulo ${cur+1}: ${m.t}`);} }
+  first=false;
+}
+function authBox(){
+  $("auth").innerHTML=admin
+   ?`<span class="who">Sesión: <b>${esc(admin)}</b> · ${role==="admin"?"administrador":"editor"}</span>${role==="admin"?'<button type="button" class="hbtn" data-act="admin">Administración</button>':""}<button type="button" class="hbtn" data-act="pw">Contraseña</button><button type="button" class="hbtn" data-act="logout">Salir</button>`
+   :`<button type="button" class="hbtn" data-act="login">Ingresar</button>`;
+}
+function go(i){ if(i<0||i>=M.length)return; location.hash="m"+(i+1); }
+function closeMenu(){ $("nav").classList.remove("open"); $("menuBtn").setAttribute("aria-expanded","false"); $("menuBtn").setAttribute("aria-label","Abrir menú de módulos"); }
+function route(){ const mt=location.hash.match(/m(\d+)(?:\/s(\d+))?/), n=mt?+mt[1]:0;
+  cur=(n>=1&&n<=M.length)?n-1:0; pending=mt&&mt[2]?+mt[2]:null; view(true); closeMenu(); }
+function clearSearch(){ q=""; $("search").value=""; $("count").textContent=""; view(true); $("search").focus(); }
+function openTarget(mi,id){ q=""; $("search").value=""; $("count").textContent="";
+  const h="#m"+(mi+1)+(id?"/s"+id:"");
+  if(location.hash===h){ cur=mi; pending=id||null; view(true); closeMenu(); } else location.hash=h; }
+
+/* ---------- Diálogo de formularios accesible ---------- */
+function openForm(o){
+  const d=$("dlg"), opener=document.activeElement; d.onclick=null; d.onchange=null;
+  d.innerHTML=`<form id="dform" novalidate><h2 id="dtitle">${esc(o.title)}</h2>
+   ${o.fields.map(f=>`<div class="fld"><label for="f_${f.id}">${esc(f.label)}${f.required?' <span aria-hidden="true">*</span><span class="sr-only">(obligatorio)</span>':""}</label>
+    ${f.rows?`<textarea id="f_${f.id}" rows="${f.rows}" aria-describedby="h_${f.id}">${esc(f.value||"")}</textarea>`
+    :`<input id="f_${f.id}" type="${f.type||"text"}" value="${esc(f.value||"")}" ${f.auto?`autocomplete="${f.auto}"`:'autocomplete="off"'} aria-describedby="h_${f.id}">`}
+    ${f.tools||""}<div class="help" id="h_${f.id}">${f.help||""}</div></div>`).join("")}
+   ${o.extra||""}
+   <p class="err" id="derr" role="alert" hidden></p>
+   <div class="dbtns"><button type="submit" class="primary" id="dok">${esc(o.ok||"Guardar")}</button><button type="button" id="dcancel">Cancelar</button>${o.onDelete?'<button type="button" id="ddel" class="danger">Eliminar</button>':""}</div></form>`;
+  const err=(msg,field)=>{ const e=$("derr"); e.textContent=msg; e.hidden=false;
+    o.fields.forEach(f=>$("f_"+f.id).removeAttribute("aria-invalid"));
+    if(field){ field.setAttribute("aria-invalid","true"); field.focus(); } };
+  $("dcancel").onclick=()=>d.close();
+  if(o.after) o.after({err});
+  if(o.onDelete) $("ddel").onclick=async()=>{ if(!confirm(o.confirmDelete||"¿Eliminar definitivamente? Esta acción no se puede deshacer.")) return;
+    try{ await o.onDelete(); d.close(); }catch(e){ err(e.message); } };
+  $("dform").onsubmit=async e=>{ e.preventDefault();
+    const vals={};
+    for(const f of o.fields){ const el=$("f_"+f.id); vals[f.id]=el.value;
+      if(f.required&&!el.value.trim()){ err(`Completa el campo «${f.label}».`,el); return; } }
+    const b=$("dok"); b.disabled=true;
+    try{ await o.onSubmit(vals); d.close(); }catch(ex){ err(ex.message); } finally{ b.disabled=false; } };
+  d.onclose=()=>{ if(o.onClosed){ o.onClosed(); return; } (opener&&document.contains(opener)?opener:$("mtitle")||document.body).focus?.(); };
+  d.showModal();
+  const f0=$("f_"+o.fields[0].id); f0&&f0.focus();
+}
+const FMT='Formato: <code>### Subtítulo</code> · <code>- viñeta</code> · <code>1. numerada</code> · <code>**negrita**</code> · <code>&gt; recuadro</code> · <code>[texto](https://…)</code> enlace · <code>![descripción](https://…)</code> imagen · tablas: <code>| Col | Col |</code> y debajo <code>|---|---|</code>. Separa párrafos con una línea en blanco.';
+const TOOLS=`<div class="mtools" role="group" aria-label="Insertar en el contenido">
+  <button type="button" class="mini" id="tImg">🖼 Imagen por enlace</button>
+  <button type="button" class="mini" id="tLink">🔗 Enlace</button>
+  <button type="button" class="mini" id="tPrev" aria-pressed="false">👁 Vista previa</button></div>
+ <div class="ipanel" id="ipanel" hidden>
+  <div class="fld"><label for="ipUrl" id="ipUrlL">Dirección de la imagen</label><input id="ipUrl" type="url" inputmode="url" placeholder="https://…" autocomplete="off"></div>
+  <div class="fld"><label for="ipTxt" id="ipTxtL">Descripción de la imagen</label><input id="ipTxt" type="text" autocomplete="off"><div class="help" id="ipHelp"></div></div>
+  <img id="ipPrev" class="ippv" alt="" hidden referrerpolicy="no-referrer">
+  <div class="dbtns"><button type="button" class="primary" id="ipOk">Insertar</button><button type="button" id="ipNo">Cancelar</button></div></div>
+ <div class="body prevbox" id="prev" hidden aria-live="polite"></div>`;
+function insertAt(ta,text,block){
+  const s=ta.selectionStart, e=ta.selectionEnd, v=ta.value;
+  const pre=block&&s>0?(v.slice(Math.max(0,s-2),s)==="\n\n"?"":v[s-1]==="\n"?"\n":"\n\n"):"";
+  const post=block?"\n\n":"";
+  ta.value=v.slice(0,s)+pre+text+post+v.slice(e);
+  const pos=s+pre.length+text.length+post.length; ta.focus(); ta.setSelectionRange(pos,pos);
+  ta.dispatchEvent(new Event("input"));
+}
+function wireTools(api){
+  const ta=$("f_body"), panel=$("ipanel"), prev=$("prev"); let mode="img";
+  const open=m=>{ mode=m; panel.hidden=false;
+    $("ipUrlL").textContent=m==="img"?"Dirección de la imagen":"Dirección del enlace";
+    $("ipTxtL").textContent=m==="img"?"Descripción de la imagen (para quien no puede verla)":"Texto del enlace";
+    $("ipHelp").textContent=m==="img"?"Cuenta qué muestra la imagen: se lee en voz alta y aparece como pie de foto.":"";
+    $("ipUrl").value=""; $("ipPrev").hidden=true;
+    $("ipTxt").value=m==="link"?ta.value.slice(ta.selectionStart,ta.selectionEnd):"";
+    $("ipUrl").focus(); };
+  $("tImg").onclick=()=>open("img"); $("tLink").onclick=()=>open("link");
+  $("ipNo").onclick=()=>{ panel.hidden=true; ta.focus(); };
+  $("ipUrl").addEventListener("input",()=>{ const u=$("ipUrl").value.trim(), pv=$("ipPrev");
+    if(mode==="img"&&/^https?:\/\/\S+$/.test(u)){ pv.src=u; pv.hidden=false; } else pv.hidden=true; });
+  $("ipPrev").onerror=()=>{ $("ipPrev").hidden=true; };
+  // Enter dentro del panel inserta; no debe guardar toda la sección.
+  panel.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); $("ipOk").click(); } });
+  $("ipOk").onclick=()=>{
+    const u=$("ipUrl").value.trim(), t=$("ipTxt").value.replace(/[\[\]\r\n]+/g," ").trim();
+    if(!/^https?:\/\/\S+$/.test(u)||/[()]/.test(u)){ api.err("Escribe una dirección válida que empiece por https://, sin espacios ni paréntesis.",$("ipUrl")); return; }
+    if(!t){ api.err(mode==="img"?"Escribe una descripción de la imagen.":"Escribe el texto del enlace.",$("ipTxt")); return; }
+    insertAt(ta,(mode==="img"?"!":"")+`[${t}](${u})`,mode==="img");
+    $("derr").hidden=true; panel.hidden=true; };
+  $("tPrev").onclick=()=>{ const on=prev.hidden; prev.hidden=!on; $("tPrev").setAttribute("aria-pressed",on);
+    if(on) prev.innerHTML=md(ta.value)||'<p class="empty">Nada que mostrar todavía.</p>'; };
+  ta.addEventListener("input",()=>{ if(!prev.hidden) prev.innerHTML=md(ta.value)||'<p class="empty">Nada que mostrar todavía.</p>'; });
+}
+function sectionForm(sec){
+  const mod=M[cur];
+  openForm({
+    title:sec?"Editar sección":"Agregar sección a «"+mod.t+"»",
+    fields:[
+      {id:"code",label:"Código (ej. 1.6)",value:sec?sec[0]:"",help:"Aparece como etiqueta junto al título."},
+      {id:"title",label:"Título",value:sec?sec[1]:"",required:true},
+      {id:"bullets",label:"Puntos del temario",rows:4,value:sec?sec[2].join("\n"):"",help:"Uno por línea. Se muestran solo si la sección no tiene contenido."},
+      {id:"body",label:"Contenido",rows:22,value:sec?sec[3]:"",help:FMT,tools:TOOLS}],
+    after:wireTools,
+    onSubmit:async v=>{
+      const p={module_id:mod.id,code:v.code,title:v.title,bullets:v.bullets.split("\n").map(s=>s.trim()).filter(Boolean),body:v.body};
+      if(sec) await call("PUT","/api/sections/"+sec[4],p); else await call("POST","/api/sections",p);
+      await load(); view(false); say("Sección guardada");
+    },
+    onDelete:(sec&&role==="admin")?async()=>{ await call("DELETE","/api/sections/"+sec[4]); await load(); view(false); say("Sección eliminada"); }:null
+  });
+}
+function moduleForm(mod){
+  openForm({
+    title:mod?"Editar módulo":"Nuevo módulo",
+    fields:[
+      {id:"title",label:"Título del módulo",value:mod?mod.t:"",required:true},
+      {id:"description",label:"Descripción corta",value:mod?mod.d:""},
+      {id:"image",label:"Imagen del banner por enlace (opcional)",type:"url",value:mod?mod.image:"",help:"Pega la dirección de una imagen (https://…). Vacío = se usa la ilustración. Ideal: horizontal, con el lado izquierdo despejado."},
+      {id:"note",label:"Nota al final del módulo (opcional)",value:mod?mod.note:""}],
+    onSubmit:async v=>{
+      const p={title:v.title,description:v.description,note:v.note,image:v.image.trim()};
+      if(mod){ await call("PUT","/api/modules/"+mod.id,p); await load(); view(false); say("Módulo guardado"); }
+      else { await call("POST","/api/modules",p); await load(); location.hash="m"+M.length; }
+    },
+    onDelete:(mod&&role==="admin")?async()=>{ await call("DELETE","/api/modules/"+mod.id); await load(); location.hash="m1"; cur=0; view(true); }:null,
+    confirmDelete:"¿Eliminar el módulo y TODAS sus secciones? Esta acción no se puede deshacer."
+  });
+}
+function loginForm(){
+  openForm({
+    title:"Ingresar como administrador", ok:"Ingresar",
+    fields:[{id:"user",label:"Usuario",auto:"username",required:true},{id:"pass",label:"Contraseña",type:"password",auto:"current-password",required:true}],
+    extra:'<label class="chk"><input type="checkbox" id="showpw"> Mostrar contraseña</label>',
+    after:()=>{ $("showpw").onchange=e=>{ $("f_pass").type=e.target.checked?"text":"password"; }; },
+    onSubmit:async v=>{ const r=await call("POST","/api/login",{user:v.user,pass:v.pass}); admin=r.user; role=r.role; authBox(); view(false); say("Sesión iniciada. Modo edición activado."); }
+  });
+}
+function pwForm(){
+  openForm({
+    title:"Cambiar contraseña",
+    fields:[{id:"current",label:"Contraseña actual",type:"password",auto:"current-password",required:true},
+            {id:"next",label:"Nueva contraseña",type:"password",auto:"new-password",required:true,help:"Mínimo 10 caracteres."}],
+    onSubmit:async v=>{ await call("POST","/api/password",{current:v.current,next:v.next}); say("Contraseña actualizada"); }
+  });
+}
+
+/* ---------- Panel de administración (solo administradores) ---------- */
+let adminMsg="";
+const fmtSize=n=>n>1048576?(n/1048576).toFixed(1)+" MB":Math.max(1,Math.round(n/1024))+" KB";
+const fmtDate=t=>new Date(t).toLocaleString("es-CO",{dateStyle:"medium",timeStyle:"short"});
+async function adminPanel(){
+  const d=$("dlg"), opener=document.activeElement;
+  d.onclose=()=>{ (opener&&document.contains(opener)?opener:document.body).focus?.(); };
+  d.innerHTML='<div class="adminbox"><h2 id="dtitle">Administración</h2><p class="help" role="status">Cargando…</p></div>';
+  if(!d.open) d.showModal();
+  const m=adminMsg; adminMsg=""; await renderAdmin(m);
+}
+async function renderAdmin(msg){
+  const d=$("dlg"); let info, users;
+  try{ [info,users]=await Promise.all([call("GET","/api/admin/info"),call("GET","/api/admin/users")]); }
+  catch(e){ d.innerHTML=`<div class="adminbox"><h2 id="dtitle">Administración</h2><p class="err" role="alert">${esc(e.message)}</p><div class="dbtns"><button type="button" id="aClose">Cerrar</button></div></div>`; $("aClose").onclick=()=>d.close(); return; }
+  const roleOpt=r=>`<option value="admin"${r==="admin"?" selected":""}>Administrador</option><option value="editor"${r==="editor"?" selected":""}>Editor</option>`;
+  d.innerHTML=`<div class="adminbox">
+   <h2 id="dtitle">Administración</h2>
+   <p id="amsg" class="okmsg" role="status" ${msg?"":"hidden"}>${esc(msg||"")}</p>
+   <p class="err" id="aerr" role="alert" hidden></p>
+   <section aria-labelledby="a1"><h3 id="a1">Base de datos local</h3>
+    <p>Los datos se guardan en tu equipo, en el archivo <code>${esc(info.file)}</code> (${esc(info.engine)}, ${fmtSize(info.size)}). Contiene ${info.modules} módulos, ${info.sections} secciones y ${info.users} usuarios.</p>
+    <div class="dbtns"><a class="btnlink" href="/api/admin/backup" download>⬇ Copia de seguridad (.db)</a><a class="btnlink" href="/api/admin/export" download>⬇ Exportar contenido (.json)</a><button type="button" class="mini" id="impBtn">⬆ Importar contenido (.json)</button><input type="file" id="impFile" accept=".json,application/json" hidden aria-label="Archivo JSON a importar"></div>
+    <p class="help">La copia .db incluye a los usuarios (con contraseñas cifradas): guárdala en un lugar seguro. Importar <strong>reemplaza todo el contenido</strong> y antes hace una copia automática. La wiki también guarda una copia al iniciar y otra cada día (las últimas 14) en <code>data/backups</code>.</p>
+    <details><summary>Copias guardadas (${info.backups.length})</summary><ul class="blist">${info.backups.map(b=>`<li>${esc(b.name)} · ${fmtSize(b.size)} · ${fmtDate(b.t)}</li>`).join("")||"<li>Todavía no hay copias.</li>"}</ul></details>
+   </section>
+   <section aria-labelledby="a2"><h3 id="a2">Usuarios</h3>
+    <div class="tw" tabindex="0" role="region" aria-label="Tabla de usuarios"><table><thead><tr><th scope="col">Usuario</th><th scope="col">Rol</th><th scope="col">Acciones</th></tr></thead><tbody>
+    ${users.map(u=>`<tr><th scope="row">${esc(u.username)}${u.username===admin?" (tú)":""}</th>
+      <td><select data-uid="${u.id}" aria-label="Rol de ${esc(u.username)}">${roleOpt(u.role)}</select></td>
+      <td><button type="button" class="mini" data-ua="pw" data-id="${u.id}" data-name="${esc(u.username)}">Nueva contraseña</button> ${u.username===admin?"":`<button type="button" class="mini dng" data-ua="del" data-id="${u.id}" data-name="${esc(u.username)}">Eliminar</button>`}</td></tr>`).join("")}
+    </tbody></table></div>
+    <form id="newUser" class="uform" novalidate>
+     <div class="fld"><label for="nuName">Nuevo usuario</label><input id="nuName" autocomplete="off"></div>
+     <div class="fld"><label for="nuPass">Contraseña (mín. 10)</label><input id="nuPass" type="password" autocomplete="new-password"></div>
+     <div class="fld"><label for="nuRole">Rol</label><select id="nuRole">${roleOpt("editor")}</select></div>
+     <button type="submit" class="mini">＋ Crear usuario</button></form>
+    <p class="help"><strong>Administrador:</strong> crea, edita y elimina, y gestiona usuarios y copias. <strong>Editor:</strong> crea y edita, pero no elimina.</p>
+   </section>
+   <div class="dbtns"><button type="button" id="aClose" class="primary">Cerrar</button></div></div>`;
+  const err=m=>{ $("aerr").textContent=m; $("aerr").hidden=false; $("amsg").hidden=true; };
+  $("aClose").onclick=()=>d.close();
+  $("impBtn").onclick=()=>$("impFile").click();
+  $("impFile").onchange=async e=>{
+    const f=e.target.files[0]; if(!f) return;
+    try{
+      const data=JSON.parse(await f.text());
+      if(!confirm(`Esto REEMPLAZARÁ todo el contenido actual por ${Array.isArray(data)?data.length:0} módulo(s) del archivo «${f.name}».\n\nAntes se hará una copia de seguridad automática. ¿Continuar?`)){ e.target.value=""; return; }
+      const r=await call("POST","/api/admin/import",{data});
+      await load(); cur=Math.min(cur,M.length-1); view(false);
+      await renderAdmin(`Contenido importado: ${r.modules} módulo(s). Copia previa: ${r.backup}`);
+    }catch(x){ err(x instanceof SyntaxError?"El archivo no es un JSON válido.":x.message); e.target.value=""; }
+  };
+  d.onchange=async e=>{ const sel=e.target.closest("select[data-uid]"); if(!sel) return;
+    try{ await call("PUT","/api/admin/users/"+sel.dataset.uid,{role:sel.value}); await renderAdmin("Rol actualizado."); }
+    catch(x){ await renderAdmin(); err(x.message); } };
+  d.onclick=async e=>{ const b=e.target.closest("button[data-ua]"); if(!b) return;
+    if(b.dataset.ua==="pw") return userPwForm(+b.dataset.id,b.dataset.name);
+    if(b.dataset.ua==="del"){
+      if(!confirm(`¿Eliminar al usuario «${b.dataset.name}»? No podrá volver a entrar.`)) return;
+      try{ await call("DELETE","/api/admin/users/"+b.dataset.id); await renderAdmin("Usuario eliminado."); }catch(x){ err(x.message); } } };
+  $("newUser").onsubmit=async e=>{ e.preventDefault();
+    const u=$("nuName").value.trim(), pw=$("nuPass").value, r=$("nuRole").value;
+    if(!u||!pw){ err("Escribe el usuario y la contraseña."); (!u?$("nuName"):$("nuPass")).focus(); return; }
+    try{ await call("POST","/api/admin/users",{username:u,password:pw,role:r}); await renderAdmin(`Usuario «${u}» creado.`); }
+    catch(x){ err(x.message); } };
+}
+function userPwForm(id,name){
+  openForm({ title:`Nueva contraseña para «${name}»`, ok:"Cambiar contraseña",
+    fields:[{id:"pw",label:"Nueva contraseña",type:"password",auto:"new-password",required:true,help:"Mínimo 10 caracteres. Si esa persona tenía sesión abierta, se cerrará."}],
+    onSubmit:async v=>{ await call("PUT","/api/admin/users/"+id,{password:v.pw}); adminMsg=`Contraseña de «${name}» actualizada.`; },
+    onClosed:()=>adminPanel() });
+}
+
+/* ---------- Eventos ---------- */
+document.addEventListener("click",async e=>{
+  const l=e.target.closest("#links a");
+  if(l&&q&&!(e.ctrlKey||e.metaKey||e.shiftKey)){ e.preventDefault(); return openTarget(parseInt(l.getAttribute("href").slice(2))-1); }
+  const b=e.target.closest("[data-act]"); if(!b) return;
+  const a=b.dataset.act;
+  if(a==="open"){ if(e.ctrlKey||e.metaKey||e.shiftKey) return; e.preventDefault(); return openTarget(+b.dataset.m,b.dataset.id?+b.dataset.id:null); }
+  if(a==="clear-search") return clearSearch();
+  if(a==="admin") return adminPanel();
+  if(a==="sec-up"||a==="sec-down"){ const id=+b.dataset.id;
+    try{ await call("POST","/api/sections/"+id+"/move",{dir:a==="sec-up"?"up":"down"}); await load(); view(false);
+      const c=document.getElementById("s"+id);
+      if(c){ c.open=true; c.scrollIntoView({block:"center"}); (c.querySelector(`[data-act="${a}"]`)||c.querySelector("summary")).focus({preventScroll:true}); }
+      say("Sección movida"); }catch(x){ say(x.message); } return; }
+  if(a==="mod-up"||a==="mod-down"){ const id=M[cur].id;
+    try{ await call("POST","/api/modules/"+id+"/move",{dir:a==="mod-up"?"up":"down"}); await load();
+      cur=M.findIndex(m=>m.id===id); const h="#m"+(cur+1);
+      if(location.hash===h) view(false); else location.hash=h;
+      say(`Módulo movido a la posición ${cur+1}`); }catch(x){ say(x.message); } return; }
+  if(a==="go") return go(+b.dataset.i);
+  if(a==="login") return loginForm();
+  if(a==="pw") return pwForm();
+  if(a==="logout"){ try{ await call("POST","/api/logout"); }catch(x){} admin=null; role=null; authBox(); view(false); say("Sesión cerrada"); return; }
+  if(a==="add-mod") return moduleForm(null);
+  if(a==="edit-mod") return moduleForm(M[cur]);
+  if(a==="add-sec") return sectionForm(null);
+  if(a==="edit-sec") return sectionForm(M[cur].s.find(x=>x[4]===+b.dataset.id));
+});
+let sdeb;
+$("search").addEventListener("input",e=>{ q=e.target.value.trim(); view(false);
+  if(!q){ $("count").textContent=""; return; }
+  const n=search().length; $("count").textContent=`${n} resultado(s)`;
+  clearTimeout(sdeb); sdeb=setTimeout(()=>say(n?`${n} resultado(s) para ${q}`:"Sin resultados"),600); });
+$("search").addEventListener("keydown",e=>{ if(e.key==="Escape"&&$("search").value){ e.preventDefault(); clearSearch(); } });
+addEventListener("keydown",e=>{ if(e.key==="/"&&!/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)&&!$("dlg").open){ e.preventDefault(); $("search").focus(); } });
+$("menuBtn").onclick=()=>{ const o=$("nav").classList.toggle("open"); $("menuBtn").setAttribute("aria-expanded",o);
+  $("menuBtn").setAttribute("aria-label",o?"Cerrar menú de módulos":"Abrir menú de módulos"); if(o)$("search").focus(); };
+addEventListener("keydown",e=>{ if(e.key==="Escape"&&$("nav").classList.contains("open")){ closeMenu(); $("menuBtn").focus(); }});
+addEventListener("hashchange",route);
+
+async function init(){
+  authBox();
+  try{ const me=await (await fetch("/api/me")).json(); admin=me.user; role=me.role; }catch(e){}
+  authBox();
+  try{ await load(); }
+  catch(e){
+    $("links").innerHTML="";
+    $("main").innerHTML='<div class="offline" role="alert"><h2 id="mtitle" tabindex="-1">No se pudo cargar el contenido</h2><p>Esta wiki necesita su servidor para mostrar y guardar el contenido. Ábrela así:</p><ol><li>En la carpeta del proyecto ejecuta <code>node server.js</code>.</li><li>Abre <code>http://localhost:3000</code> en el navegador.</li></ol></div>';
+    return;
+  }
+  const pq=new URLSearchParams(location.search).get("q");
+  if(pq){ q=pq.trim(); $("search").value=q; $("count").textContent=search().length+" resultado(s)"; }
+  route();
+}
+
+(function(){
+  let size=0, hc=false;
+  try{ size=+localStorage.getItem("wk-size")||0; hc=localStorage.getItem("wk-hc")==="1"; }catch(e){}
+  const apply=()=>{ document.documentElement.style.fontSize=(100+size*12.5)+"%"; document.documentElement.classList.toggle("hc",hc);
+    $("aHc").setAttribute("aria-pressed",hc);
+    try{ localStorage.setItem("wk-size",size); localStorage.setItem("wk-hc",hc?"1":"0"); }catch(e){} };
+  const panel=$("a11yPanel"), btn=$("a11yBtn");
+  const toggle=o=>{ panel.hidden=!o; btn.setAttribute("aria-expanded",o); };
+  btn.onclick=()=>{ toggle(panel.hidden); if(!panel.hidden) $("aBig").focus(); };
+  $("aBig").onclick=()=>{ size=Math.min(size+1,4); apply(); };
+  $("aSmall").onclick=()=>{ size=Math.max(size-1,-1); apply(); };
+  $("aHc").onclick=()=>{ hc=!hc; apply(); };
+  $("aReset").onclick=()=>{ size=0; hc=false; apply(); };
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&!panel.hidden){ toggle(false); btn.focus(); }});
+  apply();
+})();
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,501 @@
+[
+ {
+  "t": "Marco normativo y conceptual",
+  "d": "Comprender el sistema de salud",
+  "note": "",
+  "s": [
+   {
+    "code": "Intro",
+    "title": "Introducción",
+    "bullets": [],
+    "body": "El sistema de salud colombiano está conformado por diferentes instituciones, actores y mecanismos que trabajan de manera articulada para garantizar el acceso de la población a los servicios de salud. Dentro de esta estructura, las Instituciones Prestadoras de Servicios de Salud (IPS) cumplen una función fundamental, debido a que son las responsables de brindar directamente la atención a los usuarios, mediante acciones de promoción, prevención, diagnóstico, tratamiento y rehabilitación, entre otras.\n\nSin embargo, la prestación de los servicios no consiste únicamente en atender las necesidades de salud de las personas. También implica garantizar que la atención sea segura, oportuna, pertinente, accesible y continua. Para ello, Colombia cuenta con el Sistema Obligatorio de Garantía de Calidad en Salud (SOGCS), que establece los mecanismos y condiciones orientados al mejoramiento de la calidad de los servicios.\n\nEn este capítulo se presentan los principales conceptos, principios y disposiciones normativas que permiten comprender cómo funciona el sistema de salud colombiano, cuál es el papel de las IPS y de qué manera se organiza la garantía de calidad en las instituciones prestadoras de servicios de salud."
+   },
+   {
+    "code": "1.1",
+    "title": "Sistema General de Seguridad Social en Salud (SGSSS)",
+    "bullets": [
+     "Concepto y finalidad",
+     "Organización del sistema",
+     "Principales actores",
+     "Función de las IPS"
+    ],
+    "body": "### Concepto y finalidad\nEl Sistema General de Seguridad Social en Salud (SGSSS) es el conjunto de instituciones, normas, procedimientos y mecanismos mediante los cuales el Estado colombiano organiza la prestación de los servicios de salud y busca garantizar que la población pueda acceder a ellos.\n\nSu principal finalidad es proteger el derecho fundamental a la salud, promoviendo condiciones de acceso, equidad y calidad para todas las personas, independientemente de su condición económica o social.\n\nEl sistema tiene como fundamento, entre otras disposiciones, la Ley 100 de 1993, que estableció su organización, y la Ley Estatutaria 1751 de 2015, que reconoció la salud como un derecho fundamental autónomo.\n\n### Organización del sistema\nEl SGSSS funciona mediante la participación de diferentes actores que cumplen responsabilidades específicas para garantizar el aseguramiento, la financiación, la prestación y la vigilancia de los servicios de salud. Su organización puede comprenderse a partir de los siguientes elementos:\n\n- **Dirección y regulación:** corresponde principalmente al Estado, a través del Ministerio de Salud y Protección Social.\n- **Aseguramiento:** comprende la afiliación de las personas y la organización de las garantías de acceso a los servicios, a cargo de las entidades responsables del aseguramiento.\n- **Prestación de servicios:** se desarrolla a través de hospitales, clínicas, centros médicos, laboratorios y demás prestadores habilitados.\n- **Inspección, vigilancia y control:** busca verificar que los actores del sistema cumplan sus responsabilidades y protejan los derechos de los usuarios.\n\n### Principales actores del sistema\n| Actor | Función principal |\n|---|---|\n| Ministerio de Salud y Protección Social | Formula políticas, regula y orienta el funcionamiento del sector salud. |\n| Entidades Promotoras de Salud (EPS) y demás entidades responsables del aseguramiento | Organizan el aseguramiento y garantizan el acceso de sus afiliados a los servicios de salud, según el marco aplicable. |\n| Instituciones Prestadoras de Servicios de Salud (IPS) | Brindan directamente los servicios de salud a los usuarios. |\n| Entidades territoriales | Desarrollan funciones de dirección, coordinación y gestión de la salud pública en sus territorios. |\n| Superintendencia Nacional de Salud | Ejerce funciones de inspección, vigilancia y control sobre los actores sujetos a su competencia. |\n| ADRES | Administra recursos del sistema y desarrolla las funciones de reconocimiento y pago que le asigna la normativa. |\n\n### Función de las Instituciones Prestadoras de Servicios de Salud (IPS)\nLas IPS son organizaciones públicas, privadas o mixtas encargadas de prestar servicios de salud a la población. Su función principal es brindar atención de acuerdo con las necesidades de los usuarios, cumpliendo las condiciones de calidad y los requisitos establecidos por la regulación colombiana. Entre sus principales responsabilidades se encuentran:\n\n1. Prestar servicios de salud de acuerdo con su capacidad y servicios habilitados.\n2. Garantizar una atención segura y humanizada.\n3. Contar con talento humano competente.\n4. Disponer de infraestructura, equipos y recursos adecuados.\n5. Mantener registros e historias clínicas completos y organizados.\n6. Desarrollar actividades de evaluación y mejoramiento de la calidad.\n7. Proteger los derechos de los pacientes.\n\n> **Aplicación en nuestra IPS:** CEJEL IPS S.A.S. tendrá la responsabilidad de brindar servicios de mediana complejidad a la población de Sincelejo y municipios cercanos. Para cumplir su función deberá organizar sus recursos humanos, físicos, tecnológicos y administrativos, procurando que los servicios se presten con calidad, seguridad y oportunidad."
+   },
+   {
+    "code": "1.2",
+    "title": "Sistema Obligatorio de Garantía de Calidad en Salud (SOGCS)",
+    "bullets": [
+     "Definición",
+     "Objetivos",
+     "Importancia para las instituciones de salud"
+    ],
+    "body": "### Definición\nEl Sistema Obligatorio de Garantía de Calidad en Salud (SOGCS) es el conjunto de instituciones, normas, requisitos, mecanismos y procesos mediante los cuales se busca mejorar la calidad de los servicios de salud en Colombia.\n\nSu finalidad es promover que la atención brindada a los usuarios cumpla condiciones adecuadas de calidad y contribuya a proteger su vida, su salud y su bienestar.\n\nEl SOGCS se encuentra reglamentado principalmente en el Decreto 780 de 2016, que compila las disposiciones del sector salud, incluyendo las relacionadas con el Decreto 1011 de 2006.\n\n### Objetivos del SOGCS\n- Mejorar la calidad de los servicios de salud.\n- Garantizar condiciones adecuadas para la prestación de los servicios.\n- Promover la seguridad de los pacientes.\n- Fortalecer la evaluación y el mejoramiento continuo.\n- Incentivar la calidad en las instituciones prestadoras.\n- Generar información que permita conocer y evaluar los resultados de la atención.\n\n### Importancia del SOGCS para las instituciones de salud\nEl SOGCS es importante porque permite que las instituciones no se limiten a prestar servicios, sino que desarrollen mecanismos para evaluar cómo los están prestando y qué deben mejorar. Su aplicación contribuye a:\n\n- Identificar fallas en los procesos asistenciales y administrativos.\n- Prevenir riesgos durante la atención.\n- Mejorar la organización institucional.\n- Fortalecer la confianza de los usuarios.\n- Optimizar el uso de los recursos.\n- Promover una cultura de calidad y mejoramiento continuo.\n\n> **Aplicación en nuestra IPS:** Para CEJEL IPS S.A.S., el SOGCS será la base para organizar sus procesos de calidad. A través de sus componentes podrá verificar las condiciones de habilitación, evaluar sus servicios, identificar oportunidades de mejora y establecer mecanismos para medir la calidad de la atención."
+   },
+   {
+    "code": "1.3",
+    "title": "Atributos de la calidad en salud",
+    "bullets": [
+     "Accesibilidad",
+     "Oportunidad",
+     "Seguridad",
+     "Pertinencia",
+     "Continuidad"
+    ],
+    "body": "La calidad en salud no depende únicamente de contar con buenos profesionales o equipos médicos, también implica que los usuarios puedan acceder a los servicios que necesitan, recibir atención a tiempo y obtener intervenciones seguras y adecuadas.\n\nEl Decreto 780 de 2016, en el desarrollo de las disposiciones del SOGCS, contempla cinco características fundamentales de la calidad de la atención: accesibilidad, oportunidad, seguridad, pertinencia y continuidad.\n\n### 1. Accesibilidad\nEs la posibilidad de que las personas puedan utilizar los servicios de salud que necesitan, sin barreras que impidan o dificulten su atención.\n\n### 2. Oportunidad\nConsiste en recibir la atención requerida sin retrasos que puedan poner en riesgo la vida o la salud del paciente.\n\n### 3. Seguridad\nBusca reducir los riesgos y prevenir situaciones que puedan ocasionar daños al paciente durante la prestación de los servicios.\n\n### 4. Pertinencia\nSignifica que el paciente reciba los servicios que realmente necesita, de acuerdo con sus condiciones de salud y con el conocimiento científico disponible.\n\n### 5. Continuidad\nConsiste en garantizar que el paciente reciba las intervenciones necesarias de manera organizada y sin interrupciones injustificadas durante su proceso de atención."
+   },
+   {
+    "code": "1.4",
+    "title": "Componentes del SOGCS",
+    "bullets": [
+     "Sistema Único de Habilitación (SUH)",
+     "Programa de Auditoría para el Mejoramiento de la Calidad (PAMEC)",
+     "Sistema Único de Acreditación (SUA)",
+     "Sistema de Información para la Calidad"
+    ],
+    "body": "El SOGCS está integrado por cuatro componentes que funcionan de manera articulada. Cada uno cumple una finalidad específica y contribuye al mejoramiento de la calidad de los servicios de salud. El fundamento de esta organización se encuentra en el artículo 2.5.1.2.2 del Decreto 780 de 2016.\n\n### 1.4.1. Sistema Único de Habilitación (SUH)\nEs el componente que establece las condiciones mínimas que deben cumplir los prestadores para ofrecer servicios de salud. Busca proteger a los usuarios, verificando que las instituciones cuenten con los recursos, condiciones y procesos necesarios para prestar sus servicios de manera segura.\n\n**Ejemplo:** una IPS que ofrece hospitalización debe disponer de infraestructura, talento humano, dotación y procesos acordes con los requisitos establecidos para ese servicio.\n\n### 1.4.2. Programa de Auditoría para el Mejoramiento de la Calidad (PAMEC)\nEs el mecanismo mediante el cual las instituciones evalúan sus procesos, identifican oportunidades de mejora y desarrollan acciones para elevar la calidad de los servicios. Su funcionamiento se relaciona con el mejoramiento continuo y el ciclo PHVA: planear, hacer, verificar y actuar.\n\n### 1.4.3. Sistema Único de Acreditación (SUA)\nEs un componente orientado a reconocer a las instituciones que alcanzan niveles superiores de calidad, mediante la evaluación del cumplimiento de estándares establecidos para la acreditación en salud. A diferencia de la habilitación, la acreditación es voluntaria y representa un compromiso institucional con el mejoramiento continuo y la excelencia.\n\n### 1.4.4. Sistema de Información para la Calidad\nEs el componente que permite recopilar, organizar, analizar y divulgar información relacionada con la calidad de los servicios de salud. Su finalidad es facilitar el seguimiento de los resultados, generar información útil para los usuarios y apoyar la toma de decisiones de las instituciones y autoridades sanitarias. La Resolución 256 de 2016 establece disposiciones sobre este componente y define indicadores para el monitoreo de la calidad.\n\n### Cómo se articulan\nLos cuatro componentes no funcionan de manera independiente. La habilitación establece las condiciones mínimas para prestar los servicios; el PAMEC permite evaluar y mejorar los procesos; la acreditación impulsa niveles superiores de calidad; y el Sistema de Información proporciona datos para conocer los resultados y orientar las decisiones institucionales.\n\nEn conjunto, permiten que las IPS desarrollen una gestión organizada y orientada a mejorar la atención de los pacientes."
+   },
+   {
+    "code": "1.5",
+    "title": "Marco normativo",
+    "bullets": [
+     "Decreto 780 de 2016",
+     "Resolución 3100 de 2019 y sus modificaciones",
+     "Resolución 5095 de 2018",
+     "Resolución 256 de 2016",
+     "Resolución 2626 de 2019",
+     "Otras disposiciones relacionadas"
+    ],
+    "body": "La prestación de servicios de salud en Colombia está regulada por diferentes disposiciones que establecen los derechos de los usuarios, las responsabilidades de las instituciones y las condiciones que deben cumplirse para garantizar la calidad de la atención.\n\n| Norma | Objeto e importancia para la IPS |\n|---|---|\n| Ley 100 de 1993 | Organiza el Sistema General de Seguridad Social en Salud. |\n| Ley 1438 de 2011 | Fortalece el SGSSS y establece disposiciones relacionadas con la Atención Primaria en Salud. |\n| Ley Estatutaria 1751 de 2015 | Reconoce y regula la salud como derecho fundamental. |\n| Decreto 780 de 2016 | Compila y organiza la reglamentación del sector salud, incluyendo el SOGCS. |\n| Resolución 256 de 2016 | Establece disposiciones del Sistema de Información para la Calidad e indicadores de monitoreo. |\n| Resolución 5095 de 2018 | Adopta el Manual de Acreditación en Salud Ambulatorio y Hospitalario de Colombia, versión 3.1. |\n| Resolución 1328 de 2021 | Modifica la Resolución 5095 de 2018 e incorpora estándares de acreditación para IPS con énfasis en baja complejidad. |\n| Resolución 3100 de 2019 | Establece los procedimientos y condiciones de inscripción de prestadores y habilitación de servicios de salud. |\n| Resolución 2626 de 2019 | Modifica la PAIS y adopta el Modelo de Acción Integral Territorial (MAITE). |\n\n### Relación de las normas con nuestra IPS\nCEJEL IPS S.A.S. deberá considerar estas disposiciones para organizar sus servicios, cumplir las condiciones de habilitación, desarrollar actividades de auditoría y mejoramiento, medir sus resultados y promover una atención centrada en el usuario."
+   }
+  ]
+ },
+ {
+  "t": "Conozcamos nuestra IPS: diagnóstico institucional",
+  "d": "Identificar la institución, su población y sus recursos",
+  "note": "",
+  "s": [
+   {
+    "code": "Intro",
+    "title": "Introducción",
+    "bullets": [],
+    "body": "Para comprender cómo se aplican las normas de calidad en los servicios de salud, es necesario conocer primero las características de la institución donde se desarrollan las actividades asistenciales y administrativas.\n\nCada IPS tiene condiciones particulares relacionadas con su ubicación, población atendida, capacidad instalada, talento humano, recursos tecnológicos y servicios ofrecidos. Estas características influyen directamente en la forma como organiza sus procesos y responde a las necesidades de los usuarios.\n\nPor esta razón, en este capítulo se presenta la caracterización de una institución ficticia denominada CEJEL IPS S.A.S., ubicada en Sincelejo, Sucre. A partir de sus características se identificarán sus recursos, servicios y principales necesidades institucionales, con el propósito de establecer una base para los análisis de habilitación, auditoría y mejoramiento de la calidad que se desarrollarán en los siguientes capítulos."
+   },
+   {
+    "code": "2.1",
+    "title": "Identificación de la IPS",
+    "bullets": [
+     "Nombre",
+     "Naturaleza jurídica",
+     "Ubicación",
+     "Misión y visión",
+     "Nivel de complejidad"
+    ],
+    "body": "### CEJEL IPS S.A.S.\nInstitución Prestadora de Servicios de Salud.\n\n| Dato | Descripción |\n|---|---|\n| Razón social | CEJEL IPS S.A.S. |\n| Naturaleza jurídica | Sociedad por Acciones Simplificada (S.A.S.) |\n| Carácter | Institución privada |\n| Ubicación | Sincelejo, Sucre, Colombia |\n| Nivel de complejidad | Mediana complejidad |\n| Ámbito de atención | Población urbana y rural del departamento de Sucre y zonas de influencia |\n| Tipo de institución | Prestadora de servicios de salud |\n\n> **Nota:** institución ficticia creada con fines académicos. Sus características organizacionales y servicios son hipotéticos.\n\n### Misión institucional\nCEJEL IPS S.A.S. es una institución prestadora de servicios de salud de carácter privado, comprometida con brindar atención integral, segura, humanizada y oportuna a la población, mediante la prestación de servicios de mediana complejidad, un talento humano competente y una gestión institucional orientada al mejoramiento continuo. Desarrollamos nuestras actividades bajo principios de calidad, ética, responsabilidad y eficiencia, procurando satisfacer las necesidades de nuestros usuarios y contribuir al bienestar de la comunidad.\n\n### Visión institucional\nPara el año 2030, CEJEL IPS S.A.S. será una institución reconocida en el departamento de Sucre por la calidad y seguridad de sus servicios de salud, la humanización de la atención y la capacidad de responder integralmente a las necesidades de sus usuarios. Se distinguirá por una gestión institucional eficiente, el fortalecimiento de sus procesos, el desarrollo de su talento humano y una cultura organizacional fundamentada en la evaluación y el mejoramiento continuo."
+   },
+   {
+    "code": "2.2",
+    "title": "Contexto territorial y población atendida",
+    "bullets": [
+     "Características generales de la población",
+     "Necesidades de atención",
+     "Contexto urbano y rural"
+    ],
+    "body": ""
+   },
+   {
+    "code": "2.3",
+    "title": "Portafolio de servicios",
+    "bullets": [
+     "Consulta externa",
+     "Urgencias",
+     "Hospitalización",
+     "Apoyo diagnóstico y terapéutico",
+     "Otros servicios según la complejidad seleccionada"
+    ],
+    "body": ""
+   },
+   {
+    "code": "2.4",
+    "title": "Recursos institucionales",
+    "bullets": [
+     "Infraestructura",
+     "Equipos y tecnología",
+     "Talento humano",
+     "Recursos administrativos"
+    ],
+    "body": ""
+   },
+   {
+    "code": "2.5",
+    "title": "Diagnóstico institucional",
+    "bullets": [
+     "Fortalezas",
+     "Debilidades",
+     "Oportunidades",
+     "Amenazas"
+    ],
+    "body": ""
+   }
+  ]
+ },
+ {
+  "t": "Sistema Único de Habilitación",
+  "d": "Condiciones para prestar servicios de calidad",
+  "note": "",
+  "s": [
+   {
+    "code": "3.1",
+    "title": "¿Qué es la habilitación?",
+    "bullets": [
+     "Concepto",
+     "Objetivos",
+     "Importancia",
+     "Registro Especial de Prestadores de Servicios de Salud (REPS)"
+    ],
+    "body": ""
+   },
+   {
+    "code": "3.2",
+    "title": "Condiciones de habilitación",
+    "bullets": [
+     "Capacidad técnico-administrativa",
+     "Suficiencia patrimonial y financiera",
+     "Capacidad tecnológica y científica"
+    ],
+    "body": ""
+   },
+   {
+    "code": "3.3",
+    "title": "Los siete estándares de habilitación",
+    "bullets": [
+     "Talento humano",
+     "Infraestructura",
+     "Dotación",
+     "Medicamentos, dispositivos médicos e insumos",
+     "Procesos prioritarios",
+     "Historia clínica y registros",
+     "Interdependencia de servicios"
+    ],
+    "body": ""
+   },
+   {
+    "code": "3.4",
+    "title": "Aplicación en nuestra IPS",
+    "bullets": [
+     "¿Qué debe cumplir?",
+     "¿Qué documentos y evidencias necesita?",
+     "¿Qué situaciones pueden representar incumplimientos?",
+     "¿Cómo puede mejorar?"
+    ],
+    "body": ""
+   }
+  ]
+ },
+ {
+  "t": "PAMEC: mejoramiento continuo de la calidad",
+  "d": "Auditoría para el mejoramiento de la calidad",
+  "note": "",
+  "s": [
+   {
+    "code": "4.1",
+    "title": "¿Qué es el PAMEC?",
+    "bullets": [
+     "Definición",
+     "Objetivos",
+     "Importancia"
+    ],
+    "body": ""
+   },
+   {
+    "code": "4.2",
+    "title": "¿Cómo funciona la auditoría para el mejoramiento?",
+    "bullets": [
+     "Autocontrol",
+     "Auditoría interna",
+     "Auditoría externa"
+    ],
+    "body": ""
+   },
+   {
+    "code": "4.3",
+    "title": "Tipos de acciones de auditoría",
+    "bullets": [
+     "Preventivas",
+     "De seguimiento",
+     "Coyunturales"
+    ],
+    "body": ""
+   },
+   {
+    "code": "4.4",
+    "title": "Ciclo PHVA",
+    "bullets": [
+     "Planear",
+     "Hacer",
+     "Verificar",
+     "Actuar"
+    ],
+    "body": ""
+   },
+   {
+    "code": "4.5",
+    "title": "Aplicación del PAMEC en la IPS",
+    "bullets": [],
+    "body": ""
+   },
+   {
+    "code": "4.6",
+    "title": "Seguimiento de resultados",
+    "bullets": [
+     "Indicadores sencillos",
+     "Metas",
+     "Evaluación de resultados"
+    ],
+    "body": ""
+   }
+  ]
+ },
+ {
+  "t": "Sistema Único de Acreditación",
+  "d": "El camino hacia la excelencia",
+  "note": "",
+  "s": [
+   {
+    "code": "5.1",
+    "title": "¿Qué es la acreditación en salud?",
+    "bullets": [
+     "Concepto",
+     "Objetivos",
+     "Características",
+     "Carácter voluntario"
+    ],
+    "body": ""
+   },
+   {
+    "code": "5.2",
+    "title": "Diferencias entre habilitación y acreditación",
+    "bullets": [],
+    "body": ""
+   },
+   {
+    "code": "5.3",
+    "title": "Estándares de acreditación",
+    "bullets": [
+     "Atención al cliente asistencial",
+     "Direccionamiento",
+     "Gerencia",
+     "Gerencia del talento humano",
+     "Gerencia del ambiente físico",
+     "Gestión de tecnología",
+     "Gerencia de la información",
+     "Mejoramiento de la calidad"
+    ],
+    "body": ""
+   },
+   {
+    "code": "5.4",
+    "title": "Ejes de la acreditación",
+    "bullets": [
+     "Seguridad del paciente",
+     "Humanización",
+     "Gestión del riesgo",
+     "Transformación cultural",
+     "Gestión de la tecnología",
+     "Responsabilidad social"
+    ],
+    "body": ""
+   },
+   {
+    "code": "5.5",
+    "title": "Beneficios para la IPS",
+    "bullets": [
+     "Fortalecimiento de la confianza",
+     "Mejoramiento de los procesos",
+     "Cultura organizacional de calidad",
+     "Mayor seguridad y satisfacción del usuario"
+    ],
+    "body": ""
+   },
+   {
+    "code": "5.6",
+    "title": "¿Cómo prepararse para la acreditación?",
+    "bullets": [
+     "Autoevaluación",
+     "Identificación de oportunidades",
+     "Fortalecimiento de procesos",
+     "Mejoramiento continuo"
+    ],
+    "body": ""
+   }
+  ]
+ },
+ {
+  "t": "PAIS y MAITE",
+  "d": "Modelos para una atención integral",
+  "note": "",
+  "s": [
+   {
+    "code": "6.1",
+    "title": "Política de Atención Integral en Salud (PAIS)",
+    "bullets": [
+     "Concepto",
+     "Objetivos",
+     "Enfoque de atención integral"
+    ],
+    "body": ""
+   },
+   {
+    "code": "6.2",
+    "title": "Modelo de Acción Integral Territorial (MAITE)",
+    "bullets": [
+     "Concepto",
+     "Propósitos",
+     "Líneas de acción",
+     "Responsabilidad territorial"
+    ],
+    "body": ""
+   },
+   {
+    "code": "6.3",
+    "title": "Atención Primaria en Salud (APS)",
+    "bullets": [
+     "Promoción de la salud",
+     "Prevención de la enfermedad",
+     "Participación comunitaria",
+     "Atención familiar y territorial"
+    ],
+    "body": ""
+   },
+   {
+    "code": "6.4",
+    "title": "Gestión Integral del Riesgo en Salud",
+    "bullets": [
+     "Identificación de riesgos",
+     "Prevención",
+     "Seguimiento de pacientes"
+    ],
+    "body": ""
+   },
+   {
+    "code": "6.5",
+    "title": "Rutas Integrales de Atención en Salud (RIAS)",
+    "bullets": [
+     "Concepto",
+     "Finalidad",
+     "Promoción y mantenimiento de la salud",
+     "Atención de grupos de riesgo"
+    ],
+    "body": ""
+   },
+   {
+    "code": "6.6",
+    "title": "Aplicación en la IPS",
+    "bullets": [
+     "Mejoramiento del acceso",
+     "Atención oportuna",
+     "Continuidad del cuidado",
+     "Referencia y contrarreferencia",
+     "Articulación de los servicios"
+    ],
+    "body": ""
+   }
+  ]
+ },
+ {
+  "t": "Gestión administrativa y financiera de los servicios de salud",
+  "d": "Codificación, tarifas, contratación, facturación y cartera",
+  "note": "",
+  "s": [
+   {
+    "code": "7.1",
+    "title": "CUPS",
+    "bullets": [
+     "¿Qué es?",
+     "¿Para qué sirve?",
+     "Importancia en la identificación y codificación de procedimientos"
+    ],
+    "body": ""
+   },
+   {
+    "code": "7.2",
+    "title": "MAPIPOS",
+    "bullets": [
+     "Antecedentes",
+     "Relación con el antiguo Plan Obligatorio de Salud",
+     "Diferencias frente a los manuales tarifarios",
+     "Alcance histórico y situación actual"
+    ],
+    "body": ""
+   },
+   {
+    "code": "7.3",
+    "title": "Manual tarifario SOAT",
+    "bullets": [
+     "Concepto",
+     "Finalidad",
+     "Aplicación de tarifas",
+     "Importancia para el reconocimiento económico de servicios"
+    ],
+    "body": ""
+   },
+   {
+    "code": "7.4",
+    "title": "Contratación de servicios de salud",
+    "bullets": [
+     "Relación entre EPS y prestadores",
+     "Acuerdos de voluntades",
+     "Modalidades de pago"
+    ],
+    "body": ""
+   },
+   {
+    "code": "7.5",
+    "title": "Facturación y radicación",
+    "bullets": [
+     "Registro de servicios prestados",
+     "Elaboración de facturas",
+     "Soportes de cobro",
+     "Presentación de cuentas"
+    ],
+    "body": ""
+   },
+   {
+    "code": "7.6",
+    "title": "Glosas y cartera",
+    "bullets": [
+     "Concepto de glosa",
+     "Causas frecuentes",
+     "Respuesta a glosas",
+     "Gestión de cartera"
+    ],
+    "body": ""
+   },
+   {
+    "code": "7.7",
+    "title": "Sostenibilidad financiera",
+    "bullets": [
+     "Importancia del recaudo",
+     "Control de recursos",
+     "Eficiencia administrativa",
+     "Relación entre calidad y sostenibilidad"
+    ],
+    "body": ""
+   }
+  ]
+ },
+ {
+  "t": "Plan de fortalecimiento institucional",
+  "d": "De los hallazgos a las acciones de mejora",
+  "note": "El contenido de este módulo estaba incompleto en el texto original; se irán agregando las demás secciones.",
+  "s": [
+   {
+    "code": "8.1",
+    "title": "Identificación de problemas",
+    "bullets": [
+     "Debilidades en habilitación"
+    ],
+    "body": ""
+   }
+  ]
+ }
+]
