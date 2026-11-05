@@ -1,12 +1,13 @@
-// Servidor de la wiki CEJEL IPS: contenido en SQLite + login con roles.
-// Sin dependencias externas. Requiere Node 22.5 o superior (usa node:sqlite).
+// Servidor de la wiki CEJEL IPS: contenido en MySQL + login con roles.
+// Requiere Node 18 o superior y un servidor MySQL/MariaDB. Se conecta con el enlace MYSQL_URL del .env:
+//   MYSQL_URL=mysql://usuario:clave@host:3306/base_de_datos
 //   npm start      (o doble clic en "Iniciar wiki.bat")
 'use strict';
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { DatabaseSync } = require('node:sqlite');
+const mysql = require('mysql2/promise');
 
 const ROOT = path.join(__dirname, '..');
 const PUBLIC = path.join(ROOT, 'public');
@@ -25,106 +26,137 @@ try {
 
 const PORT = +process.env.PORT || 3000;
 const HOST = process.env.HOST || '127.0.0.1';
-const DATA = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : path.join(ROOT, 'data');
-fs.mkdirSync(DATA, { recursive: true });
-const BACKUPS = path.join(DATA, 'backups');
-fs.mkdirSync(BACKUPS, { recursive: true });
-const db = new DatabaseSync(path.join(DATA, 'data.db'));
 
-db.exec(`
-PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON;
-CREATE TABLE IF NOT EXISTS users(
-  id INTEGER PRIMARY KEY, username TEXT UNIQUE NOT NULL, salt TEXT NOT NULL, hash TEXT NOT NULL,
-  role TEXT NOT NULL DEFAULT 'editor');
-CREATE TABLE IF NOT EXISTS modules(
-  id INTEGER PRIMARY KEY, position INTEGER NOT NULL, title TEXT NOT NULL,
-  description TEXT NOT NULL DEFAULT '', note TEXT NOT NULL DEFAULT '');
-CREATE TABLE IF NOT EXISTS sections(
-  id INTEGER PRIMARY KEY, module_id INTEGER NOT NULL REFERENCES modules(id) ON DELETE CASCADE,
-  position INTEGER NOT NULL, code TEXT NOT NULL DEFAULT '', title TEXT NOT NULL,
-  bullets TEXT NOT NULL DEFAULT '[]', body TEXT NOT NULL DEFAULT '');
-`);
-// Migración: bases creadas antes de existir roles (su único usuario era administrador).
-if (!db.prepare('PRAGMA table_info(users)').all().some(c => c.name === 'role'))
-  db.exec("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'admin'");
+// ---------- Conexión a MySQL ----------
+const DB_URL = process.env.MYSQL_URL || process.env.DATABASE_URL || '';
+function poolFromUrl(raw) {
+  let u;
+  try { u = new URL(raw); } catch { u = null; }
+  if (!u || !/^mysql(2)?:$/.test(u.protocol) || !u.hostname || u.pathname.length < 2)
+    throw new Error('MYSQL_URL no es válido. Formato: mysql://usuario:clave@host:3306/base_de_datos');
+  const ssl = /^(true|1|require|required)$/i.test(u.searchParams.get('ssl') || u.searchParams.get('sslmode') || '');
+  return {
+    pool: mysql.createPool({
+      host: u.hostname, port: +u.port || 3306, user: decodeURIComponent(u.username), password: decodeURIComponent(u.password),
+      database: decodeURIComponent(u.pathname.slice(1)), charset: 'utf8mb4', connectionLimit: 10, waitForConnections: true,
+      ...(ssl ? { ssl: { rejectUnauthorized: false } } : {})
+    }),
+    label: `${u.hostname}:${u.port || 3306}/${decodeURIComponent(u.pathname.slice(1))}` // sin usuario ni clave
+  };
+}
+let pool, DB_LABEL;
+try { ({ pool, label: DB_LABEL } = poolFromUrl(DB_URL)); }
+catch (e) { console.error(DB_URL ? e.message : 'Falta MYSQL_URL en el archivo .env (mysql://usuario:clave@host:3306/base_de_datos).'); process.exit(1); }
 
-// Migración: imagen de banner por módulo.
-if (!db.prepare('PRAGMA table_info(modules)').all().some(c => c.name === 'image'))
-  db.exec("ALTER TABLE modules ADD COLUMN image TEXT NOT NULL DEFAULT ''");
+const q = async (sql, args = []) => (await pool.query(sql, args))[0];          // devuelve filas
+const one = async (sql, args = []) => (await q(sql, args))[0];                  // primera fila o undefined
+const count = async t => (await one(`SELECT COUNT(*) n FROM ${t}`)).n;
+async function tx(fn) {
+  const c = await pool.getConnection();
+  try {
+    await c.beginTransaction();
+    const r = await fn(async (sql, args = []) => (await c.query(sql, args))[0]);
+    await c.commit();
+    return r;
+  } catch (e) { await c.rollback().catch(() => {}); throw e; }
+  finally { c.release(); }
+}
+
+async function initSchema() {
+  const T = 'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4';
+  await q(`CREATE TABLE IF NOT EXISTS users(
+    id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL UNIQUE,
+    salt VARCHAR(64) NOT NULL, hash VARCHAR(256) NOT NULL, role VARCHAR(20) NOT NULL DEFAULT 'editor') ${T}`);
+  await q(`CREATE TABLE IF NOT EXISTS modules(
+    id INT AUTO_INCREMENT PRIMARY KEY, \`position\` INT NOT NULL, title VARCHAR(255) NOT NULL,
+    description VARCHAR(600) NOT NULL DEFAULT '', note TEXT NOT NULL, image VARCHAR(600) NOT NULL DEFAULT '') ${T}`);
+  await q(`CREATE TABLE IF NOT EXISTS sections(
+    id INT AUTO_INCREMENT PRIMARY KEY, module_id INT NOT NULL, \`position\` INT NOT NULL, code VARCHAR(20) NOT NULL DEFAULT '',
+    title VARCHAR(255) NOT NULL, bullets MEDIUMTEXT NOT NULL, body MEDIUMTEXT NOT NULL,
+    CONSTRAINT fk_sections_module FOREIGN KEY (module_id) REFERENCES modules(id) ON DELETE CASCADE) ${T}`);
+  await q(`CREATE TABLE IF NOT EXISTS backups(
+    id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(80) NOT NULL UNIQUE, created_at BIGINT NOT NULL, data LONGTEXT NOT NULL) ${T}`);
+}
 
 // ---------- Datos iniciales ----------
-if (db.prepare('SELECT COUNT(*) n FROM modules').get().n === 0) {
+async function seedIfEmpty() {
+  if (await count('modules') !== 0) return;
   const seed = JSON.parse(fs.readFileSync(path.join(__dirname, 'seed.json'), 'utf8'));
-  const im = db.prepare('INSERT INTO modules(position,title,description,note) VALUES(?,?,?,?)');
-  const is = db.prepare('INSERT INTO sections(module_id,position,code,title,bullets,body) VALUES(?,?,?,?,?,?)');
-  seed.forEach((m, i) => {
-    const id = im.run(i + 1, m.t, m.d, m.note || '').lastInsertRowid;
-    m.s.forEach((s, j) => is.run(id, j + 1, s.code, s.title, JSON.stringify(s.bullets), s.body));
+  await tx(async t => {
+    for (const [i, m] of seed.entries()) {
+      const id = (await t('INSERT INTO modules(`position`,title,description,note,image) VALUES(?,?,?,?,?)', [i + 1, m.t, m.d, m.note || '', ''])).insertId;
+      for (const [j, s] of m.s.entries())
+        await t('INSERT INTO sections(module_id,`position`,code,title,bullets,body) VALUES(?,?,?,?,?,?)', [id, j + 1, s.code, s.title, JSON.stringify(s.bullets), s.body]);
+    }
   });
   console.log('Base de datos inicializada con', seed.length, 'módulos.');
 }
 
 // ---------- Usuarios ----------
 const hashPw = (pw, salt) => crypto.scryptSync(pw, salt, 64).toString('hex');
-function checkPw(user, pw) {
-  const row = db.prepare('SELECT * FROM users WHERE username=?').get(user);
+async function checkPw(user, pw) {
+  const row = await one('SELECT * FROM users WHERE username=?', [user]);
   const h = Buffer.from(hashPw(pw, row ? row.salt : 'x'.repeat(32)), 'hex'); // mismo costo exista o no el usuario
   if (!row) return null;
   return crypto.timingSafeEqual(h, Buffer.from(row.hash, 'hex')) ? row : null;
 }
 // Usuarios definidos en .env como  USUARIO_1=nombre:contraseña:rol  (rol: admin | editor).
 // Solo se CREAN si no existen: cambiar la contraseña desde la página no se revierte al reiniciar.
-const created = [];
-for (const [k, v] of Object.entries(process.env)) {
-  if (!/^USUARIO_\d+$/.test(k)) continue;
-  const a = v.indexOf(':'), z = v.lastIndexOf(':');
-  const name = a > 0 ? v.slice(0, a).trim() : '', pass = z > a ? v.slice(a + 1, z) : '', role = z > a ? v.slice(z + 1).trim().toLowerCase() : '';
-  if (!/^[\w.\-@]{2,40}$/.test(name) || pass.length < 8 || !['admin', 'editor'].includes(role)) {
-    console.warn(`⚠ ${k} ignorado: use  nombre:contraseña(mín. 8):rol  con rol admin o editor.`); continue;
+async function initUsers() {
+  const created = [];
+  for (const [k, v] of Object.entries(process.env)) {
+    if (!/^USUARIO_\d+$/.test(k)) continue;
+    const a = v.indexOf(':'), z = v.lastIndexOf(':');
+    const name = a > 0 ? v.slice(0, a).trim() : '', pass = z > a ? v.slice(a + 1, z) : '', role = z > a ? v.slice(z + 1).trim().toLowerCase() : '';
+    if (!/^[\w.\-@]{2,40}$/.test(name) || pass.length < 8 || !['admin', 'editor'].includes(role)) {
+      console.warn(`⚠ ${k} ignorado: use  nombre:contraseña(mín. 8):rol  con rol admin o editor.`); continue;
+    }
+    const row = await one('SELECT id,role FROM users WHERE username=?', [name]);
+    if (!row) {
+      const salt = crypto.randomBytes(16).toString('hex');
+      await q('INSERT INTO users(username,salt,hash,role) VALUES(?,?,?,?)', [name, salt, hashPw(pass, salt), role]);
+      created.push({ name, pass, role });
+    } else if (row.role !== role) await q('UPDATE users SET role=? WHERE id=?', [role, row.id]);
   }
-  const row = db.prepare('SELECT id,role FROM users WHERE username=?').get(name);
-  if (!row) {
-    const salt = crypto.randomBytes(16).toString('hex');
-    db.prepare('INSERT INTO users(username,salt,hash,role) VALUES(?,?,?,?)').run(name, salt, hashPw(pass, salt), role);
-    created.push({ name, pass, role });
-  } else if (row.role !== role) db.prepare('UPDATE users SET role=? WHERE id=?').run(role, row.id);
-}
-if (db.prepare('SELECT COUNT(*) n FROM users').get().n === 0) {
-  const pass = crypto.randomBytes(9).toString('base64url'), salt = crypto.randomBytes(16).toString('hex');
-  db.prepare('INSERT INTO users(username,salt,hash,role) VALUES(?,?,?,?)').run('admin', salt, hashPw(pass, salt), 'admin');
-  created.push({ name: 'admin', pass: pass + '   (guárdala: no se volverá a mostrar)', role: 'admin' });
-}
-if (created.length) {
-  console.log('\n=== Usuarios creados ===');
-  created.forEach(u => console.log(`  ${u.role.padEnd(6)} ${u.name} / ${u.pass}`));
-  console.log('========================\n');
+  if (await count('users') === 0) {
+    const pass = crypto.randomBytes(9).toString('base64url'), salt = crypto.randomBytes(16).toString('hex');
+    await q('INSERT INTO users(username,salt,hash,role) VALUES(?,?,?,?)', ['admin', salt, hashPw(pass, salt), 'admin']);
+    created.push({ name: 'admin', pass: pass + '   (guárdala: no se volverá a mostrar)', role: 'admin' });
+  }
+  if (created.length) {
+    console.log('\n=== Usuarios creados ===');
+    created.forEach(u => console.log(`  ${u.role.padEnd(6)} ${u.name} / ${u.pass}`));
+    console.log('========================\n');
+  }
 }
 
 // ---------- Copias de seguridad ----------
-// VACUUM INTO genera una copia consistente de la base aunque la wiki esté en uso.
+// Cada copia es una instantánea JSON del contenido, guardada en la tabla "backups" de la misma base de datos
+// (así sobrevive a reinicios y redespliegues). La descarga desde el panel incluye además los usuarios.
 const stamp = () => new Date().toISOString().replace(/[-:]/g, '').replace('T', '-').slice(0, 15);
-function pruneBackups() {
-  const all = fs.readdirSync(BACKUPS).filter(f => /^wiki-[\w-]+\.db$/.test(f)).sort().reverse(); // más nuevas primero
-  const auto = all.filter(f => /-(inicio|diaria)\.db$/.test(f)), other = all.filter(f => !auto.includes(f));
-  [...auto.slice(14), ...other.slice(10)].forEach(f => { try { fs.unlinkSync(path.join(BACKUPS, f)); } catch { /* ya no existe */ } });
+async function pruneBackups() {
+  const all = await q('SELECT name FROM backups ORDER BY created_at DESC, id DESC');
+  const auto = all.filter(b => /-(inicio|diaria)$/.test(b.name)), other = all.filter(b => !auto.includes(b));
+  const drop = [...auto.slice(14), ...other.slice(10)].map(b => b.name);
+  if (drop.length) await q('DELETE FROM backups WHERE name IN (?)', [drop]);
 }
-function backupNow(tag) {
-  let name, file, n = 0;
-  do { name = `wiki-${stamp()}-${tag}${n ? '-' + n : ''}.db`; file = path.join(BACKUPS, name); n++; } while (fs.existsSync(file));
-  db.exec(`VACUUM INTO '${file.replace(/'/g, "''")}'`);
-  pruneBackups();
+async function backupNow(tag) {
+  const data = JSON.stringify({ content: (await content()).map(plain) });
+  let name, n = 0;
+  do { name = `wiki-${stamp()}-${tag}${n ? '-' + n : ''}`; n++; } while (await one('SELECT 1 x FROM backups WHERE name=?', [name]));
+  await q('INSERT INTO backups(name,created_at,data) VALUES(?,?,?)', [name, Date.now(), data]);
+  await pruneBackups();
   return name;
 }
-function listBackups() {
-  return fs.readdirSync(BACKUPS).filter(f => /^wiki-[\w-]+\.db$/.test(f)).map(f => {
-    const st = fs.statSync(path.join(BACKUPS, f)); return { name: f, size: st.size, t: st.mtimeMs };
-  }).sort((a, b) => b.t - a.t).slice(0, 30);
+const listBackups = async () =>
+  (await q('SELECT name, LENGTH(data) size, created_at t FROM backups ORDER BY created_at DESC, id DESC LIMIT 30')).map(b => ({ name: b.name, size: Number(b.size), t: Number(b.t) }));
+async function startBackups() {
+  try {
+    const lastAuto = (await listBackups()).find(b => /-(inicio|diaria)$/.test(b.name));
+    if (!lastAuto || Date.now() - lastAuto.t > 12 * 3600e3) console.log('Copia de seguridad automática:', await backupNow('inicio'));
+  } catch (e) { console.warn('No se pudo crear la copia automática:', e.message); }
+  setInterval(() => { backupNow('diaria').catch(e => console.warn('Copia diaria falló:', e.message)); }, 24 * 3600e3).unref();
 }
-try {
-  const lastAuto = listBackups().find(b => /-(inicio|diaria)\.db$/.test(b.name));
-  if (!lastAuto || Date.now() - lastAuto.t > 12 * 3600e3) console.log('Copia de seguridad automática:', backupNow('inicio'));
-} catch (e) { console.warn('No se pudo crear la copia automática:', e.message); }
-setInterval(() => { try { backupNow('diaria'); } catch (e) { console.warn('Copia diaria falló:', e.message); } }, 24 * 3600e3).unref();
 
 // ---------- Sesiones y límite de intentos ----------
 const sessions = new Map(); // token -> {uid, username, role, exp}
@@ -199,46 +231,45 @@ function validateContent(data) {
     };
   });
 }
-function insertContent(list) {
-  const im = db.prepare('INSERT INTO modules(position,title,description,note,image) VALUES(?,?,?,?,?)');
-  const is = db.prepare('INSERT INTO sections(module_id,position,code,title,bullets,body) VALUES(?,?,?,?,?,?)');
-  list.forEach((m, i) => {
-    const id = im.run(i + 1, m.t, m.d, m.note, m.image).lastInsertRowid;
-    m.s.forEach((x, j) => is.run(id, j + 1, x.code, x.title, JSON.stringify(x.bullets), x.body));
-  });
+async function insertContent(t, list) {
+  for (const [i, m] of list.entries()) {
+    const id = (await t('INSERT INTO modules(`position`,title,description,note,image) VALUES(?,?,?,?,?)', [i + 1, m.t, m.d, m.note, m.image])).insertId;
+    for (const [j, x] of m.s.entries())
+      await t('INSERT INTO sections(module_id,`position`,code,title,bullets,body) VALUES(?,?,?,?,?,?)', [id, j + 1, x.code, x.title, JSON.stringify(x.bullets), x.body]);
+  }
 }
 // Intercambia un elemento con su vecino y renumera 1..n (robusto aunque las posiciones tuvieran huecos).
-function reorder(table, scopeSql, scopeArgs, id, dir) {
-  const ids = db.prepare(`SELECT id FROM ${table} ${scopeSql} ORDER BY position,id`).all(...scopeArgs).map(r => r.id);
+async function reorder(table, scopeSql, scopeArgs, id, dir) {
+  const ids = (await q(`SELECT id FROM ${table} ${scopeSql} ORDER BY \`position\`,id`, scopeArgs)).map(r => r.id);
   const i = ids.indexOf(id);
   if (i < 0) return false;
   const j = dir === 'up' ? i - 1 : i + 1;
   if (j < 0 || j >= ids.length) return true; // ya está en el extremo
   [ids[i], ids[j]] = [ids[j], ids[i]];
-  db.exec('BEGIN');
-  try { const up = db.prepare(`UPDATE ${table} SET position=? WHERE id=?`); ids.forEach((x, k) => up.run(k + 1, x)); db.exec('COMMIT'); }
-  catch (e) { db.exec('ROLLBACK'); throw e; }
+  await tx(async t => { for (const [k, x] of ids.entries()) await t(`UPDATE ${table} SET \`position\`=? WHERE id=?`, [k + 1, x]); });
   return true;
 }
-const adminCount = () => db.prepare("SELECT COUNT(*) n FROM users WHERE role='admin'").get().n;
+const adminCount = async () => (await one("SELECT COUNT(*) n FROM users WHERE role='admin'")).n;
 const dropSessions = (uid, exceptUid) => { for (const [t, v] of sessions) if (v.uid === uid && uid !== exceptUid) sessions.delete(t); };
 const fileStamp = () => new Date().toISOString().slice(0, 10);
+// Contenido sin ids (para exportar y para las copias).
+const plain = x => ({ t: x.t, d: x.d, note: x.note, image: x.image, s: x.s.map(y => ({ code: y.code, title: y.title, bullets: y.bullets, body: y.body })) });
 
 // ---------- API ----------
-function content() {
-  const mods = db.prepare('SELECT * FROM modules ORDER BY position,id').all();
-  const secs = db.prepare('SELECT * FROM sections ORDER BY position,id').all();
+async function content() {
+  const mods = await q('SELECT * FROM modules ORDER BY `position`,id');
+  const secs = await q('SELECT * FROM sections ORDER BY `position`,id');
   return mods.map(m => ({
     id: m.id, t: m.title, d: m.description, note: m.note, image: m.image,
     s: secs.filter(s => s.module_id === m.id).map(s => ({ id: s.id, code: s.code, title: s.title, bullets: JSON.parse(s.bullets), body: s.body }))
   }));
 }
-const nextPos = (table, where = '', arg) => db.prepare(`SELECT COALESCE(MAX(position),0)+1 n FROM ${table} ${where}`).get(...(arg === undefined ? [] : [arg])).n;
+const nextPos = async (table, where = '', arg) => (await one(`SELECT COALESCE(MAX(\`position\`),0)+1 n FROM ${table} ${where}`, arg === undefined ? [] : [arg])).n;
 
 async function api(req, res, url) {
   const m = req.method, p = url.pathname;
 
-  if (m === 'GET' && p === '/api/content') return send(res, 200, content());
+  if (m === 'GET' && p === '/api/content') return send(res, 200, await content());
   if (m === 'GET' && p === '/api/me') { const u = currentUser(req); return send(res, 200, { user: u ? u.username : null, role: u ? u.role : null }); }
 
   // Toda escritura exige este encabezado (un formulario de otro sitio no puede enviarlo).
@@ -249,7 +280,7 @@ async function api(req, res, url) {
     const a = attempts.get(ip) || { n: 0, until: 0 };
     if (a.until > Date.now()) return send(res, 429, { error: 'Demasiados intentos. Espera unos minutos e inténtalo de nuevo.' });
     let b; try { b = await readJson(req); } catch { return send(res, 400, { error: 'Solicitud inválida.' }); }
-    const user = checkPw(String(b.user || '').slice(0, 100), String(b.pass || '').slice(0, 200));
+    const user = await checkPw(String(b.user || '').slice(0, 100), String(b.pass || '').slice(0, 200));
     if (!user) {
       a.n++; if (a.n >= 5) { a.until = Date.now() + 15 * 60e3; a.n = 0; }
       attempts.set(ip, a);
@@ -270,119 +301,118 @@ async function api(req, res, url) {
   if (!user) return send(res, 401, { error: 'Debes iniciar sesión.' });
   const isAdmin = user.role === 'admin';
   if (p.startsWith('/api/admin/') && !isAdmin) return send(res, 403, { error: 'Solo para administradores.' });
-  if (m === 'GET' && p === '/api/admin/info') {
-    const n = t => db.prepare(`SELECT COUNT(*) n FROM ${t}`).get().n;
-    return send(res, 200, { file: 'data/data.db', engine: 'SQLite', size: fs.statSync(path.join(DATA, 'data.db')).size,
-      modules: n('modules'), sections: n('sections'), users: n('users'), backups: listBackups() });
-  }
-  if (m === 'GET' && p === '/api/admin/backup') {
-    const name = backupNow('descarga'), file = path.join(BACKUPS, name);
-    res.writeHead(200, { 'Content-Type': 'application/octet-stream', 'Content-Disposition': `attachment; filename="${name}"`, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
-    return fs.createReadStream(file).pipe(res);
-  }
-  if (m === 'GET' && p === '/api/admin/export') {
-    const data = content().map(x => ({ t: x.t, d: x.d, note: x.note, image: x.image, s: x.s.map(y => ({ code: y.code, title: y.title, bullets: y.bullets, body: y.body })) }));
-    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Content-Disposition': `attachment; filename="wiki-contenido-${fileStamp()}.json"`, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
-    return res.end(JSON.stringify(data, null, 1));
-  }
-  if (m === 'GET' && p === '/api/admin/users')
-    return send(res, 200, db.prepare('SELECT id,username,role FROM users ORDER BY username').all());
-  let b = {};
-  if (m === 'POST' || m === 'PUT') { try { b = await readJson(req, p === '/api/admin/import' ? 6e6 : 1e6); } catch { return send(res, 400, { error: 'Solicitud inválida.' }); } }
-
   try {
+    if (m === 'GET' && p === '/api/admin/info') {
+      const sz = await one('SELECT COALESCE(SUM(data_length+index_length),0) size FROM information_schema.tables WHERE table_schema=DATABASE()');
+      return send(res, 200, { file: DB_LABEL, engine: 'MySQL', size: Number(sz.size),
+        modules: await count('modules'), sections: await count('sections'), users: await count('users'), backups: await listBackups() });
+    }
+    if (m === 'GET' && p === '/api/admin/backup') {
+      const dump = { content: (await content()).map(plain), users: await q('SELECT username,salt,hash,role FROM users ORDER BY id') };
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Content-Disposition': `attachment; filename="wiki-copia-${stamp()}.json"`, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
+      return res.end(JSON.stringify(dump, null, 1));
+    }
+    if (m === 'GET' && p === '/api/admin/export') {
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Content-Disposition': `attachment; filename="wiki-contenido-${fileStamp()}.json"`, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
+      return res.end(JSON.stringify((await content()).map(plain), null, 1));
+    }
+    if (m === 'GET' && p === '/api/admin/users')
+      return send(res, 200, await q('SELECT id,username,role FROM users ORDER BY username'));
+    let b = {};
+    if (m === 'POST' || m === 'PUT') { try { b = await readJson(req, p === '/api/admin/import' ? 6e6 : 1e6); } catch { return send(res, 400, { error: 'Solicitud inválida.' }); } }
+
     if (m === 'POST' && p === '/api/password') {
-      if (!checkPw(user.username, String(b.current || ''))) return send(res, 400, { error: 'La contraseña actual no es correcta.' });
+      if (!await checkPw(user.username, String(b.current || ''))) return send(res, 400, { error: 'La contraseña actual no es correcta.' });
       const np = str(b.next, 200, true);
       if (np.length < 10) throw new Error('La nueva contraseña debe tener al menos 10 caracteres.');
       const salt = crypto.randomBytes(16).toString('hex');
-      db.prepare('UPDATE users SET salt=?,hash=? WHERE id=?').run(salt, hashPw(np, salt), user.uid);
+      await q('UPDATE users SET salt=?,hash=? WHERE id=?', [salt, hashPw(np, salt), user.uid]);
       return send(res, 200, { ok: true });
     }
     if (m === 'POST' && p === '/api/admin/import') {
       const clean = validateContent(b.data);
-      const backup = backupNow('antes-importar'); // por si hay que volver atrás
-      db.exec('BEGIN');
-      try { db.exec('DELETE FROM modules'); insertContent(clean); db.exec('COMMIT'); } catch (e) { db.exec('ROLLBACK'); throw e; }
+      const backup = await backupNow('antes-importar'); // por si hay que volver atrás
+      await tx(async t => { await t('DELETE FROM modules'); await insertContent(t, clean); });
       return send(res, 200, { ok: true, modules: clean.length, backup });
     }
     if (m === 'POST' && p === '/api/admin/users') {
       const name = uname(b.username);
-      if (db.prepare('SELECT 1 FROM users WHERE username=?').get(name)) throw new Error('Ese usuario ya existe.');
+      if (await one('SELECT 1 x FROM users WHERE username=?', [name])) throw new Error('Ese usuario ya existe.');
       const pw = pwOf(b.password), role = roleOf(b.role), salt = crypto.randomBytes(16).toString('hex');
-      const id = db.prepare('INSERT INTO users(username,salt,hash,role) VALUES(?,?,?,?)').run(name, salt, hashPw(pw, salt), role).lastInsertRowid;
-      return send(res, 201, { id: Number(id) });
+      const id = (await q('INSERT INTO users(username,salt,hash,role) VALUES(?,?,?,?)', [name, salt, hashPw(pw, salt), role])).insertId;
+      return send(res, 201, { id });
     }
     const um = p.match(/^\/api\/admin\/users\/(\d+)$/);
     if (um) {
-      const uid = +um[1], target = db.prepare('SELECT * FROM users WHERE id=?').get(uid);
+      const uid = +um[1], target = await one('SELECT * FROM users WHERE id=?', [uid]);
       if (!target) return send(res, 404, { error: 'El usuario no existe.' });
       if (m === 'PUT') {
         if (b.role !== undefined) {
           const role = roleOf(b.role);
-          if (target.role === 'admin' && role !== 'admin' && adminCount() <= 1) throw new Error('Debe quedar al menos un administrador.');
-          db.prepare('UPDATE users SET role=? WHERE id=?').run(role, uid);
+          if (target.role === 'admin' && role !== 'admin' && await adminCount() <= 1) throw new Error('Debe quedar al menos un administrador.');
+          await q('UPDATE users SET role=? WHERE id=?', [role, uid]);
           for (const v of sessions.values()) if (v.uid === uid) v.role = role;
         }
         if (b.password !== undefined) {
           const salt = crypto.randomBytes(16).toString('hex');
-          db.prepare('UPDATE users SET salt=?,hash=? WHERE id=?').run(salt, hashPw(pwOf(b.password), salt), uid);
+          await q('UPDATE users SET salt=?,hash=? WHERE id=?', [salt, hashPw(pwOf(b.password), salt), uid]);
           dropSessions(uid, user.uid); // quien tenía sesión abierta con la clave vieja debe volver a entrar
         }
         return send(res, 200, { ok: true });
       }
       if (m === 'DELETE') {
         if (uid === user.uid) throw new Error('No puedes eliminar tu propio usuario.');
-        if (target.role === 'admin' && adminCount() <= 1) throw new Error('Debe quedar al menos un administrador.');
-        db.prepare('DELETE FROM users WHERE id=?').run(uid); dropSessions(uid);
+        if (target.role === 'admin' && await adminCount() <= 1) throw new Error('Debe quedar al menos un administrador.');
+        await q('DELETE FROM users WHERE id=?', [uid]); dropSessions(uid);
         return send(res, 200, { ok: true });
       }
     }
     const sm = p.match(/^\/api\/sections\/(\d+)\/move$/);
     if (m === 'POST' && sm) {
-      const row = db.prepare('SELECT module_id FROM sections WHERE id=?').get(+sm[1]);
+      const row = await one('SELECT module_id FROM sections WHERE id=?', [+sm[1]]);
       if (!row || !['up', 'down'].includes(b.dir)) throw new Error('Solicitud inválida.');
-      reorder('sections', 'WHERE module_id=?', [row.module_id], +sm[1], b.dir);
+      await reorder('sections', 'WHERE module_id=?', [row.module_id], +sm[1], b.dir);
       return send(res, 200, { ok: true });
     }
     const mo = p.match(/^\/api\/modules\/(\d+)\/move$/);
     if (m === 'POST' && mo) {
       if (!['up', 'down'].includes(b.dir)) throw new Error('Solicitud inválida.');
-      if (!reorder('modules', '', [], +mo[1], b.dir)) throw new Error('El módulo no existe.');
+      if (!await reorder('modules', '', [], +mo[1], b.dir)) throw new Error('El módulo no existe.');
       return send(res, 200, { ok: true });
     }
     if (m === 'POST' && p === '/api/modules') {
-      const id = db.prepare('INSERT INTO modules(position,title,description,note,image) VALUES(?,?,?,?,?)')
-        .run(nextPos('modules'), str(b.title, 200, true), str(b.description, 500), str(b.note, 1000), imgOf(b.image)).lastInsertRowid;
-      return send(res, 201, { id: Number(id) });
+      const id = (await q('INSERT INTO modules(`position`,title,description,note,image) VALUES(?,?,?,?,?)',
+        [await nextPos('modules'), str(b.title, 200, true), str(b.description, 500), str(b.note, 1000), imgOf(b.image)])).insertId;
+      return send(res, 201, { id });
     }
     let mm = p.match(/^\/api\/modules\/(\d+)$/);
     if (mm && m === 'PUT') {
-      db.prepare('UPDATE modules SET title=?,description=?,note=?,image=? WHERE id=?').run(str(b.title, 200, true), str(b.description, 500), str(b.note, 1000), imgOf(b.image), +mm[1]);
+      await q('UPDATE modules SET title=?,description=?,note=?,image=? WHERE id=?', [str(b.title, 200, true), str(b.description, 500), str(b.note, 1000), imgOf(b.image), +mm[1]]);
       return send(res, 200, { ok: true });
     }
     if (mm && m === 'DELETE') {
       if (!isAdmin) return send(res, 403, { error: 'Solo un administrador puede eliminar módulos.' });
-      db.prepare('DELETE FROM modules WHERE id=?').run(+mm[1]); return send(res, 200, { ok: true });
+      await q('DELETE FROM modules WHERE id=?', [+mm[1]]); return send(res, 200, { ok: true });
     }
     if (m === 'POST' && p === '/api/sections') {
       const mod = +b.module_id;
-      if (!db.prepare('SELECT 1 FROM modules WHERE id=?').get(mod)) throw new Error('El módulo no existe.');
-      const id = db.prepare('INSERT INTO sections(module_id,position,code,title,bullets,body) VALUES(?,?,?,?,?,?)')
-        .run(mod, nextPos('sections', 'WHERE module_id=?', mod), str(b.code, 20), str(b.title, 250, true), JSON.stringify(bulletsOf(b.bullets || [])), str(b.body, 100000)).lastInsertRowid;
-      return send(res, 201, { id: Number(id) });
+      if (!await one('SELECT 1 x FROM modules WHERE id=?', [mod])) throw new Error('El módulo no existe.');
+      const id = (await q('INSERT INTO sections(module_id,`position`,code,title,bullets,body) VALUES(?,?,?,?,?,?)',
+        [mod, await nextPos('sections', 'WHERE module_id=?', mod), str(b.code, 20), str(b.title, 250, true), JSON.stringify(bulletsOf(b.bullets || [])), str(b.body, 100000)])).insertId;
+      return send(res, 201, { id });
     }
     mm = p.match(/^\/api\/sections\/(\d+)$/);
     if (mm && m === 'PUT') {
-      db.prepare('UPDATE sections SET code=?,title=?,bullets=?,body=? WHERE id=?')
-        .run(str(b.code, 20), str(b.title, 250, true), JSON.stringify(bulletsOf(b.bullets || [])), str(b.body, 100000), +mm[1]);
+      await q('UPDATE sections SET code=?,title=?,bullets=?,body=? WHERE id=?',
+        [str(b.code, 20), str(b.title, 250, true), JSON.stringify(bulletsOf(b.bullets || [])), str(b.body, 100000), +mm[1]]);
       return send(res, 200, { ok: true });
     }
     if (mm && m === 'DELETE') {
       if (!isAdmin) return send(res, 403, { error: 'Solo un administrador puede eliminar secciones.' });
-      db.prepare('DELETE FROM sections WHERE id=?').run(+mm[1]); return send(res, 200, { ok: true });
+      await q('DELETE FROM sections WHERE id=?', [+mm[1]]); return send(res, 200, { ok: true });
     }
   } catch (e) {
+    if (e.code || e.sqlState) { console.error('Error de base de datos:', e.message); return send(res, 500, { error: 'Error de la base de datos. Inténtalo de nuevo.' }); }
     return send(res, 400, { error: e.message });
   }
   return send(res, 404, { error: 'No encontrado.' });
@@ -403,12 +433,24 @@ function serveStatic(req, res, url) {
   });
 }
 
-http.createServer((req, res) => {
+// ---------- Arranque ----------
+(async () => {
   try {
-    const url = new URL(req.url, 'http://localhost');
-    if (url.pathname.startsWith('/api/')) return api(req, res, url).catch(() => send(res, 500, { error: 'Error del servidor.' }));
-    if (req.method !== 'GET') return send(res, 405, 'Método no permitido');
-    serveStatic(req, res, url);
-  } catch { send(res, 400, 'Solicitud inválida'); }
-}).listen(PORT, HOST, () => console.log(`Wiki CEJEL IPS en http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}`))
-  .on('error', e => { console.error(e.code === 'EADDRINUSE' ? `El puerto ${PORT} ya está en uso. ¿Ya hay una wiki abierta? Cierra la otra ventana o cambia PORT en .env.` : e.message); process.exit(1); });
+    await initSchema();
+    await seedIfEmpty();
+    await initUsers();
+    await startBackups();
+  } catch (e) {
+    console.error(`No se pudo conectar o preparar la base de datos MySQL (${DB_LABEL}): ${e.code ? e.code + ' - ' : ''}${e.message}`);
+    process.exit(1);
+  }
+  http.createServer((req, res) => {
+    try {
+      const url = new URL(req.url, 'http://localhost');
+      if (url.pathname.startsWith('/api/')) return api(req, res, url).catch(e => { console.error(e); if (!res.headersSent) send(res, 500, { error: 'Error del servidor.' }); });
+      if (req.method !== 'GET') return send(res, 405, 'Método no permitido');
+      serveStatic(req, res, url);
+    } catch { send(res, 400, 'Solicitud inválida'); }
+  }).listen(PORT, HOST, () => console.log(`Wiki CEJEL IPS en http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}  (MySQL: ${DB_LABEL})`))
+    .on('error', e => { console.error(e.code === 'EADDRINUSE' ? `El puerto ${PORT} ya está en uso. ¿Ya hay una wiki abierta? Cierra la otra ventana o cambia PORT en .env.` : e.message); process.exit(1); });
+})();

@@ -6,7 +6,7 @@ cd /d "%~dp0"
 where node >nul 2>nul
 if errorlevel 1 (
   echo.
-  echo  Necesitas instalar Node.js 22.5 o superior: https://nodejs.org
+  echo  Necesitas instalar Node.js 18 o superior: https://nodejs.org
   echo.
   pause
   exit /b 1
@@ -26,6 +26,7 @@ echo  Abriendo http://localhost:3000 en tu navegador...
 echo  Para apagar la wiki cierra esta ventana.
 echo.
 start "" cmd /c "timeout /t 2 /nobreak >nul & start http://localhost:3000"
+if not exist node_modules call npm install --omit=dev
 node --no-warnings server\server.js
 echo.
 pause

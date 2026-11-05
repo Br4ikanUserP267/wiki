@@ -587,9 +587,9 @@ async function renderAdmin(msg){
    <p id="amsg" class="okmsg" role="status" ${msg?"":"hidden"}>${esc(msg||"")}</p>
    <p class="err" id="aerr" role="alert" hidden></p>
    <section aria-labelledby="a1"><h3 id="a1">Base de datos local</h3>
-    <p>Los datos se guardan en tu equipo, en el archivo <code>${esc(info.file)}</code> (${esc(info.engine)}, ${fmtSize(info.size)}). Contiene ${info.modules} módulos, ${info.sections} secciones y ${info.users} usuarios.</p>
-    <div class="dbtns"><a class="btnlink" href="/api/admin/backup" download>⬇ Copia de seguridad (.db)</a><a class="btnlink" href="/api/admin/export" download>⬇ Exportar contenido (.json)</a><button type="button" class="mini" id="impBtn">⬆ Importar contenido (.json)</button><input type="file" id="impFile" accept=".json,application/json" hidden aria-label="Archivo JSON a importar"></div>
-    <p class="help">La copia .db incluye a los usuarios (con contraseñas cifradas): guárdala en un lugar seguro. Importar <strong>reemplaza todo el contenido</strong> y antes hace una copia automática. La wiki también guarda una copia al iniciar y otra cada día (las últimas 14) en <code>data/backups</code>.</p>
+    <p>Los datos se guardan en la base de datos <code>${esc(info.file)}</code> (${esc(info.engine)}, ${fmtSize(info.size)}). Contiene ${info.modules} módulos, ${info.sections} secciones y ${info.users} usuarios.</p>
+    <div class="dbtns"><a class="btnlink" href="/api/admin/backup" download>⬇ Copia de seguridad (.json)</a><a class="btnlink" href="/api/admin/export" download>⬇ Exportar contenido (.json)</a><button type="button" class="mini" id="impBtn">⬆ Importar contenido (.json)</button><input type="file" id="impFile" accept=".json,application/json" hidden aria-label="Archivo JSON a importar"></div>
+    <p class="help">La copia descargada incluye a los usuarios (con contraseñas cifradas): guárdala en un lugar seguro. Importar <strong>reemplaza todo el contenido</strong> y antes hace una copia automática. La wiki también guarda una copia del contenido al iniciar y otra cada día (las últimas 14) dentro de la propia base de datos.</p>
     <details><summary>Copias guardadas (${info.backups.length})</summary><ul class="blist">${info.backups.map(b=>`<li>${esc(b.name)} · ${fmtSize(b.size)} · ${fmtDate(b.t)}</li>`).join("")||"<li>Todavía no hay copias.</li>"}</ul></details>
    </section>
    <section aria-labelledby="a2"><h3 id="a2">Usuarios</h3>
