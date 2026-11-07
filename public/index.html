@@ -607,7 +607,7 @@ function fillCurrentModuleForm(){
     <div class="fld"><label for="fillMode">Cómo aplicar el resultado</label><select id="fillMode">
      <option value="append">Conservar las secciones actuales y agregar las nuevas</option>
      ${role==="admin"?'<option value="replace">Reemplazar todas las secciones actuales</option>':""}</select></div>
-    <p class="help">La imagen y el video configurados para este módulo se conservarán. Antes de guardar se hará una copia de seguridad.</p>
+    <p class="help">La IA conservará toda la información relevante una sola vez. El servidor descartará secciones y párrafos repetidos. La imagen y el video del módulo se conservarán.</p>
     <p id="fillErr" class="err" role="alert" hidden></p><p id="fillStatus" class="wordstatus" role="status" hidden></p>
     <div class="dbtns"><button type="submit" class="primary" id="fillGo">Crear módulo completo</button><button type="button" id="fillCancel">Cancelar</button></div></form></div>`;
   d.onclose=()=>{ (opener&&document.contains(opener)?opener:document.body).focus?.(); };
@@ -617,7 +617,7 @@ function fillCurrentModuleForm(){
     err.hidden=true;
     if(text.length<40){ err.textContent="Pega un texto completo de al menos 40 caracteres."; err.hidden=false; $("fillSource").focus(); return; }
     btn.disabled=true; status.textContent="Analizando el texto y construyendo el módulo completo…"; status.hidden=false;
-    try{ const r=await call("POST","/api/ai/module-content-draft",{module_id:mod.id,text}); renderFilledModuleDraft(r.module,mod.id,mode); }
+    try{ const r=await call("POST","/api/ai/module-content-draft",{module_id:mod.id,text,mode}); renderFilledModuleDraft(r.module,mod.id,mode); }
     catch(x){ err.textContent=x.message; err.hidden=false; status.hidden=true; btn.disabled=false; }
   };
   if(!d.open) d.showModal(); $("fillSource").focus();
@@ -636,7 +636,7 @@ function renderFilledModuleDraft(module,moduleId,mode){
     if(!parsed||typeof parsed!=="object"||Array.isArray(parsed)){ err.textContent="El borrador debe ser un objeto de módulo."; err.hidden=false; return; }
     if(replacing&&!confirm("Esto reemplazará todas las secciones actuales del módulo. Se creará una copia de seguridad antes de continuar. ¿Aplicar?")) return;
     btn.disabled=true; btn.textContent="Guardando…";
-    try{ const r=await call("POST","/api/ai/module-content-apply",{module_id:moduleId,mode,module:parsed}); await load(); d.close(); view(false); say(`Módulo completado con ${r.sections} sección(es) generadas por IA`); }
+    try{ const r=await call("POST","/api/ai/module-content-apply",{module_id:moduleId,mode,module:parsed}); await load(); d.close(); view(false); say(`Módulo completado con ${r.sections} sección(es) nuevas${r.duplicatesSkipped?`; ${r.duplicatesSkipped} duplicada(s) omitidas`:""}`); }
     catch(x){ err.textContent=x.message; err.hidden=false; btn.disabled=false; btn.textContent="Aplicar al módulo"; }
   };
   $("fillJson").focus();
