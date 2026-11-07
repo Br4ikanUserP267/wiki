@@ -497,6 +497,25 @@ async function api(req, res, url) {
       generated.video = current.video || '';
       return send(res, 200, { module: { title: generated.t, description: generated.d, note: generated.note, image: generated.image, video: generated.video, sections: generated.s } });
     }
+    if (m === 'POST' && p === '/api/ai/module-organize-draft') {
+      if (!isAdmin) return send(res, 403, { error: 'Solo un administrador puede reorganizar todo el módulo.' });
+      if (!DEEPSEEK_API_KEY) return send(res, 503, { error: 'Falta configurar DEEPSEEK_API_KEY en el archivo .env.' });
+      if (!checkAiLimit(user.uid)) return send(res, 429, { error: 'Límite de generaciones alcanzado. Espera unos minutos.' });
+      const moduleId = Number(b.module_id), current = Number.isInteger(moduleId) ? await one('SELECT * FROM modules WHERE id=?', [moduleId]) : null;
+      if (!current) throw new Error('El módulo no existe.');
+      const rows = await q('SELECT code,title,bullets,body FROM sections WHERE module_id=? ORDER BY `position`,id', [moduleId]);
+      if (!rows.length) throw new Error('El módulo no tiene secciones para organizar.');
+      const source = JSON.stringify({ title: current.title, description: current.description, note: current.note,
+        sections: rows.map(s => ({ code: s.code, title: s.title, bullets: JSON.parse(s.bullets), body: s.body })) });
+      if (source.length > 150000) throw new Error('El módulo es demasiado extenso para organizarlo de una sola vez.');
+      const instruction = `Reorganiza el siguiente módulo completo. Conserva TODA la información única y todos los datos importantes, ` +
+        `sin inventar ni eliminar contenido útil. Elimina repeticiones exactas o conceptuales, fusiona secciones solapadas y ordena el material ` +
+        `con una secuencia pedagógica clara: introducción, conceptos, desarrollo, aplicación práctica y cierre cuando corresponda. ` +
+        `Cada concepto debe aparecer una sola vez. Renumera los códigos de las secciones de forma coherente.\n\nMÓDULO ACTUAL:\n${source}`;
+      const generated = (await topicDraft(instruction, 1))[0];
+      generated.image = current.image || ''; generated.video = current.video || '';
+      return send(res, 200, { module: { title: generated.t, description: generated.d, note: generated.note, image: generated.image, video: generated.video, sections: generated.s } });
+    }
     if (m === 'POST' && p === '/api/ai/module-content-apply') {
       const moduleId = Number(b.module_id), mode = b.mode === 'replace' ? 'replace' : 'append';
       if (!Number.isInteger(moduleId) || !await one('SELECT 1 x FROM modules WHERE id=?', [moduleId])) throw new Error('El módulo no existe.');

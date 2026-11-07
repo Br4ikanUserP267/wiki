@@ -437,7 +437,7 @@ function view(moveFocus){
    <section class="hero" aria-labelledby="mtitle">
     <div class="txt"><div class="num">MÓDULO ${cur+1} DE ${M.length}</div><h2 id="mtitle" tabindex="-1">${esc(m.t)}</h2><p>${esc(m.d)}</p>
      <nav class="crumbs" aria-label="Ruta de navegación"><ol><li><a href="#m1">Inicio</a></li><li aria-current="page">Módulo ${cur+1}</li></ol></nav>
-     ${admin?'<button type="button" class="mini" data-act="ai-fill">✦ Completar con IA</button><button type="button" class="mini" data-act="edit-mod">✎ Editar módulo</button><button type="button" class="mini" data-act="mod-up" aria-label="Subir este módulo en el menú">↑ Subir módulo</button><button type="button" class="mini" data-act="mod-down" aria-label="Bajar este módulo en el menú">↓ Bajar módulo</button>':""}</div>
+     ${admin?(role==="admin"?'<button type="button" class="mini" data-act="ai-organize">↹ Organizar con IA</button>':"")+'<button type="button" class="mini" data-act="ai-fill">✦ Completar con IA</button><button type="button" class="mini" data-act="edit-mod">✎ Editar módulo</button><button type="button" class="mini" data-act="mod-up" aria-label="Subir este módulo en el menú">↑ Subir módulo</button><button type="button" class="mini" data-act="mod-down" aria-label="Bajar este módulo en el menú">↓ Bajar módulo</button>':""}</div>
     <div class="visual">${scene(cur)}<img class="photo" src="${esc(m.image||"images/modulo-"+(cur+1)+".jpg")}" alt="" referrerpolicy="no-referrer" onerror="this.remove()"></div>
    </section>
    ${moduleVideo(m.video,m.t)}
@@ -598,6 +598,18 @@ function pwForm(){
 }
 
 /* ---------- Completar el módulo actual pegando el texto completo ---------- */
+async function organizeCurrentModule(){
+  const mod=M[cur], d=$("dlg"), opener=document.activeElement; d.onclick=null; d.onchange=null;
+  d.innerHTML=`<div class="wordbox"><h2 id="dtitle">Organizar «${esc(mod.t)}» con IA</h2>
+   <p>La IA está revisando todas las secciones, eliminando repeticiones y preparando un orden pedagógico claro.</p>
+   <p id="orgStatus" class="wordstatus" role="status">Analizando el módulo completo…</p><p id="orgErr" class="err" role="alert" hidden></p>
+   <div class="dbtns"><button type="button" id="orgCancel">Cancelar</button></div></div>`;
+  d.onclose=()=>{ (opener&&document.contains(opener)?opener:document.body).focus?.(); };
+  $("orgCancel").onclick=()=>d.close(); if(!d.open) d.showModal();
+  try{ const r=await call("POST","/api/ai/module-organize-draft",{module_id:mod.id});
+    if(!d.open) return; renderFilledModuleDraft(r.module,mod.id,"replace",organizeCurrentModule,"Revisar módulo organizado"); }
+  catch(x){ if(!d.open) return; $("orgStatus").hidden=true; $("orgErr").textContent=x.message; $("orgErr").hidden=false; }
+}
 function fillCurrentModuleForm(){
   const mod=M[cur], d=$("dlg"), opener=document.activeElement; d.onclick=null; d.onchange=null;
   d.innerHTML=`<div class="wordbox"><h2 id="dtitle">Completar «${esc(mod.t)}» con IA</h2>
@@ -622,14 +634,14 @@ function fillCurrentModuleForm(){
   };
   if(!d.open) d.showModal(); $("fillSource").focus();
 }
-function renderFilledModuleDraft(module,moduleId,mode){
+function renderFilledModuleDraft(module,moduleId,mode,backAction=fillCurrentModuleForm,heading="Revisar módulo completo"){
   const d=$("dlg"), replacing=mode==="replace";
-  d.innerHTML=`<div class="wordbox"><h2 id="dtitle">Revisar módulo completo</h2>
+  d.innerHTML=`<div class="wordbox"><h2 id="dtitle">${esc(heading)}</h2>
    <p>La IA creó <strong>${module.sections.length} sección(es)</strong>. Puedes corregir cualquier campo antes de aplicarlo.</p>
    <label for="fillJson"><strong>Contenido propuesto</strong></label><textarea id="fillJson" spellcheck="false">${esc(JSON.stringify(module,null,2))}</textarea>
    <p class="help">Modo: <strong>${replacing?"reemplazar las secciones actuales":"conservar y agregar secciones"}</strong>.</p>
    <p id="fillErr" class="err" role="alert" hidden></p><div class="dbtns"><button type="button" class="primary" id="fillSave">Aplicar al módulo</button><button type="button" id="fillBack">Volver</button><button type="button" id="fillCancel">Cancelar</button></div></div>`;
-  $("fillBack").onclick=fillCurrentModuleForm; $("fillCancel").onclick=()=>d.close();
+  $("fillBack").onclick=backAction; $("fillCancel").onclick=()=>d.close();
   $("fillSave").onclick=async()=>{
     const err=$("fillErr"), btn=$("fillSave"); let parsed;
     try{ parsed=JSON.parse($("fillJson").value); }catch(e){ err.textContent="El JSON no es válido. Revisa comas, llaves y comillas."; err.hidden=false; return; }
@@ -818,6 +830,7 @@ document.addEventListener("click",async e=>{
   const a=b.dataset.act;
   if(a==="open"){ if(e.ctrlKey||e.metaKey||e.shiftKey) return; e.preventDefault(); return openTarget(+b.dataset.m,b.dataset.id?+b.dataset.id:null); }
   if(a==="clear-search") return clearSearch();
+  if(a==="ai-organize") return organizeCurrentModule();
   if(a==="ai-fill") return fillCurrentModuleForm();
   if(a==="ai-modules") return aiModuleForm();
   if(a==="word") return wordImport();
