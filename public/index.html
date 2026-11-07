@@ -186,6 +186,11 @@ dialog h2{margin:0 0 14px;color:var(--navy);font-size:1.3rem}
 .adminbox .tw td,.adminbox .tw th{white-space:nowrap;vertical-align:middle}
 .adm{flex-wrap:wrap}
 .hero .mini{margin-right:8px}
+.wordbox{padding:28px 34px;max-height:96vh;overflow:auto}
+.wordbox form{padding:0;max-height:none;overflow:visible}
+.wordbox input[type=file]{display:block;width:100%;padding:14px;border:1.5px dashed var(--steel);border-radius:12px;background:var(--mist);margin:12px 0}
+.wordbox textarea{width:100%;min-height:420px;border:1.5px solid #5B7C97;border-radius:10px;padding:12px;font:14px/1.45 ui-monospace,Consolas,monospace;resize:vertical}
+.wordstatus{padding:12px 14px;background:var(--ice);border-radius:10px;color:var(--navy)}
 @media(max-width:700px){.uform{grid-template-columns:1fr}}
 
 #f_body{min-height:400px;font-size:1.05rem;line-height:1.6}
@@ -428,7 +433,7 @@ function view(moveFocus){
 }
 function authBox(){
   $("auth").innerHTML=admin
-   ?`<span class="who">Sesión: <b>${esc(admin)}</b> · ${role==="admin"?"administrador":"editor"}</span>${role==="admin"?'<button type="button" class="hbtn" data-act="admin">Administración</button>':""}<button type="button" class="hbtn" data-act="pw">Contraseña</button><button type="button" class="hbtn" data-act="logout">Salir</button>`
+   ?`<span class="who">Sesión: <b>${esc(admin)}</b> · ${role==="admin"?"administrador":"editor"}</span><button type="button" class="hbtn" data-act="word">Importar Word</button>${role==="admin"?'<button type="button" class="hbtn" data-act="admin">Administración</button>':""}<button type="button" class="hbtn" data-act="pw">Contraseña</button><button type="button" class="hbtn" data-act="logout">Salir</button>`
    :`<button type="button" class="hbtn" data-act="login">Ingresar</button>`;
 }
 function go(i){ if(i<0||i>=M.length)return; location.hash="m"+(i+1); }
@@ -566,6 +571,58 @@ function pwForm(){
   });
 }
 
+/* ---------- Crear módulos desde Word con DeepSeek ---------- */
+const fileBase64=file=>new Promise((resolve,reject)=>{
+  const reader=new FileReader();
+  reader.onload=()=>resolve(String(reader.result).split(",")[1]||"");
+  reader.onerror=()=>reject(new Error("No se pudo leer el archivo."));
+  reader.readAsDataURL(file);
+});
+function wordImport(){
+  const d=$("dlg"), opener=document.activeElement;
+  d.onclick=null; d.onchange=null;
+  d.innerHTML=`<div class="wordbox"><h2 id="dtitle">Crear módulos desde Word</h2>
+   <p>Selecciona un archivo <strong>.docx</strong>. DeepSeek organizará su contenido en módulos y secciones sin guardar nada hasta que confirmes.</p>
+   <form id="wordForm"><label for="wordFile"><strong>Documento Word</strong></label>
+    <input id="wordFile" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required>
+    <p class="help">Máximo 10 MB. El texto del documento se enviará a DeepSeek para generar el borrador.</p>
+    <p id="wordErr" class="err" role="alert" hidden></p><p id="wordStatus" class="wordstatus" role="status" hidden></p>
+    <div class="dbtns"><button type="submit" class="primary" id="wordGo">Generar borrador</button><button type="button" id="wordCancel">Cancelar</button></div>
+   </form></div>`;
+  d.onclose=()=>{ (opener&&document.contains(opener)?opener:document.body).focus?.(); };
+  $("wordCancel").onclick=()=>d.close();
+  $("wordForm").onsubmit=async e=>{
+    e.preventDefault(); const file=$("wordFile").files[0], err=$("wordErr"), status=$("wordStatus"), btn=$("wordGo");
+    err.hidden=true;
+    if(!file||!/\.docx$/i.test(file.name)){ err.textContent="Selecciona un archivo Word .docx."; err.hidden=false; return; }
+    if(file.size>10*1024*1024){ err.textContent="El archivo debe pesar menos de 10 MB."; err.hidden=false; return; }
+    btn.disabled=true; status.textContent="Leyendo el documento y generando los módulos con DeepSeek…"; status.hidden=false;
+    try{ const data=await fileBase64(file); const r=await call("POST","/api/ai/word-draft",{filename:file.name,data}); renderWordDraft(r.modules,file.name); }
+    catch(x){ err.textContent=x.message; err.hidden=false; status.hidden=true; btn.disabled=false; }
+  };
+  if(!d.open) d.showModal(); $("wordFile").focus();
+}
+function renderWordDraft(modules,filename){
+  const d=$("dlg");
+  d.innerHTML=`<div class="wordbox"><h2 id="dtitle">Revisar borrador de ${esc(filename)}</h2>
+   <p>DeepSeek generó <strong>${modules.length} módulo(s)</strong>. Puedes corregir títulos, textos o secciones directamente en el JSON antes de guardarlo.</p>
+   <label for="wordJson"><strong>Módulos propuestos</strong></label>
+   <textarea id="wordJson" spellcheck="false">${esc(JSON.stringify(modules,null,2))}</textarea>
+   <p class="help">Guardar añadirá estos módulos al final de la wiki. No reemplazará los existentes.</p>
+   <p id="wordErr" class="err" role="alert" hidden></p>
+   <div class="dbtns"><button type="button" class="primary" id="wordSave">Crear módulos</button><button type="button" id="wordBack">Elegir otro archivo</button><button type="button" id="wordCancel">Cancelar</button></div></div>`;
+  $("wordBack").onclick=wordImport; $("wordCancel").onclick=()=>d.close();
+  $("wordSave").onclick=async()=>{
+    const err=$("wordErr"), btn=$("wordSave"); let parsed;
+    try{ parsed=JSON.parse($("wordJson").value); }catch(e){ err.textContent="El JSON no es válido. Revisa comas, llaves y comillas."; err.hidden=false; return; }
+    if(!Array.isArray(parsed)){ err.textContent="El contenido debe ser una lista de módulos entre corchetes [ ]."; err.hidden=false; return; }
+    btn.disabled=true; btn.textContent="Guardando…"; const firstNew=M.length+1;
+    try{ const r=await call("POST","/api/ai/word-import",{modules:parsed}); await load(); d.close(); location.hash="m"+firstNew; view(false); say(`${r.modules} módulo(s) creados desde Word`); }
+    catch(x){ err.textContent=x.message; err.hidden=false; btn.disabled=false; btn.textContent="Crear módulos"; }
+  };
+  $("wordJson").focus();
+}
+
 /* ---------- Panel de administración (solo administradores) ---------- */
 let adminMsg="";
 const fmtSize=n=>n>1048576?(n/1048576).toFixed(1)+" MB":Math.max(1,Math.round(n/1024))+" KB";
@@ -648,6 +705,7 @@ document.addEventListener("click",async e=>{
   const a=b.dataset.act;
   if(a==="open"){ if(e.ctrlKey||e.metaKey||e.shiftKey) return; e.preventDefault(); return openTarget(+b.dataset.m,b.dataset.id?+b.dataset.id:null); }
   if(a==="clear-search") return clearSearch();
+  if(a==="word") return wordImport();
   if(a==="admin") return adminPanel();
   if(a==="sec-up"||a==="sec-down"){ const id=+b.dataset.id;
     try{ await call("POST","/api/sections/"+id+"/move",{dir:a==="sec-up"?"up":"down"}); await load(); view(false);
