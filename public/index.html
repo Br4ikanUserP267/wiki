@@ -79,6 +79,11 @@ label[for=search]{display:block;font-weight:700;color:var(--navy);margin-bottom:
 .hero .visual{position:absolute;right:0;top:0;bottom:0;width:54%;background:linear-gradient(135deg,var(--navy),var(--steel) 55%,var(--sky));-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 48%);mask-image:linear-gradient(90deg,transparent 0,#000 48%)}
 .hero .visual .scene,.hero .visual .photo{position:absolute;inset:0;width:100%;height:100%}
 .hero .visual .photo{object-fit:cover}
+.module-video{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;margin:0 0 22px;box-shadow:0 6px 20px rgba(23,70,107,.1)}
+.module-video h2{margin:0 0 12px;color:var(--navy);font-size:1.2rem}
+.video-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#071827}
+.video-frame iframe,.video-frame video{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-link{display:inline-flex;align-items:center;min-height:46px;padding:9px 16px;border:1.5px solid var(--steel);border-radius:10px;color:var(--text);font-weight:700;text-decoration:none}
 .mini{margin-top:16px;min-height:40px;background:#fff;border:1.5px solid var(--steel);color:var(--text);border-radius:8px;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer}
 .mini:hover{background:var(--ice)}
 
@@ -190,6 +195,8 @@ dialog h2{margin:0 0 14px;color:var(--navy);font-size:1.3rem}
 .wordbox form{padding:0;max-height:none;overflow:visible}
 .wordbox input[type=file]{display:block;width:100%;padding:14px;border:1.5px dashed var(--steel);border-radius:12px;background:var(--mist);margin:12px 0}
 .wordbox textarea{width:100%;min-height:420px;border:1.5px solid #5B7C97;border-radius:10px;padding:12px;font:14px/1.45 ui-monospace,Consolas,monospace;resize:vertical}
+.wordbox textarea.ai-prompt{min-height:170px;font:inherit}
+.wordbox textarea.ai-source{min-height:360px;font:inherit}
 .wordstatus{padding:12px 14px;background:var(--ice);border-radius:10px;color:var(--navy)}
 @media(max-width:700px){.uform{grid-template-columns:1fr}}
 
@@ -340,6 +347,23 @@ function md(src){
   return o;
 }
 
+function moduleVideo(url,title){
+  if(!url) return "";
+  let u; try{ u=new URL(url); }catch(e){ return ""; }
+  const host=u.hostname.toLowerCase().replace(/^www\./,""); let embed="";
+  if(host==="youtu.be") embed=u.pathname.slice(1).split("/")[0];
+  else if(host==="youtube.com"||host==="m.youtube.com"||host==="youtube-nocookie.com"){
+    embed=u.searchParams.get("v")||((u.pathname.match(/^\/(?:embed|shorts)\/([^/]+)/)||[])[1]||"");
+  }
+  if(/^[\w-]{6,20}$/.test(embed)) return `<section class="module-video" aria-label="Video del módulo"><h2>Video: ${esc(title)}</h2><div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${embed}" title="Video de ${esc(title)}" loading="lazy" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></section>`;
+  if(host==="vimeo.com"||host==="player.vimeo.com"){
+    const id=(u.pathname.match(/\/(?:video\/)?(\d+)/)||[])[1];
+    if(id) return `<section class="module-video" aria-label="Video del módulo"><h2>Video: ${esc(title)}</h2><div class="video-frame"><iframe src="https://player.vimeo.com/video/${id}" title="Video de ${esc(title)}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div></section>`;
+  }
+  if(/\.(mp4|webm|ogg)$/i.test(u.pathname)) return `<section class="module-video" aria-label="Video del módulo"><h2>Video: ${esc(title)}</h2><div class="video-frame"><video controls preload="metadata" src="${esc(url)}">Tu navegador no puede reproducir este video.</video></div></section>`;
+  return `<section class="module-video"><h2>Video: ${esc(title)}</h2><a class="video-link" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Abrir video en otra pestaña</a></section>`;
+}
+
 /* ---------- Ilustración del banner ---------- */
 const ST='fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"';
 const ICONS=[
@@ -372,7 +396,7 @@ async function call(method,url,body){
 }
 async function load(){
   const r=await fetch("/api/content",{cache:"no-store"}); if(!r.ok) throw new Error("x");
-  M=(await r.json()).map(m=>({id:m.id,t:m.t,d:m.d,note:m.note,image:m.image||"",s:m.s.map(x=>[x.code,x.title,x.bullets,x.body,x.id])}));
+  M=(await r.json()).map(m=>({id:m.id,t:m.t,d:m.d,note:m.note,image:m.image||"",video:m.video||"",s:m.s.map(x=>[x.code,x.title,x.bullets,x.body,x.id])}));
 }
 function say(t){ $("status").textContent=""; setTimeout(()=>$("status").textContent=t,50); }
 
@@ -413,9 +437,10 @@ function view(moveFocus){
    <section class="hero" aria-labelledby="mtitle">
     <div class="txt"><div class="num">MÓDULO ${cur+1} DE ${M.length}</div><h2 id="mtitle" tabindex="-1">${esc(m.t)}</h2><p>${esc(m.d)}</p>
      <nav class="crumbs" aria-label="Ruta de navegación"><ol><li><a href="#m1">Inicio</a></li><li aria-current="page">Módulo ${cur+1}</li></ol></nav>
-     ${admin?'<button type="button" class="mini" data-act="edit-mod">✎ Editar módulo</button><button type="button" class="mini" data-act="mod-up" aria-label="Subir este módulo en el menú">↑ Subir módulo</button><button type="button" class="mini" data-act="mod-down" aria-label="Bajar este módulo en el menú">↓ Bajar módulo</button>':""}</div>
+     ${admin?'<button type="button" class="mini" data-act="ai-fill">✦ Completar con IA</button><button type="button" class="mini" data-act="edit-mod">✎ Editar módulo</button><button type="button" class="mini" data-act="mod-up" aria-label="Subir este módulo en el menú">↑ Subir módulo</button><button type="button" class="mini" data-act="mod-down" aria-label="Bajar este módulo en el menú">↓ Bajar módulo</button>':""}</div>
     <div class="visual">${scene(cur)}<img class="photo" src="${esc(m.image||"images/modulo-"+(cur+1)+".jpg")}" alt="" referrerpolicy="no-referrer" onerror="this.remove()"></div>
    </section>
+   ${moduleVideo(m.video,m.t)}
    ${hasOpen?`<div class="tools"><button type="button" id="toggleAll">Expandir todas las secciones</button></div>`:""}
    ${secs.map(card).join("")||`<p class="empty" role="status">Ninguna sección de este módulo coincide con “${esc(q)}”. Revisa los otros módulos del menú.</p>`}
    ${admin&&!q?'<p><button type="button" class="addbtn" data-act="add-sec">＋ Agregar sección a este módulo</button></p>':""}
@@ -433,7 +458,7 @@ function view(moveFocus){
 }
 function authBox(){
   $("auth").innerHTML=admin
-   ?`<span class="who">Sesión: <b>${esc(admin)}</b> · ${role==="admin"?"administrador":"editor"}</span><button type="button" class="hbtn" data-act="word">Importar Word</button>${role==="admin"?'<button type="button" class="hbtn" data-act="admin">Administración</button>':""}<button type="button" class="hbtn" data-act="pw">Contraseña</button><button type="button" class="hbtn" data-act="logout">Salir</button>`
+   ?`<span class="who">Sesión: <b>${esc(admin)}</b> · ${role==="admin"?"administrador":"editor"}</span><button type="button" class="hbtn" data-act="ai-modules">Crear con IA</button><button type="button" class="hbtn" data-act="word">Importar Word</button>${role==="admin"?'<button type="button" class="hbtn" data-act="admin">Administración</button>':""}<button type="button" class="hbtn" data-act="pw">Contraseña</button><button type="button" class="hbtn" data-act="logout">Salir</button>`
    :`<button type="button" class="hbtn" data-act="login">Ingresar</button>`;
 }
 function go(i){ if(i<0||i>=M.length)return; location.hash="m"+(i+1); }
@@ -543,9 +568,10 @@ function moduleForm(mod){
       {id:"title",label:"Título del módulo",value:mod?mod.t:"",required:true},
       {id:"description",label:"Descripción corta",value:mod?mod.d:""},
       {id:"image",label:"Imagen del banner por enlace (opcional)",type:"url",value:mod?mod.image:"",help:"Pega la dirección de una imagen (https://…). Vacío = se usa la ilustración. Ideal: horizontal, con el lado izquierdo despejado."},
+      {id:"video",label:"Video de este módulo (opcional)",type:"url",value:mod?mod.video:"",help:"Acepta YouTube, Vimeo o un enlace directo .mp4, .webm o .ogg. Cada módulo puede tener un video diferente."},
       {id:"note",label:"Nota al final del módulo (opcional)",value:mod?mod.note:""}],
     onSubmit:async v=>{
-      const p={title:v.title,description:v.description,note:v.note,image:v.image.trim()};
+      const p={title:v.title,description:v.description,note:v.note,image:v.image.trim(),video:v.video.trim()};
       if(mod){ await call("PUT","/api/modules/"+mod.id,p); await load(); view(false); say("Módulo guardado"); }
       else { await call("POST","/api/modules",p); await load(); location.hash="m"+M.length; }
     },
@@ -569,6 +595,93 @@ function pwForm(){
             {id:"next",label:"Nueva contraseña",type:"password",auto:"new-password",required:true,help:"Mínimo 10 caracteres."}],
     onSubmit:async v=>{ await call("POST","/api/password",{current:v.current,next:v.next}); say("Contraseña actualizada"); }
   });
+}
+
+/* ---------- Completar el módulo actual pegando el texto completo ---------- */
+function fillCurrentModuleForm(){
+  const mod=M[cur], d=$("dlg"), opener=document.activeElement; d.onclick=null; d.onchange=null;
+  d.innerHTML=`<div class="wordbox"><h2 id="dtitle">Completar «${esc(mod.t)}» con IA</h2>
+   <p>Pega todo el texto fuente. DeepSeek creará el título, la descripción y las secciones desarrolladas para este módulo.</p>
+   <form id="fillModuleForm"><div class="fld"><label for="fillSource">Texto completo del módulo</label>
+    <textarea class="ai-source" id="fillSource" required placeholder="Pega aquí el documento, guía, protocolo, apuntes o contenido completo…"></textarea></div>
+    <div class="fld"><label for="fillMode">Cómo aplicar el resultado</label><select id="fillMode">
+     <option value="append">Conservar las secciones actuales y agregar las nuevas</option>
+     ${role==="admin"?'<option value="replace">Reemplazar todas las secciones actuales</option>':""}</select></div>
+    <p class="help">La imagen y el video configurados para este módulo se conservarán. Antes de guardar se hará una copia de seguridad.</p>
+    <p id="fillErr" class="err" role="alert" hidden></p><p id="fillStatus" class="wordstatus" role="status" hidden></p>
+    <div class="dbtns"><button type="submit" class="primary" id="fillGo">Crear módulo completo</button><button type="button" id="fillCancel">Cancelar</button></div></form></div>`;
+  d.onclose=()=>{ (opener&&document.contains(opener)?opener:document.body).focus?.(); };
+  $("fillCancel").onclick=()=>d.close();
+  $("fillModuleForm").onsubmit=async e=>{
+    e.preventDefault(); const text=$("fillSource").value.trim(), mode=$("fillMode").value, err=$("fillErr"), status=$("fillStatus"), btn=$("fillGo");
+    err.hidden=true;
+    if(text.length<40){ err.textContent="Pega un texto completo de al menos 40 caracteres."; err.hidden=false; $("fillSource").focus(); return; }
+    btn.disabled=true; status.textContent="Analizando el texto y construyendo el módulo completo…"; status.hidden=false;
+    try{ const r=await call("POST","/api/ai/module-content-draft",{module_id:mod.id,text}); renderFilledModuleDraft(r.module,mod.id,mode); }
+    catch(x){ err.textContent=x.message; err.hidden=false; status.hidden=true; btn.disabled=false; }
+  };
+  if(!d.open) d.showModal(); $("fillSource").focus();
+}
+function renderFilledModuleDraft(module,moduleId,mode){
+  const d=$("dlg"), replacing=mode==="replace";
+  d.innerHTML=`<div class="wordbox"><h2 id="dtitle">Revisar módulo completo</h2>
+   <p>La IA creó <strong>${module.sections.length} sección(es)</strong>. Puedes corregir cualquier campo antes de aplicarlo.</p>
+   <label for="fillJson"><strong>Contenido propuesto</strong></label><textarea id="fillJson" spellcheck="false">${esc(JSON.stringify(module,null,2))}</textarea>
+   <p class="help">Modo: <strong>${replacing?"reemplazar las secciones actuales":"conservar y agregar secciones"}</strong>.</p>
+   <p id="fillErr" class="err" role="alert" hidden></p><div class="dbtns"><button type="button" class="primary" id="fillSave">Aplicar al módulo</button><button type="button" id="fillBack">Volver</button><button type="button" id="fillCancel">Cancelar</button></div></div>`;
+  $("fillBack").onclick=fillCurrentModuleForm; $("fillCancel").onclick=()=>d.close();
+  $("fillSave").onclick=async()=>{
+    const err=$("fillErr"), btn=$("fillSave"); let parsed;
+    try{ parsed=JSON.parse($("fillJson").value); }catch(e){ err.textContent="El JSON no es válido. Revisa comas, llaves y comillas."; err.hidden=false; return; }
+    if(!parsed||typeof parsed!=="object"||Array.isArray(parsed)){ err.textContent="El borrador debe ser un objeto de módulo."; err.hidden=false; return; }
+    if(replacing&&!confirm("Esto reemplazará todas las secciones actuales del módulo. Se creará una copia de seguridad antes de continuar. ¿Aplicar?")) return;
+    btn.disabled=true; btn.textContent="Guardando…";
+    try{ const r=await call("POST","/api/ai/module-content-apply",{module_id:moduleId,mode,module:parsed}); await load(); d.close(); view(false); say(`Módulo completado con ${r.sections} sección(es) generadas por IA`); }
+    catch(x){ err.textContent=x.message; err.hidden=false; btn.disabled=false; btn.textContent="Aplicar al módulo"; }
+  };
+  $("fillJson").focus();
+}
+
+/* ---------- Crear uno o varios módulos completos con DeepSeek ---------- */
+function aiModuleForm(){
+  const d=$("dlg"), opener=document.activeElement; d.onclick=null; d.onchange=null;
+  d.innerHTML=`<div class="wordbox"><h2 id="dtitle">Crear módulos completos con IA</h2>
+   <p>Describe el tema, el público y el enfoque. DeepSeek puede preparar de uno a diez módulos completos con sus secciones.</p>
+   <form id="aiModuleForm"><div class="fld"><label for="aiPrompt">Instrucciones para la IA</label>
+    <textarea class="ai-prompt" id="aiPrompt" required placeholder="Ej.: Crea una capacitación para personal asistencial sobre seguridad del paciente, con casos prácticos, listas de verificación y evaluación final."></textarea></div>
+    <div class="fld"><label for="aiCount">Cantidad de módulos</label><select id="aiCount">${Array.from({length:10},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join("")}</select></div>
+    <p class="help">Antes de guardar podrás revisar y modificar títulos, videos, secciones y contenido.</p>
+    <p id="aiErr" class="err" role="alert" hidden></p><p id="aiStatus" class="wordstatus" role="status" hidden></p>
+    <div class="dbtns"><button type="submit" class="primary" id="aiGo">Generar borrador</button><button type="button" id="aiCancel">Cancelar</button></div></form></div>`;
+  d.onclose=()=>{ (opener&&document.contains(opener)?opener:document.body).focus?.(); };
+  $("aiCancel").onclick=()=>d.close();
+  $("aiModuleForm").onsubmit=async e=>{
+    e.preventDefault(); const prompt=$("aiPrompt").value.trim(), count=+$("aiCount").value, err=$("aiErr"), status=$("aiStatus"), btn=$("aiGo");
+    err.hidden=true;
+    if(prompt.length<15){ err.textContent="Describe el contenido con al menos 15 caracteres."; err.hidden=false; $("aiPrompt").focus(); return; }
+    btn.disabled=true; status.textContent=`Generando ${count} módulo(s) completos con DeepSeek…`; status.hidden=false;
+    try{ const r=await call("POST","/api/ai/module-draft",{prompt,count}); renderAiModulesDraft(r.modules); }
+    catch(x){ err.textContent=x.message; err.hidden=false; status.hidden=true; btn.disabled=false; }
+  };
+  if(!d.open) d.showModal(); $("aiPrompt").focus();
+}
+function renderAiModulesDraft(modules){
+  const d=$("dlg");
+  d.innerHTML=`<div class="wordbox"><h2 id="dtitle">Revisar módulos generados por IA</h2>
+   <p>Se generaron <strong>${modules.length} módulo(s)</strong>. Revisa el JSON antes de añadirlos; el campo <code>video</code> puede ser diferente en cada módulo.</p>
+   <label for="aiJson"><strong>Módulos propuestos</strong></label><textarea id="aiJson" spellcheck="false">${esc(JSON.stringify(modules,null,2))}</textarea>
+   <p class="help">Los módulos se añadirán al final de la wiki y no reemplazarán los existentes.</p><p id="aiErr" class="err" role="alert" hidden></p>
+   <div class="dbtns"><button type="button" class="primary" id="aiSave">Crear ${modules.length} módulo(s)</button><button type="button" id="aiBack">Cambiar instrucciones</button><button type="button" id="aiCancel">Cancelar</button></div></div>`;
+  $("aiBack").onclick=aiModuleForm; $("aiCancel").onclick=()=>d.close();
+  $("aiSave").onclick=async()=>{
+    const err=$("aiErr"), btn=$("aiSave"); let parsed;
+    try{ parsed=JSON.parse($("aiJson").value); }catch(e){ err.textContent="El JSON no es válido. Revisa comas, llaves y comillas."; err.hidden=false; return; }
+    if(!Array.isArray(parsed)||!parsed.length){ err.textContent="El contenido debe ser una lista de módulos entre corchetes [ ]."; err.hidden=false; return; }
+    btn.disabled=true; btn.textContent="Guardando…"; const firstNew=M.length+1;
+    try{ const r=await call("POST","/api/ai/modules-import",{modules:parsed}); await load(); d.close(); location.hash="m"+firstNew; say(`${r.modules} módulo(s) completos creados con IA`); }
+    catch(x){ err.textContent=x.message; err.hidden=false; btn.disabled=false; btn.textContent="Crear módulos"; }
+  };
+  $("aiJson").focus();
 }
 
 /* ---------- Crear módulos desde Word con DeepSeek ---------- */
@@ -705,6 +818,8 @@ document.addEventListener("click",async e=>{
   const a=b.dataset.act;
   if(a==="open"){ if(e.ctrlKey||e.metaKey||e.shiftKey) return; e.preventDefault(); return openTarget(+b.dataset.m,b.dataset.id?+b.dataset.id:null); }
   if(a==="clear-search") return clearSearch();
+  if(a==="ai-fill") return fillCurrentModuleForm();
+  if(a==="ai-modules") return aiModuleForm();
   if(a==="word") return wordImport();
   if(a==="admin") return adminPanel();
   if(a==="sec-up"||a==="sec-down"){ const id=+b.dataset.id;
