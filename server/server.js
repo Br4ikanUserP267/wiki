@@ -83,6 +83,8 @@ async function initSchema() {
     CONSTRAINT fk_sections_module FOREIGN KEY (module_id) REFERENCES modules(id) ON DELETE CASCADE) ${T}`);
   await q(`CREATE TABLE IF NOT EXISTS backups(
     id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(80) NOT NULL UNIQUE, created_at BIGINT NOT NULL, data LONGTEXT NOT NULL) ${T}`);
+  await q(`CREATE TABLE IF NOT EXISTS migrations(
+    name VARCHAR(120) PRIMARY KEY, applied_at BIGINT NOT NULL) ${T}`);
 }
 
 // ---------- Datos iniciales ----------
@@ -97,6 +99,32 @@ async function seedIfEmpty() {
     }
   });
   console.log('Base de datos inicializada con', seed.length, 'módulos.');
+}
+
+// Publica una sola vez los capítulos académicos nuevos en instalaciones que ya
+// tenían contenido. La copia previa permite restaurar cualquier edición anterior.
+async function publishChapters2To5() {
+  const migration = 'publish-chapters-2-5-2026-11-10';
+  if (await one('SELECT 1 x FROM migrations WHERE name=?', [migration])) return;
+
+  const seed = validateContent(JSON.parse(fs.readFileSync(path.join(__dirname, 'seed.json'), 'utf8')));
+  const chapters = seed.slice(1, 5);
+  const current = (await content()).slice(1, 5).map(plain);
+  const alreadyPublished = JSON.stringify(current) === JSON.stringify(chapters);
+  let backup = '';
+
+  if (!alreadyPublished) {
+    if (await count('modules')) backup = await backupNow('antes-capitulos-2-5');
+    await tx(async t => {
+      await t('DELETE FROM modules WHERE `position` BETWEEN 2 AND 5');
+      await insertContent(t, chapters, 1);
+      await t('INSERT INTO migrations(name,applied_at) VALUES(?,?)', [migration, Date.now()]);
+    });
+    console.log(`Capítulos 2–5 publicados${backup ? `. Copia previa: ${backup}` : ''}.`);
+    return;
+  }
+
+  await q('INSERT INTO migrations(name,applied_at) VALUES(?,?)', [migration, Date.now()]);
 }
 
 // ---------- Usuarios ----------
@@ -663,6 +691,7 @@ function serveStatic(req, res, url) {
   try {
     await initSchema();
     await seedIfEmpty();
+    await publishChapters2To5();
     await initUsers();
     await startBackups();
   } catch (e) {
