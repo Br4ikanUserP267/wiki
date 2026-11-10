@@ -31,6 +31,18 @@ const chapters = [
     title: 'Sistema Único de Acreditación',
     description: 'Avanzar desde el cumplimiento hacia niveles superiores de calidad',
   },
+  {
+    number: 7,
+    file: 'capitulo-07-gestion-administrativa-financiera.docx',
+    title: 'Gestión administrativa y financiera de los servicios de salud',
+    description: 'Gestionar la codificación, contratación, facturación, cartera y sostenibilidad',
+  },
+  {
+    number: 8,
+    file: 'capitulo-08-plan-fortalecimiento-institucional.docx',
+    title: 'Plan de fortalecimiento institucional',
+    description: 'Transformar los hallazgos institucionales en acciones de mejora sostenibles',
+  },
 ];
 
 function decodeHtml(value) {
@@ -101,7 +113,13 @@ function htmlToMarkdown(source) {
 }
 
 function splitChapter(html, chapterNumber) {
-  html = html.replace(/<h[1-6][^>]*>([\s\S]*?)<\/h[1-6]>/gi, '<p><strong>$1</strong></p>');
+  html = html
+    .replace(/<h[1-6][^>]*>([\s\S]*?)<\/h[1-6]>/gi, '<p><strong>$1</strong></p>')
+    .replace(/<strong>\s*<strong>/gi, '<strong>')
+    .replace(/<\/strong>\s*<\/strong>/gi, '</strong>');
+  // Los créditos permanecen en el documento Word, pero se muestran en el
+  // pie global del sitio y no deben quedar anexados a la última sección.
+  html = html.replace(/<p[^>]*><strong>Creadores<\/strong><\/p>[\s\S]*$/i, '');
   const marker = new RegExp(
     `<p[^>]*><strong>(${chapterNumber}\\.(\\d+)\\.?)\\s+([\\s\\S]*?)<\\/strong><\\/p>`,
     'gi'
@@ -111,6 +129,7 @@ function splitChapter(html, chapterNumber) {
 
   const introHtml = html.slice(0, matches[0].index)
     .replace(/^<p><strong>CAPÍTULO[\s\S]*?<\/strong><\/p>/i, '')
+    .replace(/^<p><strong>[^<]+<\/strong><\/p>/i, '')
     .replace(/^<p><strong>Introducción<\/strong><\/p>/i, '');
 
   const sections = [{

@@ -1,8 +1,8 @@
 # Wiki CEJEL IPS · Calidad en Salud
 
-Wiki académica sobre habilitación, PAMEC y acreditación para la IPS ficticia **CEJEL IPS S.A.S.**, ubicada en Sincelejo, Sucre.
+Wiki académica de ocho capítulos sobre calidad, habilitación, PAMEC, acreditación y gestión de servicios de salud para la IPS ficticia **CEJEL IPS S.A.S.**, ubicada en Sincelejo, Sucre.
 
-La aplicación permite consultar, buscar y administrar módulos educativos. El contenido se almacena en MySQL o MariaDB y los capítulos 2–5 pueden sincronizarse desde documentos Word.
+La aplicación permite consultar, buscar y administrar módulos educativos. El contenido se almacena en MySQL o MariaDB y los capítulos 2–5, 7 y 8 pueden sincronizarse desde documentos Word.
 
 ## Requisitos
 
@@ -49,6 +49,9 @@ Los documentos académicos están organizados en [`docs`](docs/README.md):
 - Capítulo 3: Sistema Único de Habilitación.
 - Capítulo 4: PAMEC.
 - Capítulo 5: Sistema Único de Acreditación.
+- Capítulo 7: gestión administrativa y financiera de los servicios de salud.
+- Capítulo 8: plan de fortalecimiento institucional.
+- Créditos: autores y códigos estudiantiles en `docs/CREADORES.TXT`.
 
 Después de modificar los archivos Word, sincroniza la semilla con:
 
@@ -56,7 +59,7 @@ Después de modificar los archivos Word, sincroniza la semilla con:
 npm.cmd run sync:docs
 ```
 
-Este proceso conserva los módulos 1 y 6–8 y reemplaza únicamente los módulos 2–5 de `server/seed.json`. Convierte párrafos, encabezados, listas y tablas a Markdown.
+Este proceso conserva los módulos 1 y 6 y reemplaza los módulos 2–5, 7 y 8 de `server/seed.json`. Convierte párrafos, encabezados, listas y tablas a Markdown.
 
 La semilla se carga solo cuando la tabla de módulos está vacía. Una base de datos que ya contiene módulos no se modifica automáticamente.
 

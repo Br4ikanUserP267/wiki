@@ -66,6 +66,8 @@ label[for=search]{display:block;font-weight:700;color:var(--navy);margin-bottom:
 #links .addli{padding:10px 8px 4px}
 .addbtn{width:100%;min-height:46px;border:2px dashed var(--steel);background:#fff;color:var(--text);border-radius:10px;font:inherit;font-weight:700;cursor:pointer}
 .addbtn:hover{background:var(--ice)}
+.creators-nav{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 16px 16px;min-height:44px;border:1.5px solid var(--teal);border-radius:12px;color:var(--navy);font-weight:800;text-decoration:none;background:#fff}
+.creators-nav:hover{background:var(--ice)}
 
 /* ---------- Banner del módulo ---------- */
 .hero{position:relative;display:flex;align-items:center;overflow:hidden;min-height:290px;background:#fff;border:1px solid rgba(8,121,183,.16);border-radius:28px;box-shadow:var(--shadow);margin-bottom:24px}
@@ -127,6 +129,16 @@ mark.hit{background:#FFE98A;color:var(--ink);border-radius:3px;padding:0 2px}
 .empty{color:var(--muted);text-align:center;padding:30px}
 .offline{background:#fff;border:2px solid var(--steel);border-radius:16px;padding:26px}
 .offline code{background:var(--ice);padding:2px 8px;border-radius:6px}
+
+/* ---------- Créditos ---------- */
+.credits{max-width:1360px;margin:0 auto 40px;padding:0 30px}
+.credits-inner{background:linear-gradient(135deg,var(--navy),#075b8d);color:#fff;border-radius:24px;padding:30px;box-shadow:var(--shadow)}
+.credits h2{margin:0 0 6px;font-size:1.55rem}
+.credits-intro{margin:0 0 20px;color:#d9f2ff}
+.creator-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.creator{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:15px;padding:16px}
+.creator strong{display:block;font-size:1rem;line-height:1.3}
+.creator span{display:block;margin-top:7px;color:#d9f2ff;font-size:.88rem}
 
 /* ---------- Resultados de búsqueda ---------- */
 .results h2{color:var(--navy);font-size:1.7rem;margin:0 0 4px}
@@ -232,7 +244,9 @@ html.hc{--navy:#000;--steel:#0033A0;--blue:#0033A0;--text:#0033A0;--sky:#0033A0;
   .hero h2{font-size:1.6rem}
   .hero .visual{position:relative;width:100%;height:140px;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
   #a11yBtn{right:12px;bottom:12px}#a11yPanel{right:12px;bottom:82px}
+  .credits{padding:0 14px}.creator-grid{grid-template-columns:1fr 1fr}
 }
+@media(max-width:520px){.creator-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -254,10 +268,23 @@ html.hc{--navy:#000;--steel:#0033A0;--blue:#0033A0;--text:#0033A0;--sky:#0033A0;
       </div>
       <div class="navhead" aria-hidden="true">Módulos</div>
       <ol id="links"></ol>
+      <a class="creators-nav" href="#creadores">Creadores</a>
     </div>
   </nav>
   <main id="main"></main>
 </div>
+<footer class="credits" id="creadores" aria-labelledby="creatorsTitle">
+  <div class="credits-inner">
+    <h2 id="creatorsTitle">Creadores</h2>
+    <p class="credits-intro">Equipo creador de la Wiki CEJEL IPS · Calidad en Salud.</p>
+    <div class="creator-grid">
+      <div class="creator"><strong>Juan Sebastián Galeano Hurtado</strong><span>Código de estudiante: 111292696</span></div>
+      <div class="creator"><strong>Erika Patricia Medina Silva</strong><span>Código de estudiante: 111295704</span></div>
+      <div class="creator"><strong>Claudio Meza Buelvas</strong><span>Código de estudiante: 111297205</span></div>
+      <div class="creator"><strong>Luis Bernardo Vásquez Saavedra</strong><span>Código de estudiante: 111291615</span></div>
+    </div>
+  </div>
+</footer>
 <div id="status" class="sr-only" role="status" aria-live="polite"></div>
 <dialog id="dlg" aria-labelledby="dtitle"></dialog>
 
