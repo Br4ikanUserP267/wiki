@@ -1,4 +1,13 @@
+# Configuración privada
 .env
-data/
+.env.*
+!.env.example
+
+# Dependencias y datos locales
 node_modules/
+data/
+
+# Archivos temporales del sistema y registros
 *.log
+.DS_Store
+Thumbs.db

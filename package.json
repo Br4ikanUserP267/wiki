@@ -4,7 +4,9 @@
   "description": "Wiki de calidad en salud para CEJEL IPS: habilitación, PAMEC y acreditación.",
   "private": true,
   "scripts": {
-    "start": "node --no-warnings server/server.js"
+    "start": "node --no-warnings server/server.js",
+    "sync:docs": "node scripts/sync-docs.js",
+    "check": "node --check server/server.js && node --check scripts/sync-docs.js"
   },
   "engines": {
     "node": ">=18"
