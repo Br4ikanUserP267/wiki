@@ -127,6 +127,31 @@ async function publishChapters2To5() {
   await q('INSERT INTO migrations(name,applied_at) VALUES(?,?)', [migration, Date.now()]);
 }
 
+// Completa los módulos que originalmente solo contenían títulos y viñetas.
+async function publishChapters6To8() {
+  const migration = 'publish-complete-chapters-6-8-2026-11-10';
+  if (await one('SELECT 1 x FROM migrations WHERE name=?', [migration])) return;
+
+  const seed = validateContent(JSON.parse(fs.readFileSync(path.join(__dirname, 'seed.json'), 'utf8')));
+  const chapters = seed.slice(5, 8);
+  const current = (await content()).slice(5, 8).map(plain);
+  const alreadyPublished = JSON.stringify(current) === JSON.stringify(chapters);
+  let backup = '';
+
+  if (!alreadyPublished) {
+    if (await count('modules')) backup = await backupNow('antes-capitulos-6-8');
+    await tx(async t => {
+      await t('DELETE FROM modules WHERE `position` BETWEEN 6 AND 8');
+      await insertContent(t, chapters, 5);
+      await t('INSERT INTO migrations(name,applied_at) VALUES(?,?)', [migration, Date.now()]);
+    });
+    console.log(`Capítulos 6–8 publicados con contenido completo${backup ? `. Copia previa: ${backup}` : ''}.`);
+    return;
+  }
+
+  await q('INSERT INTO migrations(name,applied_at) VALUES(?,?)', [migration, Date.now()]);
+}
+
 // ---------- Usuarios ----------
 const hashPw = (pw, salt) => crypto.scryptSync(pw, salt, 64).toString('hex');
 async function checkPw(user, pw) {
@@ -692,6 +717,7 @@ function serveStatic(req, res, url) {
     await initSchema();
     await seedIfEmpty();
     await publishChapters2To5();
+    await publishChapters6To8();
     await initUsers();
     await startBackups();
   } catch (e) {

@@ -284,7 +284,7 @@
           "Objetivos",
           "Enfoque de atención integral"
         ],
-        "body": ""
+        "body": "La Política de Atención Integral en Salud (PAIS) fue adoptada mediante la Resolución 429 de 2016 para orientar el sistema hacia el goce efectivo del derecho a la salud. Su punto de partida es la persona, la familia y la comunidad, no solamente la enfermedad o la consulta aislada. Por eso integra promoción, prevención, diagnóstico, tratamiento, rehabilitación y cuidados paliativos a lo largo del curso de vida.\n\n### Objetivos principales\n- Mejorar el acceso oportuno, efectivo y con calidad a los servicios.\n- Reducir inequidades entre territorios y grupos poblacionales.\n- Coordinar las acciones individuales y colectivas de salud.\n- Fortalecer la gestión del riesgo y la continuidad del cuidado.\n- Obtener resultados verificables en salud y experiencia del usuario.\n\nLa atención integral exige reconocer las condiciones sociales, culturales, familiares y territoriales de cada persona. También requiere que aseguradores, prestadores, entidades territoriales y comunidad compartan información y responsabilidades.\n\n> **Aplicación en CEJEL IPS S.A.S.:** la institución debe organizar sus procesos para que el usuario no reciba atenciones fragmentadas. Una consulta debe conectarse con las actividades de detección temprana, educación, seguimiento, remisión y retorno que correspondan."
       },
       {
         "code": "6.2",
@@ -295,7 +295,7 @@
           "Líneas de acción",
           "Responsabilidad territorial"
         ],
-        "body": ""
+        "body": "El Modelo de Acción Integral Territorial (MAITE) fue adoptado por la Resolución 2626 de 2019 como una forma de desarrollar la PAIS mediante acciones coordinadas en departamentos, distritos y municipios. Reconoce que los problemas y capacidades de salud cambian entre territorios y que las respuestas deben construirse con participación local.\n\n### Líneas de acción del modelo\n1. **Aseguramiento:** afiliación, acceso y gestión del riesgo de la población.\n2. **Salud pública:** intervenciones colectivas articuladas con las necesidades del territorio.\n3. **Prestación de servicios:** redes suficientes, accesibles y resolutivas.\n4. **Talento humano:** disponibilidad, competencias y condiciones para la atención.\n5. **Financiamiento:** uso adecuado y sostenible de los recursos.\n6. **Enfoque diferencial:** respuesta pertinente para poblaciones y contextos diversos.\n7. **Articulación intersectorial:** coordinación con educación, ambiente, vivienda y otros sectores.\n8. **Gobernanza:** liderazgo, participación social, seguimiento y rendición de cuentas.\n\nLa responsabilidad territorial implica analizar la situación de salud, definir prioridades, coordinar actores y hacer seguimiento a resultados. MAITE debe estudiarse junto con la evolución normativa posterior del modelo de salud; sus principios de territorialización, participación y atención primaria siguen siendo referentes útiles para comprender la organización de las respuestas locales.\n\n> **Aplicación en CEJEL IPS S.A.S.:** la IPS debe conocer el Plan Territorial de Salud de Sincelejo, participar en las redes de prestación y aportar información sobre riesgos, barreras de acceso y resultados de atención."
       },
       {
         "code": "6.3",
@@ -306,7 +306,7 @@
           "Participación comunitaria",
           "Atención familiar y territorial"
         ],
-        "body": ""
+        "body": "La Atención Primaria en Salud (APS), fortalecida en Colombia por la Ley 1438 de 2011, es una estrategia de coordinación intersectorial que busca atención integral e integrada desde el entorno cercano de las personas. No equivale únicamente a servicios de baja complejidad: articula promoción, prevención, diagnóstico, tratamiento y rehabilitación con participación social y comunitaria.\n\n### Componentes esenciales\n- **Acceso de primer contacto:** orientación clara y atención sin barreras evitables.\n- **Integralidad:** respuesta a necesidades físicas, mentales y sociales.\n- **Continuidad:** seguimiento a través del tiempo y entre niveles de atención.\n- **Coordinación:** intercambio de información entre profesionales y prestadores.\n- **Enfoque familiar y comunitario:** comprensión de riesgos presentes en hogares y territorios.\n- **Participación social:** intervención activa de la comunidad en decisiones y acciones de salud.\n\nEn la práctica, la APS combina educación para la salud, vacunación, detección temprana, control de enfermedades crónicas, salud materno-perinatal y acciones sobre determinantes sociales. Cuando una necesidad supera la capacidad del primer nivel, debe existir una remisión oportuna y un retorno informado.\n\n> **Ejemplo:** ante una persona con hipertensión, CEJEL IPS S.A.S. no debe limitarse a formular medicamentos. Debe valorar riesgos, educar sobre hábitos saludables, programar controles, verificar adherencia y coordinar la atención especializada cuando sea necesaria."
       },
       {
         "code": "6.4",
@@ -316,7 +316,7 @@
           "Prevención",
           "Seguimiento de pacientes"
         ],
-        "body": ""
+        "body": "La Gestión Integral del Riesgo en Salud es el proceso mediante el cual se identifican, analizan y tratan riesgos que pueden afectar la salud de personas y poblaciones. Busca anticiparse a eventos evitables, intervenir oportunamente y evaluar si las acciones producen mejores resultados.\n\n### Ciclo de gestión del riesgo\n1. **Caracterizar la población:** edad, sexo, territorio, antecedentes, condiciones sociales y uso de servicios.\n2. **Identificar y clasificar riesgos:** reconocer personas sanas con factores de riesgo, pacientes con enfermedad estable y casos de mayor complejidad.\n3. **Definir intervenciones:** promoción, tamizaje, diagnóstico, tratamiento, rehabilitación o cuidado paliativo, según la necesidad.\n4. **Hacer seguimiento:** controlar citas, resultados, adherencia, remisiones y alertas clínicas.\n5. **Evaluar resultados:** medir cobertura, oportunidad, control de enfermedades, complicaciones y experiencia del usuario.\n\nLa información debe utilizarse con criterios de calidad, confidencialidad y seguridad. Una lista de pacientes no constituye por sí sola gestión del riesgo: se requieren responsables, acciones, plazos, evidencia de seguimiento y evaluación.\n\n> **Aplicación en CEJEL IPS S.A.S.:** se puede construir una cohorte de pacientes con diabetes, identificar quiénes no tienen control reciente, contactarlos, priorizar los casos de mayor riesgo y medir periódicamente el cumplimiento de controles y metas clínicas."
       },
       {
         "code": "6.5",
@@ -327,7 +327,7 @@
           "Promoción y mantenimiento de la salud",
           "Atención de grupos de riesgo"
         ],
-        "body": ""
+        "body": "Las Rutas Integrales de Atención en Salud (RIAS) organizan las intervenciones que deben recibir las personas, familias y comunidades para promover la salud, prevenir riesgos y atender condiciones específicas. La Resolución 3202 de 2016 adoptó el manual metodológico para su elaboración e implementación.\n\n### ¿Qué define una ruta?\nUna RIAS identifica los momentos de atención, responsables, intervenciones, resultados esperados y mecanismos de coordinación. Su finalidad es disminuir la fragmentación y asegurar que el usuario avance de manera continua por las acciones que necesita.\n\nEntre las rutas desarrolladas por el Ministerio se encuentran la de promoción y mantenimiento de la salud, la materno-perinatal y rutas para grupos de riesgo como enfermedades cardio-cerebro-vasculares, cáncer, alteraciones nutricionales, consumo de sustancias psicoactivas y enfermedades infecciosas. La aplicación concreta depende de la población, los servicios habilitados y las responsabilidades acordadas en la red.\n\n### Responsabilidades de la IPS\n- Identificar la ruta aplicable desde el primer contacto.\n- Ejecutar las intervenciones correspondientes a su capacidad.\n- Registrar de forma completa y oportuna cada atención.\n- Remitir cuando el usuario necesite servicios no disponibles.\n- Verificar la continuidad y recibir información de contrarreferencia.\n- Medir resultados y barreras de acceso.\n\n> **Idea clave:** una ruta no es solo un documento o flujograma; debe convertirse en actividades reales, coordinadas y verificables para cada usuario."
       },
       {
         "code": "6.6",
@@ -339,7 +339,7 @@
           "Referencia y contrarreferencia",
           "Articulación de los servicios"
         ],
-        "body": ""
+        "body": "Para llevar estos enfoques a la práctica, CEJEL IPS S.A.S. necesita integrar la planeación institucional, la atención clínica y el seguimiento administrativo. El objetivo es que cada usuario reciba la atención correcta, en el momento oportuno y con continuidad.\n\n### Propuesta de implementación\n| Acción | Responsable sugerido | Evidencia |\n|---|---|---|\n| Caracterizar la población atendida y sus principales riesgos. | Calidad y coordinación asistencial | Informe de caracterización |\n| Definir rutas y protocolos aplicables a los servicios habilitados. | Dirección médica | Rutas institucionales aprobadas |\n| Establecer criterios de remisión y contrarreferencia. | Coordinación asistencial | Procedimiento y formatos |\n| Hacer seguimiento a pacientes con riesgo priorizado. | Equipo asistencial | Registros de seguimiento |\n| Medir acceso, oportunidad y continuidad. | Calidad | Tablero de indicadores |\n| Analizar barreras con usuarios y actores de la red. | SIAU y dirección | Actas y planes de mejora |\n\n### Indicadores propuestos\n- Porcentaje de usuarios con valoración de riesgos actualizada.\n- Tiempo promedio para asignación de citas prioritarias.\n- Porcentaje de remisiones con seguimiento documentado.\n- Porcentaje de pacientes crónicos con controles al día.\n- Satisfacción del usuario con la continuidad de su atención.\n\nLa referencia no termina al entregar una orden. La IPS debe orientar al usuario, transmitir información clínica suficiente y verificar, según su responsabilidad, que la atención continúe. La contrarreferencia permite conocer el resultado y ajustar el plan de cuidado."
       }
     ]
   },
@@ -356,7 +356,7 @@
           "¿Para qué sirve?",
           "Importancia en la identificación y codificación de procedimientos"
         ],
-        "body": ""
+        "body": "La Clasificación Única de Procedimientos en Salud (CUPS) es el ordenamiento oficial que identifica mediante códigos y descripciones estandarizadas los procedimientos y servicios de salud realizados en Colombia. Permite que prestadores, pagadores, autoridades y sistemas de información utilicen un lenguaje común.\n\nLa CUPS se usa en el registro de atenciones, RIPS, facturación, auditoría, análisis epidemiológico y gestión de información. **El código identifica el procedimiento, pero no fija por sí mismo su precio ni garantiza automáticamente su financiación.** La cobertura y el valor reconocido dependen de la normativa aplicable y del acuerdo de voluntades.\n\nPara 2026, la clasificación fue establecida por la Resolución 2706 de 2025, vigente desde el 1 de enero de 2026. Como la CUPS se actualiza periódicamente, la institución debe trabajar con la versión correspondiente a la fecha de prestación.\n\n### Buenas prácticas de codificación\n1. Verificar que el procedimiento esté documentado en la historia clínica.\n2. Seleccionar el código cuya descripción corresponda exactamente a lo realizado.\n3. Evitar códigos genéricos cuando exista uno específico.\n4. Validar vigencia, sexo, ámbito y demás reglas técnicas aplicables.\n5. Asegurar consistencia entre historia clínica, orden, autorización, RIPS y factura.\n\n> **Ejemplo:** no debe elegirse un código solo porque tenga una tarifa favorable. Primero se documenta el servicio realmente prestado y después se asigna el código CUPS correcto."
       },
       {
         "code": "7.2",
@@ -367,7 +367,7 @@
           "Diferencias frente a los manuales tarifarios",
           "Alcance histórico y situación actual"
         ],
-        "body": ""
+        "body": "MAPIPOS es el nombre con el que se conoce al Manual de Actividades, Intervenciones y Procedimientos del antiguo Plan Obligatorio de Salud, adoptado mediante la Resolución 5261 de 1994. Organizó los servicios cubiertos en el contexto normativo de esa época y tuvo importancia histórica para definir niveles de complejidad, actividades y procedimientos.\n\n### Diferencia fundamental\nMAPIPOS fue un instrumento de beneficios: orientaba qué servicios formaban parte del antiguo POS. **No fue creado como manual tarifario.** En cambio, manuales como SOAT o ISS se han utilizado como referencias para establecer valores de servicios en determinados contextos o contratos.\n\nEl sistema evolucionó hacia el Plan de Beneficios en Salud y posteriores mecanismos de financiación y exclusiones. Por ello, MAPIPOS no debe utilizarse como fuente única para decidir la cobertura actual de un servicio, ni para asignar tarifas vigentes. La consulta contemporánea debe hacerse con las resoluciones de beneficios aplicables, la CUPS vigente, las exclusiones y las condiciones del caso.\n\n### Utilidad académica actual\n- Comprender la evolución del aseguramiento y del antiguo POS.\n- Analizar conceptos históricos de niveles de atención y organización de servicios.\n- Diferenciar cobertura, codificación y tarifa.\n- Reconocer por qué una norma antigua no debe aplicarse automáticamente a una cuenta actual.\n\n> **Precaución:** antes de citar MAPIPOS en una autorización, auditoría o factura, se debe verificar si la disposición concreta continúa vigente o fue modificada, sustituida o superada por normas posteriores."
       },
       {
         "code": "7.3",
@@ -378,7 +378,7 @@
           "Aplicación de tarifas",
           "Importancia para el reconocimiento económico de servicios"
         ],
-        "body": ""
+        "body": "El denominado Manual Tarifario SOAT tiene origen en el Decreto 2423 de 1996 y reúne procedimientos, intervenciones, servicios hospitalarios y ayudas diagnósticas con reglas para su valoración. Ha sido usado en eventos con campo de aplicación legal específico y como referencia contractual para otros servicios.\n\nEn el Sistema General de Seguridad Social en Salud no existe una única tarifa obligatoria para todos los contratos entre pagadores y prestadores. Fuera de los casos definidos por la norma, las partes acuerdan tarifas y pueden tomar el manual SOAT como referencia, aplicar porcentajes o establecer valores propios. Lo pactado debe quedar claramente escrito en el acuerdo de voluntades.\n\n### Proceso básico de liquidación\n1. Identificar el servicio efectivamente prestado y su soporte clínico.\n2. Revisar el código y la regla de facturación aplicable.\n3. Confirmar el manual, año, unidad y porcentaje acordados.\n4. Aplicar inclusiones, exclusiones y reglas de conjuntos cuando correspondan.\n5. Verificar matemáticamente el valor y conservar la trazabilidad del cálculo.\n\n### Riesgos frecuentes\n- Mezclar códigos CUPS con códigos propios del manual sin equivalencia validada.\n- Aplicar una versión o valor de referencia distinto al pactado.\n- Cobrar componentes incluidos dentro de otro servicio.\n- Desconocer topes, conjuntos o reglas especiales.\n\n> **Aplicación en CEJEL IPS S.A.S.:** antes de facturar, el área responsable debe parametrizar cada contrato y no asumir que la misma tarifa sirve para todas las entidades pagadoras."
       },
       {
         "code": "7.4",
@@ -388,7 +388,7 @@
           "Acuerdos de voluntades",
           "Modalidades de pago"
         ],
-        "body": ""
+        "body": "La contratación de servicios de salud formaliza la relación entre las entidades responsables de pago y los prestadores. El Decreto 441 de 2022, incorporado en el Decreto 780 de 2016, regula elementos de los acuerdos de voluntades y busca mayor claridad en las condiciones técnicas, operativas y financieras.\n\nUn acuerdo debe precisar, entre otros aspectos, población y servicios contratados, red, autorizaciones, rutas, tarifas, modalidad de pago, indicadores, intercambio de información, auditoría, facturación, glosas, pagos y mecanismos de solución de controversias. La capacidad ofertada debe corresponder con los servicios efectivamente habilitados.\n\n### Modalidades de pago frecuentes\n| Modalidad | Característica | Riesgo que exige gestión |\n|---|---|---|\n| Pago por evento | Reconoce servicios individuales prestados | Sobreutilización o cuentas fragmentadas |\n| Capitación | Valor anticipado por persona para un conjunto de servicios | Subutilización o insuficiencia del valor |\n| Pago global prospectivo | Suma anticipada para un grupo de atenciones o período | Desviación entre demanda estimada y real |\n| Paquete o episodio | Valor integral asociado a una condición o atención | Complicaciones y exclusiones mal definidas |\n\nNo existe una modalidad perfecta para todos los casos. La institución debe evaluar población, riesgos, costos, capacidad instalada y resultados esperados.\n\n> **Control esencial:** ninguna condición contractual debe inducir negación, demora injustificada o disminución de la calidad. Los incentivos financieros deben alinearse con resultados en salud y seguridad del paciente."
       },
       {
         "code": "7.5",
@@ -399,7 +399,7 @@
           "Soportes de cobro",
           "Presentación de cuentas"
         ],
-        "body": ""
+        "body": "La facturación transforma la atención prestada y documentada en una cuenta verificable. La radicación es la presentación formal de esa factura y sus soportes ante la entidad responsable de pago. Una cuenta de calidad debe ser íntegra, coherente, trazable y presentada dentro de los plazos aplicables.\n\nDesde el 1 de febrero de 2025 se aplican las reglas reglamentarias del Decreto 441 de 2022 desarrolladas, entre otras, por las Resoluciones 2284 y 2335 de 2023. El proceso debe articular la Factura Electrónica de Venta en salud con el RIPS validado y los soportes definidos por el Ministerio, sin exigir documentos adicionales a los autorizados por la regulación.\n\n### Flujo recomendado\n1. Registrar completa y oportunamente la atención en la historia clínica.\n2. Verificar autorizaciones y condiciones contractuales cuando correspondan.\n3. Codificar diagnósticos, procedimientos y tecnologías.\n4. Validar coherencia entre registros clínicos, RIPS y valores facturados.\n5. Generar y validar la factura electrónica y sus soportes.\n6. Radicar por el canal acordado y conservar constancia de recepción.\n7. Controlar aceptación, glosas, pagos y saldos pendientes.\n\n### Lista de verificación\n- Usuario y pagador correctamente identificados.\n- Fechas, servicios y profesionales consistentes.\n- Códigos vigentes y tarifa contractual correcta.\n- RIPS validado y soportes completos.\n- Sin duplicidades ni cobros incluidos en otros conceptos.\n\n> **Idea clave:** lo que no está adecuadamente registrado y soportado difícilmente puede auditarse, cobrarse o defenderse."
       },
       {
         "code": "7.6",
@@ -410,7 +410,7 @@
           "Respuesta a glosas",
           "Gestión de cartera"
         ],
-        "body": ""
+        "body": "Una glosa es una objeción formulada por la entidad responsable de pago frente a una factura o alguno de sus conceptos. Puede relacionarse con facturación, tarifas, soportes, autorizaciones, cobertura o pertinencia, según las causales del Manual Único de Devoluciones, Glosas y Respuestas. La Resolución 2284 de 2023 establece soportes y codificación aplicables.\n\n### Gestión de glosas\n1. Registrar fecha de recepción, factura, causal y valor objetado.\n2. Confirmar que la glosa fue presentada dentro del término aplicable.\n3. Asignar el análisis al área clínica, administrativa o contractual competente.\n4. Comparar historia clínica, RIPS, factura, contrato y soportes.\n5. Responder dentro del plazo, aceptando o controvirtiendo con evidencia.\n6. Registrar el resultado y la causa raíz.\n7. Implementar acciones para prevenir recurrencias.\n\nNo toda diferencia es una glosa. Una devolución impide tramitar la factura por una causal definida y debe distinguirse de una objeción parcial. Además, el silencio del prestador frente a una glosa puede producir aceptación tácita conforme a los plazos legales.\n\nLa cartera comprende los valores pendientes de cobro. Debe clasificarse por pagador, edad, estado, riesgo y responsable. Son herramientas útiles la conciliación periódica, confirmación de saldos, seguimiento a compromisos, cobro persuasivo y acciones jurídicas cuando procedan.\n\n### Indicadores\n- Porcentaje de valor glosado sobre valor radicado.\n- Porcentaje de glosa recuperada.\n- Tiempo promedio de respuesta.\n- Cartera por edades y rotación de cuentas por cobrar.\n\n> **Aprendizaje institucional:** una glosa repetitiva debe convertirse en una acción de mejora, no solo en una respuesta individual."
       },
       {
         "code": "7.7",
@@ -421,22 +421,74 @@
           "Eficiencia administrativa",
           "Relación entre calidad y sostenibilidad"
         ],
-        "body": ""
+        "body": "La sostenibilidad financiera es la capacidad de mantener servicios seguros y oportunos mediante el uso responsable de los recursos. No significa reducir costos a cualquier precio: implica equilibrar necesidades de salud, calidad, capacidad operativa, ingresos y obligaciones.\n\n### Elementos para una gestión sostenible\n- Conocer el costo real de cada servicio y proceso.\n- Contratar tarifas y modalidades coherentes con la complejidad y el riesgo.\n- Documentar correctamente las atenciones.\n- Radicar cuentas completas y oportunas.\n- Reducir devoluciones, glosas evitables y reprocesos.\n- Vigilar cartera, flujo de caja y concentración por pagador.\n- Planear compras, inventarios, mantenimiento y talento humano.\n- Evaluar resultados clínicos y financieros de forma conjunta.\n\nLa mala calidad también genera costos: eventos adversos, repetición de pruebas, estancias prolongadas, desperdicios, reclamaciones y pérdida de confianza. A su vez, una institución sin liquidez puede retrasar pagos, mantenimiento o adquisición de insumos, afectando la atención. Por eso calidad y finanzas deben gestionarse como dimensiones relacionadas.\n\n### Tablero mínimo sugerido\n| Dimensión | Indicador |\n|---|---|\n| Ingresos | Valor facturado y radicado por mes |\n| Recaudo | Porcentaje recaudado frente a lo reconocido |\n| Cartera | Distribución por edades |\n| Calidad de cuenta | Porcentaje de devoluciones y glosas |\n| Costos | Costo promedio por servicio |\n| Atención | Oportunidad, seguridad y satisfacción |\n\n> **Decisión responsable:** antes de ampliar un servicio, CEJEL IPS S.A.S. debe verificar necesidad poblacional, habilitación, talento humano, capacidad instalada, costos, fuente de pago y efecto esperado sobre la calidad."
       }
     ]
   },
   {
     "t": "Plan de fortalecimiento institucional",
     "d": "De los hallazgos a las acciones de mejora",
-    "note": "El contenido de este módulo estaba incompleto en el texto original; se irán agregando las demás secciones.",
+    "note": "Ejercicio académico integrador para CEJEL IPS S.A.S.; las metas deben ajustarse con una línea de base real.",
     "s": [
       {
         "code": "8.1",
-        "title": "Identificación de problemas",
+        "title": "Identificación y análisis de problemas",
         "bullets": [
-          "Debilidades en habilitación"
+          "Fuentes de información",
+          "Brechas de habilitación y calidad",
+          "Análisis de causas"
         ],
-        "body": ""
+        "body": "Un plan de fortalecimiento comienza con evidencia, no con soluciones predeterminadas. CEJEL IPS S.A.S. debe comparar su situación actual con los requisitos legales, estándares institucionales y resultados esperados para identificar brechas concretas.\n\n### Fuentes de información\n- Autoevaluación de las condiciones de habilitación vigentes.\n- Auditorías de historias clínicas, facturación y seguridad del paciente.\n- Indicadores de oportunidad, continuidad y satisfacción.\n- Quejas, peticiones, reclamos y sugerencias de los usuarios.\n- Eventos adversos, incidentes y riesgos reportados.\n- Glosas, devoluciones, cartera y reprocesos administrativos.\n- Entrevistas con trabajadores y observación directa de procesos.\n\n### Problema priorizado para el ejercicio\nSe identifica una **insuficiente calidad y oportunidad de los registros asistenciales**, que ocasiona pérdida de trazabilidad clínica, dificulta la continuidad del cuidado y genera inconsistencias en RIPS y facturación.\n\n### Análisis de causas\n| Categoría | Posibles causas |\n|---|---|\n| Personas | Capacitación insuficiente y retroalimentación tardía |\n| Método | Procedimientos extensos o criterios poco claros |\n| Tecnología | Campos no validados y fallas de interoperabilidad |\n| Medición | Auditorías esporádicas sin seguimiento individual |\n| Gestión | Responsables y tiempos de corrección no definidos |\n\nEl análisis debe comprobarse con datos. Herramientas como los cinco porqués, diagrama de causa y efecto y análisis de procesos ayudan a distinguir las causas raíz de los síntomas."
+      },
+      {
+        "code": "8.2",
+        "title": "Priorización de oportunidades de mejora",
+        "bullets": [
+          "Riesgo para el usuario",
+          "Frecuencia e impacto",
+          "Capacidad de intervención"
+        ],
+        "body": "No todas las brechas pueden abordarse al mismo tiempo. La priorización permite concentrar recursos en los problemas que representan mayor riesgo y ofrecen una posibilidad real de mejora.\n\n### Criterios propuestos\n1. **Riesgo para el usuario:** posibilidad de daño, interrupción del tratamiento o vulneración de derechos.\n2. **Magnitud:** número de personas, servicios o procesos afectados.\n3. **Frecuencia:** repetición del problema durante el período evaluado.\n4. **Impacto institucional:** efecto clínico, legal, financiero y reputacional.\n5. **Viabilidad:** recursos, tiempo y autoridad disponibles para intervenir.\n6. **Alineación:** relación con habilitación, PAMEC, seguridad del paciente y objetivos institucionales.\n\nCada oportunidad puede calificarse de 1 a 5 en los criterios definidos. La matriz debe conservar las fuentes utilizadas y justificar la decisión. Una puntuación alta no reemplaza el juicio técnico: los riesgos críticos para la vida o la seguridad requieren tratamiento inmediato aunque sean poco frecuentes.\n\n### Resultado del ejercicio\nCEJEL IPS S.A.S. prioriza la calidad de los registros porque afecta simultáneamente la continuidad asistencial, la medición de resultados, el cumplimiento normativo, el RIPS y la facturación. Como segunda prioridad se propone mejorar el seguimiento a remisiones, y como tercera, reducir tiempos de asignación de citas."
+      },
+      {
+        "code": "8.3",
+        "title": "Objetivos y plan de acción",
+        "bullets": [
+          "Objetivos medibles",
+          "Actividades y responsables",
+          "Recursos y cronograma"
+        ],
+        "body": "El objetivo general es **mejorar la integridad, oportunidad y coherencia de los registros asistenciales de CEJEL IPS S.A.S. para fortalecer la continuidad del cuidado y la calidad de la información**.\n\n### Meta académica\nAumentar, en seis meses, el porcentaje de historias clínicas que cumplen todos los criterios de la lista de verificación desde la línea de base que se establezca hasta por lo menos el 95 %. La meta deberá ajustarse después de la medición inicial.\n\n### Plan de acción\n| Actividad | Responsable | Plazo | Evidencia |\n|---|---|---|---|\n| Medir la línea de base con una muestra definida. | Calidad | Mes 1 | Informe de auditoría |\n| Simplificar criterios y actualizar la lista de verificación. | Calidad y dirección médica | Mes 1 | Instrumento aprobado |\n| Capacitar con casos de los errores más frecuentes. | Talento humano | Mes 2 | Asistencia y evaluación |\n| Configurar alertas o campos obligatorios pertinentes. | Sistemas y líderes clínicos | Meses 2–3 | Pruebas y acta de cambio |\n| Realizar auditoría concurrente y retroalimentación. | Coordinación asistencial | Meses 2–6 | Registros de seguimiento |\n| Analizar resultados y ajustar acciones. | Comité de calidad | Mensual | Actas y tablero |\n\nCada actividad debe tener un responsable principal, recursos aprobados y un criterio de terminación. Expresiones como “mejorar” o “hacer seguimiento” no son suficientes si no especifican qué se hará, quién lo hará, cuándo y cómo se demostrará."
+      },
+      {
+        "code": "8.4",
+        "title": "Implementación y gestión del cambio",
+        "bullets": [
+          "Comunicación y participación",
+          "Ejecución segura",
+          "Gestión de barreras"
+        ],
+        "body": "La implementación convierte el plan escrito en cambios reales del trabajo cotidiano. Para lograr adherencia, las personas que ejecutan el proceso deben participar en el diseño, comprender la razón del cambio y recibir herramientas suficientes.\n\n### Estrategia de implementación\n- Comunicar el problema con datos y explicar el beneficio para pacientes y trabajadores.\n- Involucrar a representantes de medicina, enfermería, archivo, facturación, calidad y sistemas.\n- Probar los cambios en un servicio o grupo pequeño antes de ampliarlos.\n- Capacitar mediante ejemplos prácticos y comprobar el aprendizaje.\n- Facilitar canales para reportar dificultades sin temor a sanciones.\n- Corregir barreras tecnológicas y de carga laboral identificadas durante la prueba.\n- Reconocer avances y compartir buenas prácticas.\n\nPuede utilizarse el ciclo PHVA: planear el cambio, hacerlo a escala controlada, verificar sus resultados y actuar para ajustarlo o estandarizarlo. Los cambios tecnológicos deben probarse antes de entrar en producción y nunca deben inducir registros falsos o selecciones automáticas que sustituyan el juicio profesional.\n\n> **Principio de seguridad:** si durante la implementación aparece un riesgo inmediato para el paciente, la institución debe controlarlo de forma prioritaria y no esperar al siguiente comité o medición mensual."
+      },
+      {
+        "code": "8.5",
+        "title": "Indicadores, seguimiento y evaluación",
+        "bullets": [
+          "Línea de base y metas",
+          "Indicadores de proceso y resultado",
+          "Toma de decisiones"
+        ],
+        "body": "El seguimiento permite saber si las actividades se ejecutaron y, sobre todo, si produjeron el resultado esperado. Cada indicador debe tener ficha técnica, fuente, responsable, periodicidad, fórmula y reglas de interpretación.\n\n### Indicadores propuestos\n| Indicador | Fórmula | Meta académica |\n|---|---|---|\n| Historias clínicas conformes | Historias que cumplen todos los criterios / historias evaluadas × 100 | ≥ 95 % |\n| Registros cerrados oportunamente | Registros cerrados dentro del plazo / registros revisados × 100 | ≥ 95 % |\n| Inconsistencias entre historia y RIPS | Registros con inconsistencia / registros revisados × 100 | ≤ 3 % |\n| Personal capacitado y aprobado | Trabajadores que aprueban evaluación / trabajadores programados × 100 | 100 % |\n| Glosas atribuibles a soportes | Valor glosado por soportes / valor total radicado × 100 | Tendencia descendente |\n\nLa línea de base debe medirse antes de fijar definitivamente las metas. Los resultados se presentan en series de tiempo, se comparan por servicio y se acompañan de análisis cualitativo. Una mejora aparente puede deberse a cambios en la muestra o en la forma de medir; por eso la metodología debe mantenerse documentada.\n\nSi un indicador no mejora, el equipo debe revisar las causas, la ejecución y la pertinencia de las acciones. El propósito de medir es tomar decisiones, no producir cifras aisladas."
+      },
+      {
+        "code": "8.6",
+        "title": "Sostenibilidad y cierre del plan",
+        "bullets": [
+          "Estandarización",
+          "Aprendizaje institucional",
+          "Mejoramiento continuo"
+        ],
+        "body": "Un plan no termina cuando se cumple el cronograma. El cierre debe determinar si la brecha se redujo, qué acciones funcionaron y cómo se mantendrán los resultados.\n\n### Criterios de cierre\n- Actividades completadas y evidencias verificadas.\n- Meta alcanzada durante varios períodos consecutivos.\n- Riesgos residuales identificados y controlados.\n- Procedimientos, formatos y sistemas actualizados.\n- Responsables permanentes y recursos definidos.\n- Lecciones aprendidas documentadas y comunicadas.\n\nLas prácticas efectivas se incorporan a la inducción, capacitación, auditoría y evaluación periódica. Si la meta no se alcanza, el plan no debe cerrarse solo porque venció la fecha: se reanalizan causas, se ajustan intervenciones y se define un nuevo ciclo PHVA.\n\n### Integración institucional\nEl plan debe relacionarse con el PAMEC, el programa de seguridad del paciente, la gestión del riesgo, el plan de capacitación y la planeación financiera. Así se evita que distintas áreas dupliquen actividades o trabajen con objetivos contradictorios.\n\n> **Resultado esperado para CEJEL IPS S.A.S.:** una institución que aprende de sus datos, corrige sus procesos y mantiene mejoras demostrables en seguridad, experiencia del usuario, continuidad y sostenibilidad."
       }
     ]
   }
